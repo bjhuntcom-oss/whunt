@@ -1,0 +1,501 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================
+   WHUNT DESIGN SYSTEM — Ultra Black / Tech Minimal
+   Inspired by: BJHUNT documentation aesthetic
+   Fonts: JetBrains Mono (code/labels) + Inter (body)
+   ===================================================== */
+
+:root {
+  /* === CORE BACKGROUNDS === */
+  --bg:         #050505;
+  --bg-s:       #0a0a0a;
+  --bg-s2:      #0e0e0e;
+  --bg-s3:      #141414;
+  --bg-b:       #1a1a1a;
+  --bg-b2:      #252525;
+
+  /* === TEXT === */
+  --text:       #e0e0e0;
+  --text-2:     #999999;
+  --text-3:     #555555;
+  --text-white: #ffffff;
+
+  /* === STATE COLORS (green / orange / red) === */
+  --green:      #00ff88;
+  --green-dim:  #00cc6a;
+  --green-bg:   rgba(0, 255, 136, 0.07);
+  --green-brd:  rgba(0, 255, 136, 0.18);
+
+  --orange:     #ff8c00;
+  --orange-dim: #cc7000;
+  --orange-bg:  rgba(255, 140, 0, 0.07);
+  --orange-brd: rgba(255, 140, 0, 0.18);
+
+  --red:        #ff3b3b;
+  --red-dim:    #cc2a2a;
+  --red-bg:     rgba(255, 59, 59, 0.07);
+  --red-brd:    rgba(255, 59, 59, 0.18);
+
+  /* === BORDERS / DIVIDERS === */
+  --brd:        #1a1a1a;
+  --brd-2:      #252525;
+  --brd-3:      #333333;
+
+  /* -------------------------------------------------------
+     Tailwind / Radix UI CSS variable mapping
+     Maps the whunt palette to the shadcn/radix convention
+  ------------------------------------------------------- */
+  --background:            var(--bg);
+  --foreground:            var(--text);
+
+  --card:                  var(--bg-s);
+  --card-foreground:       var(--text);
+
+  --popover:               var(--bg-s2);
+  --popover-foreground:    var(--text);
+
+  --primary:               var(--green);
+  --primary-foreground:    #000000;
+
+  --secondary:             var(--bg-b);
+  --secondary-foreground:  var(--text);
+
+  --muted:                 var(--bg-s3);
+  --muted-foreground:      var(--text-3);
+
+  --accent:                var(--bg-b2);
+  --accent-foreground:     var(--text);
+
+  --destructive:           var(--red);
+  --destructive-foreground:#ffffff;
+
+  --border:                var(--brd);
+  --input:                 var(--bg-b);
+  --ring:                  var(--green);
+
+  --radius: 0.375rem;
+
+  /* === SIDEBAR === */
+  --sidebar-background:         var(--bg-s);
+  --sidebar-foreground:         var(--text);
+  --sidebar-primary:            var(--green);
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent:             var(--bg-b);
+  --sidebar-accent-foreground:  var(--text);
+  --sidebar-border:             var(--brd);
+  --sidebar-ring:               var(--green);
+
+  /* === CHARTS === */
+  --chart-1: var(--green);
+  --chart-2: var(--orange);
+  --chart-3: var(--red);
+  --chart-4: #a855f7;
+  --chart-5: #3b82f6;
+
+  /* === TYPOGRAPHY === */
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* =====================================================
+   BASE LAYER
+   ===================================================== */
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    line-height: 1.7;
+    font-feature-settings: "rlig" 1, "calt" 1, "liga" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    color: var(--text-white);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; }
+  h2 { font-size: 1.375rem; font-weight: 700; }
+  h3 { font-size: 1rem; font-weight: 600; }
+  h4 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); }
+
+  p, li { color: var(--text-2); font-size: 12.5px; }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+  }
+
+  a {
+    color: var(--green);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  a:hover { opacity: 0.7; }
+
+  ::selection {
+    background: var(--green);
+    color: #000;
+  }
+}
+
+/* =====================================================
+   SCROLLBAR — ultra minimal
+   ===================================================== */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-b2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brd-3); }
+
+/* =====================================================
+   COMPONENT LAYER
+   ===================================================== */
+@layer components {
+
+  /* --- GRID BACKGROUND (for hero / dashboard sections) --- */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .grid-bg-fine {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  /* Fades the grid to black at the bottom */
+  .grid-fade {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  }
+
+  /* --- CARDS --- */
+  .card-dark {
+    background: var(--bg-s);
+    border: 1px solid var(--brd);
+    border-radius: var(--radius);
+    transition: border-color 0.2s ease;
+  }
+  .card-dark:hover { border-color: var(--brd-2); }
+
+  /* --- STAT CARD --- */
+  .stat-card {
+    background: var(--bg-s);
+    border: 1px solid var(--brd);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+    transition: border-color 0.2s ease;
+  }
+  .stat-card:hover { border-color: var(--brd-2); }
+  .stat-card .stat-value {
+    font-family: var(--font-sans);
+    font-size: 1.875rem;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .stat-card .stat-label {
+    font-size: 9.5px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-top: 0.375rem;
+    font-family: var(--font-mono);
+  }
+
+  /* --- TAGS / BADGES --- */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  .tag-green  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-brd); }
+  .tag-orange { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-brd); }
+  .tag-red    { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-brd); }
+  .tag-neutral { background: rgba(255,255,255,0.04); color: #888; border: 1px solid rgba(255,255,255,0.08); }
+
+  /* --- STATUS DOTS --- */
+  .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-dot-green  { background: var(--green);  box-shadow: 0 0 6px rgba(0,255,136,0.5); }
+  .status-dot-orange { background: var(--orange); box-shadow: 0 0 6px rgba(255,140,0,0.5); }
+  .status-dot-red    { background: var(--red);    box-shadow: 0 0 6px rgba(255,59,59,0.5); }
+
+  /* --- CONTEXT BLOCKS (colored left border) --- */
+  .cx-block {
+    background: var(--bg-s);
+    border-left: 2px solid var(--green);
+    padding: 0.875rem 1rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 0.5rem 0;
+  }
+  .cx-block-orange { border-left-color: var(--orange); }
+  .cx-block-red    { border-left-color: var(--red); }
+
+  /* --- NOTICE / ALERT BOXES --- */
+  .notice {
+    background: var(--orange-bg);
+    border: 1px solid var(--orange-brd);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 11.5px;
+    color: var(--orange);
+    font-family: var(--font-mono);
+  }
+
+  /* --- CODE BLOCK --- */
+  .code-block {
+    background: var(--bg-s);
+    border: 1px solid var(--brd);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: var(--text-2);
+    white-space: pre;
+    font-family: var(--font-mono);
+  }
+
+  /* --- FLOW ARROWS --- */
+  .flow-node {
+    background: var(--bg-s);
+    border: 1px solid var(--brd);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+  }
+  .flow-arrow {
+    color: var(--text-3);
+    font-size: 14px;
+    padding: 0 4px;
+  }
+
+  /* --- INPUTS --- */
+  .input-dark {
+    background: var(--bg-b);
+    border: 1px solid var(--brd);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.15s ease;
+    outline: none;
+  }
+  .input-dark::placeholder { color: var(--text-3); }
+  .input-dark:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(0,255,136,0.1); }
+
+  /* --- BUTTONS --- */
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    font-weight: 700;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .btn-primary:hover  { opacity: 0.85; }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-2);
+    font-weight: 500;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    border: 1px solid var(--brd);
+    border-radius: var(--radius);
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .btn-ghost:hover { border-color: var(--brd-3); color: var(--text); }
+
+  .btn-danger {
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid var(--red-brd);
+    font-weight: 700;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    border-radius: var(--radius);
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .btn-danger:hover { opacity: 0.8; }
+
+  /* --- ANIMATIONS --- */
+  .fade-in {
+    animation: fadeIn 0.4s ease-out both;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide-in {
+    animation: slideIn 0.3s ease-out both;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  /* --- GLOW EFFECTS --- */
+  .glow-green  { box-shadow: 0 0 20px rgba(0, 255, 136, 0.12); }
+  .glow-orange { box-shadow: 0 0 20px rgba(255, 140, 0, 0.12); }
+  .glow-red    { box-shadow: 0 0 20px rgba(255, 59, 59, 0.12); }
+
+  /* --- LOADING SPINNER --- */
+  .loading-spinner {
+    border: 2px solid var(--bg-b2);
+    border-top: 2px solid var(--green);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .pulse-gentle {
+    animation: pulseGentle 2s ease-in-out infinite;
+  }
+  @keyframes pulseGentle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* --- SEPARATOR --- */
+  .sep {
+    height: 1px;
+    background: var(--brd);
+    margin: 1.5rem 0;
+  }
+
+  /* --- SIDEBAR NAV ITEM --- */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius);
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    transition: background 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .nav-item:hover { background: var(--bg-b); color: var(--text); }
+  .nav-item.active { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-brd); }
+
+  /* --- TABLE --- */
+  .table-dark { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .table-dark th {
+    background: var(--bg-s2);
+    text-align: left;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--brd);
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    font-family: var(--font-mono);
+  }
+  .table-dark td {
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--brd);
+    color: var(--text-2);
+  }
+  .table-dark tr:hover td { background: rgba(255,255,255,0.015); }
+
+  /* --- MONO LABEL --- */
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+  }
+
+  /* --- GLASS CARD --- */
+  .glass-card {
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+  }
+
+  /* --- WHATSAPP compat --- */
+  .whatsapp-green { background-color: var(--green); }
+}
