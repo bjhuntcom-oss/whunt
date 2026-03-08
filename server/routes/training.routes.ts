@@ -33,8 +33,9 @@ import {
   scrapeUrl,
 } from "../services/training.service";
 import multer from "multer";
-import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
+
+const pdfParse = require("pdf-parse");
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -111,7 +112,7 @@ export function registerTrainingRoutes(app: Express) {
 
         if (file.mimetype === "application/pdf") {
           const uint8Array = new Uint8Array(file.buffer.buffer, file.buffer.byteOffset, file.buffer.byteLength);
-          const parser = new PDFParse(uint8Array);
+          const parser = new pdfParse(uint8Array);
           await parser.load();
           const result = await parser.getText();
           content = typeof result === "string" ? result : (result?.text || "");
