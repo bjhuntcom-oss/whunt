@@ -29,7 +29,7 @@ RUN apk add --no-cache python3 make g++
 
 # Install production dependencies only
 COPY package*.json ./
-RUN npm install --production
+RUN npm install --production && npm install vite
 
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
