@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -69,6 +69,7 @@ interface Props {
   onOpenChange: (open: boolean) => void;
   existingData?: Partial<AISettingsFormValues> & { id?: string };
   onSuccess?: () => void;
+  activeChannel?: any;
 }
 
 export default function AISettingsModal({

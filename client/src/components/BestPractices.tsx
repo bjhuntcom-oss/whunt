@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -66,15 +66,15 @@ const BestPractices = () => {
 
   const categories = (t("bestPractices.categories", {
     returnObjects: true,
-  }) || []) as Category[];
+  }) || []) as unknown as Category[];
 
   const practices = (t("bestPractices.practices", {
     returnObjects: true,
-  }) || {}) as PracticesMap;
+  }) || {}) as unknown as PracticesMap;
 
   const quickTips = (t("bestPractices.quickTips.tips", {
     returnObjects: true,
-  }) || []) as QuickTip[];
+  }) || []) as unknown as QuickTip[];
 
   const sectionIcons: Record<
     CategoryId,
@@ -269,7 +269,7 @@ const BestPractices = () => {
                   {(
                     t("bestPractices.warning.points", {
                       returnObjects: true,
-                    }) as string[]
+                    }) as unknown as string[]
                   ).map((point, index) => (
                     <li key={index}>• {point}</li>
                   ))}

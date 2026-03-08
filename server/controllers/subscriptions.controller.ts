@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { Request, Response } from "express";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { db } from "../db";
 import { subscriptions, users, plans } from "@shared/schema";
 import { eq, and, desc, lt, sql } from "drizzle-orm";
@@ -291,9 +291,9 @@ export const createSubscription = async (req: Request, res: Response) => {
         status: "active",
         billingCycle,
         startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        endDate: endDate ? new Date(endDate) : null,
         autoRenew: autoRenew ?? true,
-      })
+      } as any)
       .returning();
 
     res.status(201).json({
@@ -506,7 +506,7 @@ export const changePlan = async (req: Request, res: Response) => {
 
           await db
             .update(users)
-            .set({ planId: newPlanId, updatedAt: new Date() })
+            .set({ planId: newPlanId, updatedAt: new Date() } as any)
             .where(eq(users.id, userId));
 
           return res.status(200).json({
@@ -585,7 +585,7 @@ export const changePlan = async (req: Request, res: Response) => {
 
     await db
       .update(users)
-      .set({ planId: newPlanId, updatedAt: new Date() })
+      .set({ planId: newPlanId, updatedAt: new Date() } as any)
       .where(eq(users.id, userId));
 
     return res.status(200).json({

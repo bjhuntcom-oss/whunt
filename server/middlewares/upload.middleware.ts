@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import multer, { FileFilterCallback } from "multer";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import path from "path";
 import fs from "fs";
 import { Request, Response, NextFunction } from "express";
@@ -142,7 +142,7 @@ export const handleDigitalOceanUpload = async (
       files.forEach(file => {
         console.log(`   📍 Local path: ${file.path}`);
         console.log(`   🌐 Access URL: /uploads/${path.basename(path.dirname(file.path))}/${file.filename}`);
-        file.cloudUrl = `${path.basename(path.dirname(file.path))}/${file.filename}`;
+        (file as any).cloudUrl = `${path.basename(path.dirname(file.path))}/${file.filename}`;
       });
       return next();
     }
@@ -186,10 +186,10 @@ export const handleDigitalOceanUpload = async (
         // Construct cloud URL
         const endpointUrl = new URL(endpoint || "");
         // console.log('endpointUrl:', endpointUrl);
-        file.cloudUrl = `https://${bucket}.${endpointUrl.host}/${fileKey}`;
+        (file as any).cloudUrl = `https://${bucket}.${endpointUrl.host}/${fileKey}`;
 
         console.log(`   ✅ Upload successful!`);
-        console.log(`   🌐 Cloud URL: ${file.cloudUrl}`);
+        console.log(`   🌐 Cloud URL: ${(file as any).cloudUrl}`);
 
         // Delete local file after successful upload
         fs.unlinkSync(file.path);

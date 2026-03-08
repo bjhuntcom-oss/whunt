@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -20,9 +20,9 @@
 // ============================================
 
 import { Router } from 'express';
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import type { Express } from "express";
-import { storage } from 'server/storage';
+import { storage as storageBase } from 'server/storage';
 import OpenAI from 'openai';
 import { requireAuth } from 'server/middlewares/auth.middleware';
 import { aiSettings, insertSiteSchema, panelConfig, sites, trainingQaPairs } from '@shared/schema';
@@ -32,9 +32,12 @@ import { db } from 'server/db';
 import { searchTrainingData } from '../services/training.service';
 import multer from 'multer';
 import path from 'path';
+import { io } from '../socket';
+
+const storage = storageBase as any;
 
 
-function buildAIClient(aiSetting) {
+function buildAIClient(aiSetting: any) {
   if (aiSetting.provider === "openai") {
     return new OpenAI({
       apiKey: aiSetting.apiKey,
@@ -130,7 +133,7 @@ res.json({
           name: cat.name,
           icon: cat.icon,
           articleCount: articlesMap.get(cat.id)?.length || 0,
-          articles: (articlesMap.get(cat.id) || []).map(article => ({
+          articles: (articlesMap.get(cat.id) || []).map((article: any) => ({
             id: article.id,
             title: article.title,
             preview: article.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
@@ -275,8 +278,7 @@ app.post("/api/widget/chat", async (req, res) => {
       contact = contacts?.[0] || null;
       if (!contact) {
         contact = await storage.createContact({
-          tenantId: site.tenantId,
-          channelId: channelId || site.tenantId,
+          channelId: channelId || site.channelId,
           name: visitorInfo.name || "Anonymous",
           email: visitorInfo.email,
           phone: visitorInfo.mobile || "",
@@ -676,7 +678,7 @@ ${triggerPhrases.length > 0 ? `- If the user mentions any of these phrases, esca
       const { conversationId } = req.params;
       const messages = await storage.getConversationMessages(conversationId);
       
-      const formattedMessages = messages.map(msg => ({
+      const formattedMessages = messages.map((msg: any) => ({
         id: msg.id,
         content: msg.content,
         fromUser: msg.fromUser,
@@ -815,7 +817,7 @@ ${triggerPhrases.length > 0 ? `- If the user mentions any of these phrases, esca
     try {
       const validated = insertSiteSchema.parse(req.body);
       // Ensure site belongs to user's tenant
-      if (validated.tenantId !== req.user?.tenantId && req.user?.role !== "super_admin") {
+      if ((validated as any).tenantId !== (req.user as any)?.tenantId && req.user?.role !== "super_admin") {
         return res.status(403).json({ message: "Access denied" });
       }
       const site = await storage.createSite(validated);
@@ -832,7 +834,7 @@ ${triggerPhrases.length > 0 ? `- If the user mentions any of these phrases, esca
       if (!site) {
         return res.status(404).json({ message: "Site not found" });
       }
-      if (site.tenantId !== req.user?.tenantId && req.user?.role !== "admin") {
+      if ((site as any).tenantId !== (req.user as any)?.tenantId && req.user?.role !== "admin") {
         return res.status(403).json({ message: "Access denied" });
       }
       

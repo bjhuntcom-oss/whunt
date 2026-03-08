@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -106,12 +106,9 @@ export function GeneralSettings(): JSX.Element {
       setMeta({
         title: displayData.title,
         favicon: displayData.favicon,
-        currency: displayData.currency,
-        country: displayData.country,
-        supportEmail: displayData.supportEmail,
         description: displayData.tagline,
         keywords: `${displayData.title} ${displayData?.tagline}`,
-      });
+      } as any);
     }
   }, [brandSettings]);
 

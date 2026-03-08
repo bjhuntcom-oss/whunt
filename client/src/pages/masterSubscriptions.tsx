@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -117,13 +117,13 @@ export default function AllSubscriptionsPage() {
       const json = await res.json();
       return json;
     },
-    keepPreviousData: true,
+    placeholderData: (prev: any) => prev,
   });
 
-  const subscriptions = data?.data ?? [];
-  const page = data?.pagination?.page ?? currentPage;
-  const totalPages = data?.pagination?.totalPages ?? 1;
-  const total = data?.pagination?.total ?? 0;
+  const subscriptions = (data as any)?.data ?? [];
+  const page = (data as any)?.pagination?.page ?? currentPage;
+  const totalPages = (data as any)?.pagination?.totalPages ?? 1;
+  const total = (data as any)?.pagination?.total ?? 0;
 
   // Handle limit change
   const handleLimitChange = (newLimit: number) => {
@@ -238,7 +238,7 @@ export default function AllSubscriptionsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {subscriptions.map(({ subscription, user, plan }) => (
+              {subscriptions.map(({ subscription, user, plan }: any) => (
                 <tr
                   key={subscription.id}
                   className="hover:bg-[#050505] transition-colors"
@@ -295,7 +295,7 @@ export default function AllSubscriptionsPage() {
 
         {/* Mobile/Tablet Card View */}
         <div className="lg:hidden space-y-4">
-          {subscriptions.map(({ subscription, user, plan }) => (
+          {subscriptions.map(({ subscription, user, plan }: any) => (
             <div
               key={subscription.id}
               className="bg-[#0a0a0a] rounded-lg shadow-sm border border-[#1a1a1a] p-4"

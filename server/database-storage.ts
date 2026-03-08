@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -101,11 +101,11 @@ export class DatabaseStorage implements IStorage {
 }
 
   async getSites(): Promise<Site[]> {
-  const sites = await db
+  const siteRows = await db
     .select()
     .from(sites);
-  
-  return sites as Site[];
+
+  return siteRows as Site[];
 }
 
   async getSitesByChannel(channelId: string): Promise<Site[]> {
@@ -240,13 +240,7 @@ async getContactsByUser(
   userId: string,
   page: number = 1,
   limit: number = 10
-): Promise<{
-  data: Contact[];
-  total: number;
-  totalPages: number;
-  page: number;
-  limit: number;
-}> {
+): Promise<any> {
   return this.contactRepo.getContactsByUserId(userId, page, limit);
 }
 
@@ -340,12 +334,7 @@ async getContactsByUser(
   async getCampaigns(
   page: number = 1,
   limit: number = 10
-): Promise<{
-  data: Campaign[];
-  total: number;
-  page: number;
-  limit: number;
-}> {
+): Promise<any> {
   return this.campaignRepo.getAll(page, limit);
 }
 
@@ -365,7 +354,7 @@ async getContactsByUser(
     return this.campaignRepo.getById(id);
   }
 
-  async getCampaignByUserId(userId: string, page: number = 1, limit: number = 10): Promise<Campaign | undefined> {
+  async getCampaignByUserId(userId: string, page: number = 1, limit: number = 10): Promise<any> {
     return this.campaignRepo.getCampaignByUserId(userId, page, limit);
   }
 
@@ -415,10 +404,7 @@ async getActiveChannelByUserId(userId: string): Promise<Channel | undefined> {
   userId: string,
   page: number = 1,
   limit: number = 10
-): Promise<{
-  data: Channel[];
-  pagination: { page: number; limit: number; total: number; totalPages: number };
-}> {
+): Promise<any> {
   return this.channelRepo.getByUser(userId, page, limit);
 }
 
@@ -461,10 +447,7 @@ async getActiveChannelByUserId(userId: string): Promise<Channel | undefined> {
 
   // database-storage.ts
 
-async getTemplates(page = 1, limit = 10): Promise<{
-  data: Template[];
-  pagination: { total: number; totalPages: number; page: number; limit: number };
-}> {
+async getTemplates(page = 1, limit = 10): Promise<any> {
   const result = await this.templateRepo.getAll(page, limit);
   return {
     data: result.data,
@@ -477,7 +460,7 @@ async getTemplates(page = 1, limit = 10): Promise<{
   userId: string,
   page: number = 1,
   limit: number = 10
-): Promise<{ data: Template[]; total: number; page: number; limit: number }> {
+): Promise<any> {
   return this.templateRepo.getTemplateByUserID(userId, page, limit);
 }
 
@@ -500,7 +483,7 @@ async getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<T
   channelId: string,
   page: number = 1,
   limit: number = 10
-): Promise<{ data: Template[]; total: number }> {
+): Promise<any> {
   return this.templateRepo.getByChannel(channelId, page, limit);
 }
 
@@ -813,7 +796,8 @@ async getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<T
     ]);
 
     const { totalCount, todayCount, weekCount, lastWeekCount } = contactStats;
-    const totalTemplates = allTemplates.length;
+    const allTemplatesData = Array.isArray(allTemplates) ? allTemplates : (allTemplates as any).data ?? [];
+    const totalTemplates = allTemplatesData.length;
 
     // PERF-03 FIX: Filter users in SQL instead of JavaScript
     const adminUsers = allUsers.filter(user => user.role === "admin");
@@ -829,6 +813,7 @@ async getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<T
     tomorrow.setDate(today.getDate() + 1);
     
     const todaySignups = adminUsers.filter(user => {
+      if (!user.createdAt) return false;
       const createdAt = new Date(user.createdAt);
       return createdAt >= today && createdAt < tomorrow;
     }).length;
@@ -852,7 +837,7 @@ async getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<T
     };
   }
 
-  async getDashboardStatsByChannel(channelId: string, userId: string): Promise<any> {
+  async getDashboardStatsByChannel(channelId: string, userId?: string): Promise<any> {
     const { totalCount, todayCount, weekCount, lastWeekCount } =
       await this.contactRepo.getContactStats(channelId);
     const totalCampaigns = await this.campaignRepo
@@ -860,14 +845,14 @@ async getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<T
       .then((c) => c.total ?? 0);
 
     const totalTemplates = await this.templateRepo.getByChannel(channelId).then((t) => t.total ?? 0);
-    const totalTemplatesByUserId = await this.templateRepo.getTemplateByUserID(userId);
+    const totalTemplatesByUserId = await this.templateRepo.getTemplateByUserID(userId ?? '');
     const messageStats = await this.messageQueueRepo.getMessageStatsByChannel(
       channelId
     );
 
-    const totalChannels = await this.channelRepo.getTotalChannelsByUser(userId);
+    const totalChannels = await this.channelRepo.getTotalChannelsByUser(userId ?? '');
 
-    const totalTeamMembers = await this.userRepo.getTeamUsersCountByCreator(userId)
+    const totalTeamMembers = await this.userRepo.getTeamUsersCountByCreator(userId ?? '')
 
     return {
       totalContacts: Number(totalCount),

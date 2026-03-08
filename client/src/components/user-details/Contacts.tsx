@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -71,11 +71,11 @@ export default function Contacts({ userId }: ContactsProps) {
       return json;
     },
     enabled: !!userId,
-    keepPreviousData: true,
+    placeholderData: (prev: any) => prev,
   });
 
-  const contacts = data?.data || [];
-  const totalPages = data?.pagination?.totalPages || 1;
+  const contacts = (data as any)?.data || [];
+  const totalPages = (data as any)?.pagination?.totalPages || 1;
 
   if (isLoading)
     return (
@@ -125,7 +125,7 @@ export default function Contacts({ userId }: ContactsProps) {
             </tr>
           </thead>
           <tbody>
-            {contacts.map((contact) => (
+            {contacts.map((contact: any) => (
               <tr
                 key={contact.id}
                 className="hover:bg-[#050505] transition-colors text-sm text-[#999]"
@@ -171,14 +171,14 @@ export default function Contacts({ userId }: ContactsProps) {
 
       {/* Pagination */}
       {/* Pagination (Fully Responsive) */}
-      {data?.pagination && (
+      {(data as any)?.pagination && (
         <div className="w-full mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* LEFT SIDE → Showing + Per Page */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <span className="text-sm text-[#999]">
               Showing {(page - 1) * limit + 1} to{" "}
-              {Math.min(page * limit, data.pagination.total)} of{" "}
-              {data.pagination.total} contacts
+              {Math.min(page * limit, (data as any).pagination.total)} of{" "}
+              {(data as any).pagination.total} contacts
             </span>
 
             {/* Per Page Selector (Optional) */}
@@ -213,10 +213,10 @@ export default function Contacts({ userId }: ContactsProps) {
 
             <button
               className="px-3 py-1 border rounded disabled:opacity-50"
-              disabled={page >= data.pagination.totalPages}
+              disabled={page >= (data as any).pagination.totalPages}
               onClick={() =>
                 setPage((prev) =>
-                  Math.min(prev + 1, data.pagination.totalPages)
+                  Math.min(prev + 1, (data as any).pagination.totalPages)
                 )
               }
             >

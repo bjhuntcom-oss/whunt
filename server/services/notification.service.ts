@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { eq, and, inArray } from "drizzle-orm";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import {
   notifications,
   sentNotifications,
@@ -45,22 +45,23 @@ async function getEmailTransporter() {
   const { getSMTPConfig } = await import("server/controllers/smtp.controller");
   const config = await getSMTPConfig();
   if (config) {
-    const port = parseInt(config.port, 10);
+    const port = typeof config.port === 'string' ? parseInt(config.port, 10) : (config.port as number);
     const secure = port === 465;
-    return nodemailer.createTransport({
+    const transportOptions: any = {
       host: config.host,
       port,
       secure,
-      ...(!secure && (port === 587 || !!config.secure) ? { requireTLS: true } : {}),
       auth: {
         user: config.user,
         pass: config.password,
       },
-    });
+    };
+    if (!secure && (port === 587 || !!config.secure)) {
+      transportOptions.requireTLS = true;
+    }
+    return nodemailer.createTransport(transportOptions);
   }
-  return nodemailer.createTransport({
-    jsonTransport: true,
-  });
+  return nodemailer.createTransport({ jsonTransport: true } as any);
 }
 
 export async function sendNotificationEmail(to: string, subject: string, htmlBody: string) {

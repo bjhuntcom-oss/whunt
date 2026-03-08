@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import type { Request, Response } from "express";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { storage } from "../storage";
 import {
   aiSettings,
@@ -1870,7 +1870,7 @@ async function handleStripeSubscriptionUpdated(subscription: any) {
         };
 
         await db.update(users)
-          .set({ planId: plan.id, updatedAt: new Date() })
+          .set({ planId: plan.id, updatedAt: new Date() } as any)
           .where(eq(users.id, existingSub.userId));
       }
     }
@@ -2029,7 +2029,7 @@ async function createSubscriptionFromTransaction(
       gatewaySubscriptionId: gatewaySubscriptionId || transaction.providerTransactionId || null,
       gatewayProvider: gatewayProvider || null,
       gatewayStatus: 'active',
-    })
+    } as any)
     .returning();
 
   await db
@@ -2040,7 +2040,7 @@ async function createSubscriptionFromTransaction(
   if (transaction.userId) {
     await db
       .update(users)
-      .set({ planId: transaction.planId, updatedAt: new Date() })
+      .set({ planId: transaction.planId, updatedAt: new Date() } as any)
       .where(eq(users.id, transaction.userId));
   }
 

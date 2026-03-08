@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { db } from "../db";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import { webhookConfigs, messages, conversations, contacts, messageQueue, templates, channels, users, aiSettings, sites } from "@shared/schema";
 import { eq, and } from "drizzle-orm";
 import crypto from "crypto";
@@ -655,12 +655,12 @@ export class WebhookHandler {
       (m.content.includes("I don't have") || m.content.includes("I'm not sure") || m.content.includes("I cannot find"))
     ).length;
 
-    const widgetCfg = site?.widgetConfig || {};
-    const escalationConfig = widgetCfg.escalationRules || {};
+    const widgetCfg = (site?.widgetConfig || {}) as any;
+    const escalationConfig = (widgetCfg as any).escalationRules || {};
     const maxAttempts = escalationConfig.maxAttempts || 3;
 
     const siteName = site?.name || channelData?.name || "our company";
-    const basePrompt = widgetCfg.systemPrompt ||
+    const basePrompt = (widgetCfg as any).systemPrompt ||
       `You are a helpful, friendly customer support assistant for ${siteName}. Answer questions using the provided knowledge base. Be conversational and helpful. Keep responses concise for WhatsApp (under 300 words). If you don't know the answer, be honest about it.`;
 
     const escalationInstruction = `\n\nESCALATION RULES:
@@ -705,16 +705,16 @@ ${unansweredCount >= maxAttempts - 1 ? `- The user has had ${unansweredCount} un
       if (escalated) {
         let assignedAgent: any = null;
 
-        const teamMembers = widgetCfg.teamMembers || [];
+        const teamMembers = (widgetCfg as any).teamMembers || [];
         let validMembers = teamMembers.filter((m: any) => m.userId);
 
         if (validMembers.length === 0 && channelData?.createdBy) {
           const ownerAndTeam = await db
-            .select({ id: users.id, name: users.name })
+            .select({ id: users.id, name: users.firstName })
             .from(users)
             .where(eq(users.id, channelData.createdBy));
           const teamUsers = await db
-            .select({ id: users.id, name: users.name })
+            .select({ id: users.id, name: users.firstName })
             .from(users)
             .where(eq(users.createdBy, channelData.createdBy));
           const allAgents = [...ownerAndTeam, ...teamUsers];
@@ -784,16 +784,16 @@ ${unansweredCount >= maxAttempts - 1 ? `- The user has had ${unansweredCount} un
       console.error("[AI] Failed to generate/send auto-reply:", error.message);
 
       let fallbackMembers: any[] = [];
-      const teamMembers = widgetCfg.teamMembers || [];
+      const teamMembers = (widgetCfg as any).teamMembers || [];
       fallbackMembers = teamMembers.filter((m: any) => m.userId);
 
       if (fallbackMembers.length === 0 && channelData?.createdBy) {
         const ownerAndTeam = await db
-          .select({ id: users.id, name: users.name })
+          .select({ id: users.id, name: users.firstName })
           .from(users)
           .where(eq(users.id, channelData.createdBy));
         const teamUsers = await db
-          .select({ id: users.id, name: users.name })
+          .select({ id: users.id, name: users.firstName })
           .from(users)
           .where(eq(users.createdBy, channelData.createdBy));
         fallbackMembers = [...ownerAndTeam, ...teamUsers].map(u => ({ userId: u.id, name: u.name }));
@@ -967,7 +967,7 @@ ${unansweredCount >= maxAttempts - 1 ? `- The user has had ${unansweredCount} un
 
       if (templateRecord && (event === "APPROVED" || event === "REJECTED")) {
         try {
-          const channel = await db.select().from(channels).where(eq(channels.id, templateRecord.channelId)).limit(1);
+          const channel = await db.select().from(channels).where(eq(channels.id, templateRecord.channelId ?? '')).limit(1);
           const channelName = channel[0]?.name || "Unknown";
           const eventType = event === "APPROVED" ? NOTIFICATION_EVENTS.TEMPLATE_APPROVED : NOTIFICATION_EVENTS.TEMPLATE_REJECTED;
           const ownerId = channel[0]?.createdBy;

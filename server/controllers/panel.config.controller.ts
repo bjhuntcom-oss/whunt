@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { Request, Response } from "express";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import {
   createPanelConfig,
   getPanelConfigs,
@@ -67,7 +67,6 @@ interface ParsedPanelConfig
     supportEmail: string;
     logo: string;
     favicon: string;
-    supportEmail: string;
     currency: string;
     country: string;
   }> {}
@@ -281,15 +280,21 @@ export const getBrandSettings = async (_req: Request, res: Response) => {
       currency: config.currency || "",
       country: config.country || "",
       supportEmail: config.supportEmail || "",
-      logo: config.logo?.startsWith("https")
-        ? config.logo
-        : `/uploads/${config.logo}`,
-      logo2: config.logo2?.startsWith("https")
-        ? config.logo2
-        : `/uploads/${config.logo2}`,  
-      favicon: config.favicon?.startsWith("https")
-        ? config.favicon
-        : `/uploads/${config.favicon}`,
+      logo: config.logo
+        ? config.logo.startsWith("https") || config.logo.startsWith("/")
+          ? config.logo
+          : `/uploads/${config.logo}`
+        : "",
+      logo2: config.logo2
+        ? config.logo2.startsWith("https") || config.logo2.startsWith("/")
+          ? config.logo2
+          : `/uploads/${config.logo2}`
+        : "",
+      favicon: config.favicon
+        ? config.favicon.startsWith("https") || config.favicon.startsWith("/")
+          ? config.favicon
+          : `/uploads/${config.favicon}`
+        : "",
       updatedAt: config.updatedAt?.toISOString() || new Date().toISOString(),
     };
 
@@ -335,7 +340,7 @@ export const createBrandSettings = async (req: Request, res: Response) => {
         file.cloudUrl ||
         `/uploads/${path.basename(path.dirname(file.path))}/${file.filename}`;
     } else if (parsed.logo2?.includes("base64,")) {
-      logo2Path = await processBase64Image(parsed.logo2, "logo");
+      logo2Path = await processBase64Image(parsed.logo2, "logo") ?? undefined;
     }
 
 
@@ -415,7 +420,7 @@ export const updateBrandSettingsOld = async (req: Request, res: Response) => {
       logoPath = logoFile.cloudUrl || `/uploads/${logoFile.filename}`;
       console.log(`🖼️ Updated Logo: ${logoPath}`);
     } else if (parsed.logo && parsed.logo.includes("base64,")) {
-      logoPath = await processBase64Image(parsed.logo, "logo");
+      logoPath = await processBase64Image(parsed.logo, "logo") ?? undefined;
     }
 
     // ✅ 2. Handle favicon
@@ -424,7 +429,7 @@ export const updateBrandSettingsOld = async (req: Request, res: Response) => {
       faviconPath = faviconFile.cloudUrl || `/uploads/${faviconFile.filename}`;
       console.log(`🌐 Updated Favicon: ${faviconPath}`);
     } else if (parsed.favicon && parsed.favicon.includes("base64,")) {
-      faviconPath = await processBase64Image(parsed.favicon, "favicon");
+      faviconPath = await processBase64Image(parsed.favicon, "favicon") ?? undefined;
     }
 
     // ✅ 3. Don't strip cloud URLs anymore
@@ -485,7 +490,7 @@ export const updateBrandSettings = async (req: Request, res: Response) => {
       logoPath = logoFile.cloudUrl || `/uploads/${logoFile.filename}`;
       console.log(`🖼️ Updated Logo: ${logoPath}`);
     } else if (parsed.logo && parsed.logo.includes("base64,")) {
-      logoPath = await processBase64Image(parsed.logo, "logo");
+      logoPath = await processBase64Image(parsed.logo, "logo") ?? undefined;
     }
 
     // =============================
@@ -496,7 +501,7 @@ export const updateBrandSettings = async (req: Request, res: Response) => {
       logo2Path = logo2File.cloudUrl || `/uploads/${logo2File.filename}`;
       console.log(`🖼️ Updated Secondary Logo: ${logo2Path}`);
     } else if (parsed.logo2 && parsed.logo2.includes("base64,")) {
-      logo2Path = await processBase64Image(parsed.logo2, "logo2");
+      logo2Path = await processBase64Image(parsed.logo2, "logo") ?? undefined;
     }
 
     // =============================
@@ -507,7 +512,7 @@ export const updateBrandSettings = async (req: Request, res: Response) => {
       faviconPath = faviconFile.cloudUrl || `/uploads/${faviconFile.filename}`;
       console.log(`🌐 Updated Favicon: ${faviconPath}`);
     } else if (parsed.favicon && parsed.favicon.includes("base64,")) {
-      faviconPath = await processBase64Image(parsed.favicon, "favicon");
+      faviconPath = await processBase64Image(parsed.favicon, "favicon") ?? undefined;
     }
 
     // =============================

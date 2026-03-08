@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,27 +16,7 @@
  */
 
 import type { Request, Response, NextFunction } from 'express';
-
-// Temporary implementations for development
-class WhuntError extends Error {
-  statusCode: number;
-  code?: string;
-
-  constructor(statusCode: number, message: string, code?: string) {
-    super(message);
-    this.statusCode = statusCode;
-    this.code = code;
-  }
-}
-
-const whuntLogger = {
-  error: (message: string, ...args: any[]) => console.error(message, ...args),
-  info: (message: string, ...args: any[]) => console.log(message, ...args),
-  warn: (message: string, ...args: any[]) => console.warn(message, ...args),
-};
-
-const WHUNT_HEADER_KEY = 'X-Powered-By';
-const WHUNT_HEADER_VALUE = 'Whunt v3.2.0';
+import { WhuntError, whuntLogger, WHUNT_HEADER_KEY, WHUNT_HEADER_VALUE } from "@whunt/core";
 
 const coreAsyncHandler = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
   Promise.resolve(fn(req, res, next)).catch(next);

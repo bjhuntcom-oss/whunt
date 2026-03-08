@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -169,8 +169,8 @@ function EditContactForm({
 
               <Select
                 onValueChange={(value) => {
-                  if (!field.value.includes(value)) {
-                    field.onChange([...field.value, value]);
+                  if (!(field.value as any)?.includes(value)) {
+                    field.onChange([...(field.value as any ?? []), value]);
                   }
                 }}
               >
@@ -195,7 +195,7 @@ function EditContactForm({
                       className="ml-1 h-3 w-3 cursor-pointer"
                       onClick={() =>
                         field.onChange(
-                          field.value.filter((n: string) => n !== name)
+                          (field.value as any)?.filter((n: string) => n !== name)
                         )
                       }
                     />

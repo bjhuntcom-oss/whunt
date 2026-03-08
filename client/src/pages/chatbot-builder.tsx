@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -82,7 +82,7 @@ export default function ChatbotList() {
   const chatbots = resNewData || [];
   console.log(chatbots);
   // Simple search filter
-  const filteredChatbots = chatbots?.data?.filter((bot) =>
+  const filteredChatbots = (chatbots as any)?.data?.filter((bot: any) =>
     bot.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -155,7 +155,7 @@ export default function ChatbotList() {
                         </TableCell>
                       </TableRow>
                     ) : (
-                      filteredChatbots.map((bot) => (
+                      (filteredChatbots as any[]).map((bot: any) => (
                         <TableRow key={bot.id}>
                           <TableCell className="font-medium">
                             {bot.title}

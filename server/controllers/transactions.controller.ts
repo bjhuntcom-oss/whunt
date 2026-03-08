@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { Request, Response } from "express";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { db } from "../db";
 import {
   transactions,
@@ -476,7 +476,7 @@ export const createTransaction = async (req: Request, res: Response) => {
         status: "pending",
         paymentMethod,
         metadata: {},
-      })
+      } as any)
       .returning();
 
     res.status(201).json({
@@ -578,7 +578,7 @@ export const completeTransaction = async (req: Request, res: Response) => {
         metadata,
         paidAt: new Date(),
         updatedAt: new Date(),
-      })
+      } as any)
       .where(eq(transactions.id, id))
       .returning();
 
@@ -601,7 +601,7 @@ export const completeTransaction = async (req: Request, res: Response) => {
         startDate,
         endDate,
         autoRenew: true,
-      })
+      } as any)
       .returning();
 
     await db
@@ -660,7 +660,7 @@ export const refundTransaction = async (req: Request, res: Response) => {
         refundedAt: new Date(),
         metadata: { ...transaction.metadata, refundReason },
         updatedAt: new Date(),
-      })
+      } as any)
       .where(eq(transactions.id, id))
       .returning();
 
@@ -741,7 +741,7 @@ export const initiatePayment = async (req: Request, res: Response) => {
         billingCycle: cycle,
         status: "pending",
         metadata: {},
-      })
+      } as any)
       .returning();
 
     const transaction = newTransaction[0];
@@ -756,7 +756,7 @@ export const initiatePayment = async (req: Request, res: Response) => {
         .set({
           providerTransactionId: result.subscriptionId,
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       const publishableKey = await getStripePublishableKey();
@@ -775,7 +775,7 @@ export const initiatePayment = async (req: Request, res: Response) => {
         .set({
           providerTransactionId: result.subscriptionId,
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       const keyId = await getRazorpayKeyId();
@@ -794,7 +794,7 @@ export const initiatePayment = async (req: Request, res: Response) => {
         .set({
           providerTransactionId: result.subscriptionId,
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       paymentData = {
@@ -810,7 +810,7 @@ export const initiatePayment = async (req: Request, res: Response) => {
         .set({
           providerTransactionId: result.reference,
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       const publicKey = await getPaystackPublicKey();
@@ -828,7 +828,7 @@ export const initiatePayment = async (req: Request, res: Response) => {
         .set({
           providerTransactionId: result.subscriptionId,
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       paymentData = {
@@ -887,7 +887,7 @@ export const verifyRazorpayPayment = async (req: Request, res: Response) => {
 
     const provider = providerData[0];
     const secret =
-      provider.config.apiSecret || process.env.RAZORPAY_KEY_SECRET;
+      (provider.config as any)?.apiSecret || process.env.RAZORPAY_KEY_SECRET || '';
 
     const generated_signature = crypto
       .createHmac("sha256", secret)
@@ -916,7 +916,7 @@ export const verifyRazorpayPayment = async (req: Request, res: Response) => {
           status: "failed",
           metadata: { error: "Invalid signature" },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transactionId));
 
       return res.status(400).json({
@@ -934,7 +934,7 @@ export const verifyRazorpayPayment = async (req: Request, res: Response) => {
         paidAt: new Date(),
         metadata: { verified: true },
         updatedAt: new Date(),
-      })
+      } as any)
       .where(eq(transactions.id, transactionId));
 
     const planData = await db
@@ -995,12 +995,12 @@ export const verifyRazorpayPayment = async (req: Request, res: Response) => {
         gatewayStatus: "active",
         createdAt: new Date(),
         updatedAt: new Date(),
-      })
+      } as any)
       .returning();
 
     await db
       .update(users)
-      .set({ planId: transaction.planId, updatedAt: new Date() })
+      .set({ planId: (transaction as any).planId, updatedAt: new Date() } as any)
       .where(eq(users.id, transaction.userId));
 
     res.status(200).json({
@@ -1081,7 +1081,7 @@ export const verifyStripePayment = async (req: Request, res: Response) => {
           paidAt: new Date(),
           metadata: { verified: true, stripeStatus: stripeSub.status },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transactionId));
 
       const planData = await db
@@ -1137,12 +1137,12 @@ export const verifyStripePayment = async (req: Request, res: Response) => {
           gatewayStatus: stripeSub.status,
           createdAt: new Date(),
           updatedAt: new Date(),
-        })
+        } as any)
         .returning();
 
       await db
         .update(users)
-        .set({ planId: transaction.planId, updatedAt: new Date() })
+        .set({ planId: (transaction as any).planId, updatedAt: new Date() } as any)
         .where(eq(users.id, transaction.userId));
 
       return res.status(200).json({
@@ -1166,7 +1166,7 @@ export const verifyStripePayment = async (req: Request, res: Response) => {
             error: "Subscription not active",
           },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transactionId));
 
       return res.status(400).json({
@@ -1244,7 +1244,7 @@ export const verifyPayPalPayment = async (req: Request, res: Response) => {
           paidAt: new Date(),
           metadata: { verified: true, paypalStatus: subStatus.status },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       const planData = await db
@@ -1304,12 +1304,12 @@ export const verifyPayPalPayment = async (req: Request, res: Response) => {
           gatewayStatus: subStatus.status,
           createdAt: new Date(),
           updatedAt: new Date(),
-        })
+        } as any)
         .returning();
 
       await db
         .update(users)
-        .set({ planId: transaction.planId, updatedAt: new Date() })
+        .set({ planId: (transaction as any).planId, updatedAt: new Date() } as any)
         .where(eq(users.id, transaction.userId));
 
       return res.status(200).json({
@@ -1332,7 +1332,7 @@ export const verifyPayPalPayment = async (req: Request, res: Response) => {
             error: "Subscription not active",
           },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       return res.status(400).json({
@@ -1432,7 +1432,7 @@ export const verifyPaystackPayment = async (req: Request, res: Response) => {
             error: "Payment verification failed",
           },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       return res.status(400).json({
@@ -1453,7 +1453,7 @@ export const verifyPaystackPayment = async (req: Request, res: Response) => {
         paidAt: new Date(),
         metadata: { verified: true, paystackStatus: paystackData.status },
         updatedAt: new Date(),
-      })
+      } as any)
       .where(eq(transactions.id, transaction.id));
 
     const planData = await db
@@ -1515,12 +1515,12 @@ export const verifyPaystackPayment = async (req: Request, res: Response) => {
         gatewayStatus: "active",
         createdAt: new Date(),
         updatedAt: new Date(),
-      })
+      } as any)
       .returning();
 
     await db
       .update(users)
-      .set({ planId: transaction.planId, updatedAt: new Date() })
+      .set({ planId: (transaction as any).planId, updatedAt: new Date() } as any)
       .where(eq(users.id, transaction.userId));
 
     return res.status(200).json({
@@ -1599,7 +1599,7 @@ export const verifyMercadoPagoPayment = async (req: Request, res: Response) => {
           paidAt: new Date(),
           metadata: { verified: true, mercadopagoStatus: subStatus.status },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       const planData = await db
@@ -1659,12 +1659,12 @@ export const verifyMercadoPagoPayment = async (req: Request, res: Response) => {
           gatewayStatus: subStatus.status,
           createdAt: new Date(),
           updatedAt: new Date(),
-        })
+        } as any)
         .returning();
 
       await db
         .update(users)
-        .set({ planId: transaction.planId, updatedAt: new Date() })
+        .set({ planId: (transaction as any).planId, updatedAt: new Date() } as any)
         .where(eq(users.id, transaction.userId));
 
       return res.status(200).json({
@@ -1687,7 +1687,7 @@ export const verifyMercadoPagoPayment = async (req: Request, res: Response) => {
             error: "Subscription not active",
           },
           updatedAt: new Date(),
-        })
+        } as any)
         .where(eq(transactions.id, transaction.id));
 
       return res.status(400).json({

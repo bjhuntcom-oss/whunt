@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -487,7 +487,7 @@ export function ChannelSettings() {
                           )}
                         </h3>
                         {channel.isActive && (
-                          <Badge variant="success" className="text-xs">
+                          <Badge variant="default" className="text-xs bg-green-600">
                             {t("settings.channel_setting.active")}
                           </Badge>
                         )}

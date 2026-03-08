@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -88,7 +88,8 @@ interface ValidationErrors {
   tagline?: string;
   logo?: string;
   favicon?: string;
-  supportEmail?:string;
+  supportEmail?: string;
+  [key: string]: string | undefined;
 }
 
 interface GeneralSettingsModalProps {
@@ -121,11 +122,12 @@ const GeneralSettingsModal: React.FC<GeneralSettingsModalProps> = ({
   const [logo2Preview, setLogo2Preview] = useState<string>("");
   const [uploadStatus, setUploadStatus] = useState<{
     logo?: "uploading" | "success" | "error";
+    logo2?: "uploading" | "success" | "error";
     favicon?: "uploading" | "success" | "error";
   }>({});
   const { toast } = useToast();
 
-  const [countryData, setCountryData] = useState([]);
+  const [countryData, setCountryData] = useState<Array<{ country_code: string; country: string; currency_code: string; currency: string; symbol: string }>>([]);
   const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
@@ -213,7 +215,7 @@ const GeneralSettingsModal: React.FC<GeneralSettingsModalProps> = ({
 
   const handleFileUpload = (
     file: File | null,
-    type: "logo" | "logo2" | "favicon"
+    type: "logo" | "logo2" | "favicon" | string
   ): void => {
     if (!file) return;
 
@@ -320,7 +322,7 @@ const GeneralSettingsModal: React.FC<GeneralSettingsModalProps> = ({
     handleFileUpload(file, type);
   };
 
-  const getUploadStatusIcon = (type: "logo" | "favicon") => {
+  const getUploadStatusIcon = (type: "logo" | "favicon" | "logo2") => {
     const status = uploadStatus[type];
     switch (status) {
       case "uploading":

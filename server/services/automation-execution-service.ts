@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -302,12 +302,12 @@ private stemWord(word: string = ""): string {
 
  case "keyword":
     if (matchType === "any") {
-      conditionMet = lowerKeywords.some(k =>
+      conditionMet = lowerKeywords.some((k: string) =>
         lowerInput.includes(k)
       );
-    } 
+    }
     else if (matchType === "all") {
-      conditionMet = lowerKeywords.every(k =>
+      conditionMet = lowerKeywords.every((k: string) =>
         lowerInput.includes(k)
       );
     }
@@ -320,7 +320,7 @@ private stemWord(word: string = ""): string {
   // EQUALS (fuzzy safe)
   // -------------------------
   case "equals":
-    conditionMet = lowerKeywords.some(k =>
+    conditionMet = lowerKeywords.some((k: string) =>
       lowerInput === k ||
       this.stemWord(lowerInput) === this.stemWord(k)
     );
@@ -332,13 +332,13 @@ private stemWord(word: string = ""): string {
   // STARTS WITH (fuzzy safe)
   // -------------------------
   case "starts_with":
-    conditionMet = lowerKeywords.some(k =>
+    conditionMet = lowerKeywords.some((k: string) =>
       lowerInput.startsWith(k) ||
       this.stemWord(lowerInput).startsWith(this.stemWord(k))
     );
 
     matchedKeyword = conditionMet
-      ? lowerKeywords.find(k =>
+      ? lowerKeywords.find((k: string) =>
           lowerInput.startsWith(k) ||
           this.stemWord(lowerInput).startsWith(this.stemWord(k))
         )
@@ -350,13 +350,13 @@ private stemWord(word: string = ""): string {
   // CONTAINS (fuzzy safe)
   // -------------------------
   case "contains":
-    conditionMet = lowerKeywords.some(k =>
+    conditionMet = lowerKeywords.some((k: string) =>
       lowerInput.includes(k) ||
       this.stemWord(lowerInput).includes(this.stemWord(k))
     );
 
     matchedKeyword = conditionMet
-      ? lowerKeywords.find(k =>
+      ? lowerKeywords.find((k: string) =>
           lowerInput.includes(k) ||
           this.stemWord(lowerInput).includes(this.stemWord(k))
         )
@@ -1020,7 +1020,7 @@ private async sendTextMessage(whatsappApi: any, to: string, message: string) {
  * Convert relative media path to public URL
  */
 private async getPublicMediaUrl(relativePath: string): Promise<string> {
-  const baseUrl = process.env.APP_URL || ("" ? `https://${""}` : 'https://whatsway.diploy.in');
+  const baseUrl = process.env.APP_URL || 'https://whunt.io';
   const cleanPath = relativePath.startsWith('/') ? relativePath.substring(1) : relativePath;
   return `${baseUrl}/${cleanPath}`;
 }

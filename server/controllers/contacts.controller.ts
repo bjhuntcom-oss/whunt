@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import type { Request, Response } from "express";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { storage } from "../storage";
 import { contacts, users, insertContactSchema } from "@shared/schema";
 import { AppError, asyncHandler } from "../middlewares/error.middleware";
@@ -41,7 +41,7 @@ export const getContacts = asyncHandler(
     const { search, channelId } = req.query;
     const user = (req.session as any)?.user;
 
-    let contacts;
+    let contacts: any[] = [];
     if (channelId && typeof channelId === "string") {
       if (user && user.role !== 'superadmin') {
         const ownerId = user.role === 'team' ? user.createdBy : user.id;
@@ -602,7 +602,7 @@ export const importContacts = asyncHandler(
           channelId,
           createdBy: (req.session as any).user.id,
         });
-        const created = await storage.createContact(validatedContact);
+        const created = await storage.createContact(validatedContact as any);
         createdContacts.push(created);
         existingPhones.add(created.phone); // Add to set to catch duplicates within the import
       } catch (error) {

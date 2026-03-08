@@ -54,10 +54,3 @@ export const HTTP_STATUS = {
   SERVICE_UNAVAILABLE: 503,
 } as const;
 
-// Backward-compatibility aliases (deprecated — use WHUNT_* prefix)
-export const DIPLOY_PRODUCT_NAME = WHUNT_PRODUCT_NAME;
-export const DIPLOY_VERSION = WHUNT_VERSION;
-export const DIPLOY_HEADER_KEY = WHUNT_HEADER_KEY;
-export const DIPLOY_HEADER_VALUE = WHUNT_HEADER_VALUE;
-export const DIPLOY_POWERED_BY = WHUNT_POWERED_BY;
-export const DIPLOY_BRAND = WHUNT_BRAND;

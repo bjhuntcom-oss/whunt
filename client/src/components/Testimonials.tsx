@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,8 +16,38 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Star, Quote, ArrowLeft, ArrowRight } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { useTranslation } from "@/lib/i18n";
+
+const getInitials = (name: string) =>
+  name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+const AvatarWithFallback: React.FC<{ src: string; name: string }> = ({ src, name }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+
+  if (imgFailed || !src) {
+    return (
+      <div className="w-9 h-9 bg-[#00ff88] flex items-center justify-center flex-shrink-0 text-black font-bold text-xs">
+        {getInitials(name)}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={name}
+      className="w-9 h-9 object-cover flex-shrink-0"
+      onError={() => setImgFailed(true)}
+    />
+  );
+};
 
 const Testimonials: React.FC = () => {
   const { t } = useTranslation();
@@ -62,125 +92,142 @@ const Testimonials: React.FC = () => {
     setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
   };
 
-  return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 via-white to-slate-50 relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-72 h-72 bg-emerald-100/40 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-cyan-100/40 rounded-full blur-3xl"></div>
+  const gridTestimonials = testimonials.slice(0, 3);
 
-      <div className="max-w-7xl mx-auto relative">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center bg-amber-50 text-amber-700 px-5 py-2 rounded-full text-sm font-medium mb-6 border border-amber-200/60">
-            <Star className="w-4 h-4 mr-2 fill-amber-400 text-amber-400" />
-            {t("Landing.testimonialsSec.introTagline")}
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] mb-5 tracking-tight">
-            {t("Landing.testimonialsSec.headlinePre")}
-            <span className="block bg-gradient-to-r from-emerald-600 to-cyan-600 bg-clip-text text-transparent mt-1">
-              {t("Landing.testimonialsSec.headlineHighlight")}
+  return (
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#050505]">
+      <div className="max-w-7xl mx-auto">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
+              <Star className="w-3 h-3 fill-[#00ff88]" />
+              {t("Landing.testimonialsSec.introTagline")}
             </span>
-          </h2>
-          <p className="text-lg text-[#555] max-w-2xl mx-auto leading-relaxed">
-            {t("Landing.testimonialsSec.subHeadline")}
-          </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] tracking-tight leading-tight mb-4">
+              {t("Landing.testimonialsSec.headlinePre")}{" "}
+              <span className="text-[#00ff88]">
+                {t("Landing.testimonialsSec.headlineHighlight")}
+              </span>
+            </h2>
+            <p className="text-base text-[#999] max-w-2xl mx-auto leading-relaxed">
+              {t("Landing.testimonialsSec.subHeadline")}
+            </p>
+          </motion.div>
         </div>
 
-        <div className="relative max-w-4xl mx-auto mb-12">
-          <div className="bg-[#0a0a0a]/80 backdrop-blur-sm p-8 md:p-12 rounded-2xl border border-[#1a1a1a]/80 relative transition-all duration-500">
-            <Quote className="absolute top-6 left-6 w-8 h-8 text-emerald-200/60" />
+        {/* Testimonial cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#1a1a1a] border border-[#1a1a1a] mb-8">
+          {gridTestimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+                delay: index * 0.08,
+              }}
+              className={`bg-[#0a0a0a] p-6 transition-colors cursor-pointer ${
+                currentTestimonial === index
+                  ? "border-l-2 border-l-[#00ff88]"
+                  : "hover:bg-[#0e0e0e]"
+              }`}
+              onClick={() => setCurrentTestimonial(index)}
+            >
+              {/* Stars */}
+              <div className="flex gap-0.5 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 text-[#00ff88] fill-[#00ff88]" />
+                ))}
+              </div>
 
-            <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
-              <div className="flex-shrink-0">
-                <div className="relative">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full opacity-20 blur-sm"></div>
-                  <img
-                    src={testimonials[currentTestimonial].image}
-                    alt={testimonials[currentTestimonial].name}
-                    className="w-20 h-20 rounded-full object-cover relative ring-2 ring-white"
-                  />
+              {/* Quote */}
+              <blockquote className="text-[#999] text-sm leading-relaxed mb-5">
+                "{testimonial.text}"
+              </blockquote>
+
+              {/* Profile */}
+              <div className="flex items-center gap-3">
+                <AvatarWithFallback src={testimonial.image} name={testimonial.name} />
+                <div className="min-w-0">
+                  <p className="font-semibold text-[#e0e0e0] text-sm truncate">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-[#555] text-xs truncate">
+                    {testimonial.role} · {testimonial.company}
+                  </p>
                 </div>
               </div>
 
-              <div className="flex-1 text-center md:text-left">
-                <div className="flex justify-center md:justify-start space-x-1 mb-4">
-                  {[...Array(testimonials[currentTestimonial].rating)].map(
-                    (_, i) => (
-                      <Star
-                        key={i}
-                        className="w-4 h-4 text-amber-400 fill-amber-400"
-                      />
-                    )
-                  )}
-                </div>
-
-                <blockquote className="text-lg md:text-xl text-[#999] mb-6 leading-relaxed font-light">
-                  "{testimonials[currentTestimonial].text}"
-                </blockquote>
-
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <p className="font-semibold text-[#e0e0e0]">
-                      {testimonials[currentTestimonial].name}
-                    </p>
-                    <p className="text-[#555] text-sm">
-                      {testimonials[currentTestimonial].role} at{" "}
-                      {testimonials[currentTestimonial].company}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 md:mt-0 bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-lg">
-                    <p className="text-sm font-medium text-emerald-700">
-                      {testimonials[currentTestimonial].results}
-                    </p>
-                  </div>
-                </div>
+              {/* Results tag */}
+              <div className="mt-4">
+                <span className="text-xs text-[#00ff88] font-medium bg-[#00ff88]/10 px-2.5 py-1">
+                  {testimonial.results}
+                </span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          ))}
+        </div>
 
+        {/* Prev/Next nav */}
+        <div className="flex justify-center gap-3 mb-12">
           <button
             onClick={prevTestimonial}
-            className="absolute -left-4 md:-left-5 top-1/2 transform -translate-y-1/2 bg-[#0a0a0a] p-2.5 rounded-full border border-[#1a1a1a] hover:border-emerald-300 hover:bg-emerald-50 transition-all duration-200 shadow-sm"
+            className="p-2 border border-[#1a1a1a] bg-[#0a0a0a] hover:border-[#252525] hover:bg-[#0e0e0e] transition-colors"
             aria-label={navButtons.previous}
           >
             <ArrowLeft className="w-4 h-4 text-[#555]" />
           </button>
+          <div className="flex items-center gap-1.5">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentTestimonial(index)}
+                className={`h-1 transition-all duration-300 ${
+                  index === currentTestimonial
+                    ? "bg-[#00ff88] w-6"
+                    : "bg-[#252525] w-2 hover:bg-[#333]"
+                }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
           <button
             onClick={nextTestimonial}
-            className="absolute -right-4 md:-right-5 top-1/2 transform -translate-y-1/2 bg-[#0a0a0a] p-2.5 rounded-full border border-[#1a1a1a] hover:border-emerald-300 hover:bg-emerald-50 transition-all duration-200 shadow-sm"
+            className="p-2 border border-[#1a1a1a] bg-[#0a0a0a] hover:border-[#252525] hover:bg-[#0e0e0e] transition-colors"
             aria-label={navButtons.next}
           >
             <ArrowRight className="w-4 h-4 text-[#555]" />
           </button>
         </div>
 
-        <div className="flex justify-center space-x-2 mb-16">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentTestimonial(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === currentTestimonial
-                  ? "bg-emerald-500 w-8"
-                  : "bg-gray-300/60 w-2 hover:bg-gray-400"
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {/* Stats row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#1a1a1a] border border-[#1a1a1a]"
+        >
           {statsGrid.map((stat, index) => (
             <div
               key={index}
-              className="text-center bg-[#0a0a0a]/60 backdrop-blur-sm border border-[#1a1a1a]/60 rounded-2xl p-6 hover:border-emerald-200/80 transition-colors duration-200"
+              className="text-center py-8 px-4 bg-[#0a0a0a]"
             >
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-cyan-600 bg-clip-text text-transparent mb-1">
+              <div className="text-3xl font-bold text-[#e0e0e0] mb-1 tracking-tight">
                 {stat.number}
               </div>
-              <div className="text-[#555] text-sm font-medium">{stat.label}</div>
+              <div className="text-[#555] text-xs uppercase tracking-wider">{stat.label}</div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

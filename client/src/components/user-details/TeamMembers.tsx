@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -69,11 +69,11 @@ export default function TeamMembers({ userId }: TeamMembersProps) {
       return res.json();
     },
     enabled: !!userId,
-    keepPreviousData: true,
+    placeholderData: (prev: any) => prev,
   });
 
-  const teamMembers = data?.data || [];
-  const totalPages = data?.pagination?.totalPages || 1;
+  const teamMembers = (data as any)?.data || [];
+  const totalPages = (data as any)?.pagination?.totalPages || 1;
 
   // Loading State with Skeleton
   if (isLoading) {
@@ -164,7 +164,7 @@ export default function TeamMembers({ userId }: TeamMembersProps) {
             </tr>
           </thead>
           <tbody>
-            {teamMembers.map((member) => (
+            {teamMembers.map((member: any) => (
               <tr
                 key={member.id}
                 className="hover:bg-[#050505] transition-colors text-sm text-[#999]"
@@ -206,13 +206,13 @@ export default function TeamMembers({ userId }: TeamMembersProps) {
       </div>
 
       {/* Pagination */}
-      {data?.pagination && (
+      {(data as any)?.pagination && (
         <div className="w-full mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <span className="text-sm text-[#999]">
               Showing {(page - 1) * limit + 1} to{" "}
-              {Math.min(page * limit, data.pagination.total)} of{" "}
-              {data.pagination.total} team members
+              {Math.min(page * limit, (data as any).pagination.total)} of{" "}
+              {(data as any).pagination.total} team members
             </span>
 
             <select
@@ -241,16 +241,16 @@ export default function TeamMembers({ userId }: TeamMembersProps) {
 
             <PageNumbers
               currentPage={page}
-              totalPages={data.pagination.totalPages}
+              totalPages={(data as any).pagination.totalPages}
               onPageChange={(p) => setPage(p)}
             />
 
             <button
               className="px-3 py-1 border rounded disabled:opacity-50"
-              disabled={page >= data.pagination.totalPages}
+              disabled={page >= (data as any).pagination.totalPages}
               onClick={() =>
                 setPage((prev) =>
-                  Math.min(prev + 1, data.pagination.totalPages)
+                  Math.min(prev + 1, (data as any).pagination.totalPages)
                 )
               }
             >

@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -65,7 +65,7 @@ export function WebhookFlowDiagram() {
           <div className="w-12 h-12 sm:w-16 sm:h-16 bg-orange-100 rounded-full flex items-center justify-center mb-2">
             <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600" />
           </div>
-          <p className="text-sm font-medium">WhatsWay receives</p>
+          <p className="text-sm font-medium">Whunt receives</p>
           <p className="text-xs text-[#555] mt-1">Updates inbox</p>
         </div>
       </div>

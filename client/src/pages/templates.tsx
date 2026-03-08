@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -116,7 +116,7 @@ export default function Templates() {
   const { data: activeChannel } = useQuery({
     queryKey: ["/api/channels/active"],
   });
-  const channelId = activeChannel?.id;
+  const channelId = (activeChannel as any)?.id;
 
   const [drafts, setDrafts] = useState<TemplateDraft[]>(() => getTemplateDrafts(channelId));
 
@@ -168,7 +168,7 @@ const createTemplateMutation = useMutation({
     formData.append("category", data.category);
     formData.append("language", data.language);
     formData.append("body", data.body || "");
-    formData.append("channelId", activeChannel?.id);
+    formData.append("channelId", (activeChannel as any)?.id ?? '');
 
     if (data.footer) {
       formData.append("footer", data.footer);
@@ -296,7 +296,7 @@ const createTemplateMutation = useMutation({
     mutationFn: async () => {
       if (!activeChannel) throw new Error("No active channel");
       const response = await apiRequest("POST", `/api/templates/sync`, {
-        channelId: activeChannel?.id,
+        channelId: (activeChannel as any)?.id,
       });
       return await response.json();
     },
@@ -536,7 +536,7 @@ const createTemplateMutation = useMutation({
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                          {templatesData?.data.map((template) => {
+                          {templatesData?.data.map((template: any) => {
                             const cat = categoryStyles[template.category] || categoryStyles.MARKETING;
                             const CatIcon = cat.icon;
                             const MediaIcon = getMediaIcon(template.mediaType);
@@ -612,7 +612,7 @@ const createTemplateMutation = useMutation({
 
                     {/* Mobile Card View */}
                     <div className="lg:hidden space-y-4">
-                      {templatesData?.data.map((template) => {
+                      {templatesData?.data.map((template: any) => {
                         const cat = categoryStyles[template.category] || categoryStyles.MARKETING;
                         const CatIcon = cat.icon;
                         const MediaIcon = getMediaIcon(template.mediaType);

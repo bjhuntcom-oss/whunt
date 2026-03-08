@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -128,7 +128,7 @@ export default function Plans() {
     : currencySymbol;
 
   const purchasedPlans =
-    userPlans?.data?.map((p) => ({
+    (userPlans as any)?.data?.map((p: any) => ({
       planId: p.subscription.planId,
       name: p.subscription.planData?.name,
       status: p.subscription.status, // active / expired
@@ -202,8 +202,8 @@ export default function Plans() {
       });
     }
 
-    const activeSub = userPlans?.data?.find(
-      (p) => p.subscription.status === "active"
+    const activeSub = (userPlans as any)?.data?.find(
+      (p: any) => p.subscription.status === "active"
     )?.subscription;
 
     if (!activeSub) {
@@ -400,12 +400,7 @@ export default function Plans() {
       monthlyPrice: plan.monthlyPrice || "0",
       annualPrice: plan.annualPrice || "0",
       permissions: {
-        channel: "",
-        contacts: "",
-        automation: "",
-        campaign: "",
-        apiRequestsPerMonth: "",
-        apiRateLimitPerMinute: "",
+        ...{ channel: "", contacts: "", automation: "", campaign: "", apiRequestsPerMonth: "", apiRateLimitPerMinute: "" },
         ...(plan.permissions || {}),
       },
       features: (plan.features || []).map((f: any) => {
@@ -1095,14 +1090,14 @@ export default function Plans() {
                     const isPopular = plan.popular;
 
                     const isActivePlan =
-                      userPlans?.data?.some(
-                        (p) =>
+                      (userPlans as any)?.data?.some(
+                        (p: any) =>
                           p.subscription.planId === plan.id &&
                           p.subscription.status === "active"
                       ) || false;
 
-                    const activePlan = userPlans?.data?.find(
-                      (p) => p.subscription.status === "active"
+                    const activePlan = (userPlans as any)?.data?.find(
+                      (p: any) => p.subscription.status === "active"
                     )?.subscription;
 
                     // console.log("Active Plan@@@@@@@@@@@@@:", activePlan);

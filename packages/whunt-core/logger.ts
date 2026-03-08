@@ -49,5 +49,3 @@ export const whuntLogger = {
   },
 };
 
-// Backward-compat alias
-export const diployLogger = whuntLogger;

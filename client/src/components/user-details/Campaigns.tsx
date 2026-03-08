@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -83,11 +83,11 @@ export default function Campaigns({ userId }: CampaignsProps) {
       return json;
     },
     enabled: !!userId,
-    keepPreviousData: true,
+    placeholderData: (prev: any) => prev,
   });
 
-  const campaigns = data?.data ?? [];
-  const total = data?.total ?? 0;
+  const campaigns = (data as any)?.data ?? [];
+  const total = (data as any)?.total ?? 0;
   const totalPages = Math.ceil(total / limit);
 
   if (isLoading)
@@ -134,7 +134,7 @@ export default function Campaigns({ userId }: CampaignsProps) {
             </tr>
           </thead>
           <tbody>
-            {campaigns.map((campaign) => (
+            {campaigns.map((campaign: any) => (
               <tr
                 key={campaign.id}
                 className="hover:bg-[#050505] transition-colors text-sm text-[#999]"

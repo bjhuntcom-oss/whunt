@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import type { Channel } from "@shared/schema";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import * as fs from "fs";
 import path from "path";
 import axios from "axios";
@@ -899,7 +899,7 @@ async uploadMediaFromUrl(url: string, mimeType: string = 'image/jpeg'): Promise<
     console.log("✅ File downloaded to:", tempFilePath);
 
     // Upload using existing function
-    const mediaId = await this.uploadMediaTwo(tempFilePath, mimeType);
+    const mediaId = await this.uploadMedia(tempFilePath, mimeType);
 
     // Cleanup
     if (fs.existsSync(tempFilePath)) {

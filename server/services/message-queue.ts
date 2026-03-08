@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { db } from "../db";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import { messageQueue, channels, campaigns } from "@shared/schema";
 import { eq, and, lte, or, isNull, sql, inArray } from "drizzle-orm";
 import { WhatsAppApiService } from "./whatsapp-api";
@@ -135,7 +135,7 @@ export class MessageQueueService {
           })
           .where(inArray(messageQueue.id, messageIds));
 
-        const channelIds = [...new Set(messages.map(m => m.channelId).filter(Boolean))];
+        const channelIds = [...new Set(messages.map(m => m.channelId).filter(Boolean))] as string[];
         const channelCache = new Map<string, any>();
         if (channelIds.length > 0) {
           const fetchedChannels = await db

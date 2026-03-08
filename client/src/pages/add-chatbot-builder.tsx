@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -69,15 +69,15 @@ const AddChatbotBuilder = () => {
     interactionType: "ai-only",
     avatar: AVATAR_OPTIONS[0],
     primaryColor: "#3B82F6",
-    logoUrl: null,
+    logoUrl: null as string | null,
   });
 
   const { t } = useTranslation();
   const [chatbotId, setChatbotId] = useState(null);
-  const [trainingData, setTrainingData] = useState([]);
+  const [trainingData, setTrainingData] = useState<any[]>([]);
   const [embedCode, setEmbedCode] = useState("");
   const [chatOpen, setChatOpen] = useState(true);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<{ id: number; type: string; text: string; time?: string }[]>([
     { id: 1, type: "bot", text: config.welcomeMessage, time: "1 hour ago" },
     {
       id: 2,
@@ -109,12 +109,12 @@ const AddChatbotBuilder = () => {
     setEmbedCode(code);
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setConfig({ ...config, logoUrl: event.target.result });
+        setConfig({ ...config, logoUrl: (event.target?.result as string) ?? null });
       };
       reader.readAsDataURL(file);
     }
@@ -133,7 +133,7 @@ const AddChatbotBuilder = () => {
       const res = chatbotId
         ? await api.updateChatbot(chatbotId, config)
         : await api.createChatbot(config);
-      if (!chatbotId) setChatbotId(res.data.id);
+      if (!chatbotId) setChatbotId((res as any).data.id);
       alert("Chatbot saved successfully!");
     } catch (err) {
       console.error(err);
@@ -142,11 +142,11 @@ const AddChatbotBuilder = () => {
   };
 
   // ✅ Add training data
-  const addTrainingText = async (title, text) => {
+  const addTrainingText = async (title: string, text: string) => {
     if (!chatbotId) return alert("Save chatbot first!");
     try {
       const res = await api.addTrainingData({ chatbotId, title, text });
-      setTrainingData([...trainingData, res.data]);
+      setTrainingData([...trainingData as any[], (res as any).data]);
       alert("Training data added!");
     } catch (err) {
       console.error(err);
@@ -168,10 +168,10 @@ const AddChatbotBuilder = () => {
         message: inputMessage,
         sender: "user",
       });
-      if (res.data.reply) {
+      if ((res as any).data?.reply) {
         setMessages((prev) => [
           ...prev,
-          { id: Date.now(), type: "bot", text: res.data.reply },
+          { id: Date.now(), type: "bot", text: (res as any).data.reply },
         ]);
       }
     } catch (err) {
@@ -183,11 +183,11 @@ const AddChatbotBuilder = () => {
     try {
       if (!chatbotId) {
         const res = await api.createChatbot(config);
-        setChatbotId(res.data.id);
+        setChatbotId((res as any).data.id);
       }
 
       // Send training data if any
-      for (const t of trainingData) {
+      for (const t of trainingData as any[]) {
         await api.addTrainingData({ chatbotId, ...t });
       }
 
@@ -641,8 +641,8 @@ const AddChatbotBuilder = () => {
                 <button
                   onClick={() => {
                     const title =
-                      document.getElementById("training-title").value;
-                    const text = document.getElementById("training-text").value;
+                      (document.getElementById("training-title") as HTMLInputElement)?.value ?? '';
+                    const text = (document.getElementById("training-text") as HTMLInputElement)?.value ?? '';
                     addTrainingText(title, text);
                   }}
                   className="w-full py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-all flex items-center justify-center gap-2"
@@ -655,7 +655,7 @@ const AddChatbotBuilder = () => {
                     <h3 className="font-semibold text-[#e0e0e0]">
                       Added Training Data
                     </h3>
-                    {trainingData.map((data) => (
+                    {(trainingData as any[]).map((data) => (
                       <div key={data.id} className="p-3 bg-[#050505] rounded-lg">
                         <p className="font-medium text-sm">{data.title}</p>
                       </div>

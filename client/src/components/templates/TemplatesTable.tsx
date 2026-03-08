@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -113,8 +113,8 @@ function getButtonsFromTemplate(template: Template) {
       buttons.push({ type: btn.type || "QUICK_REPLY", text: btn.text || "" });
     }
   }
-  if (buttons.length === 0 && template.components && Array.isArray(template.components)) {
-    for (const comp of template.components as any[]) {
+  if (buttons.length === 0 && (template as any).components && Array.isArray((template as any).components)) {
+    for (const comp of (template as any).components as any[]) {
       if (comp.type === "BUTTONS" && Array.isArray(comp.buttons)) {
         for (const btn of comp.buttons) {
           buttons.push({ type: btn.type || "QUICK_REPLY", text: btn.text || "" });
@@ -194,7 +194,7 @@ export function TemplatesTable({
             const CatIcon = cat.icon;
             const MediaIcon = getMediaIcon(template.mediaType);
             const buttons = getButtonsFromTemplate(template);
-            const langLabel = getLanguageLabel(template.language);
+            const langLabel = getLanguageLabel(template.language ?? '');
 
             return (
               <div
@@ -228,7 +228,7 @@ export function TemplatesTable({
                     className="flex items-center gap-1 ml-2 flex-shrink-0"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {getStatusBadge(template.status)}
+                    {getStatusBadge(template.status ?? '')}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
@@ -298,7 +298,7 @@ export function TemplatesTable({
 
                 <div className="mt-3 pt-2.5 border-t text-xs text-[#555] flex items-center justify-between">
                   <span>
-                    {format(new Date(template.createdAt), "MMM d, yyyy")}
+                    {template.createdAt ? format(new Date(template.createdAt), "MMM d, yyyy") : '-'}
                   </span>
                   {buttons.length > 0 && (
                     <span className="text-[#555]">

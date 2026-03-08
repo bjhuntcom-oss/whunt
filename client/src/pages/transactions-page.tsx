@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -82,7 +82,7 @@ function TransactionsPage() {
       const { data } = await axios.get("/api/transactions", { params });
       return data;
     },
-    keepPreviousData: true,
+    placeholderData: (prev: any) => prev,
   });
 
   // 🔹 Fetch Transaction Stats
@@ -94,14 +94,14 @@ function TransactionsPage() {
     },
   });
 
-  const transactions = transactionData?.data || [];
-  const stats = statsData?.data || {
+  const transactions = (transactionData as any)?.data || [];
+  const stats = (statsData as any)?.data || {
     totalRevenue: 0,
     statusCounts: [],
   };
 
-  const totalPages = transactionData?.pagination?.totalPages || 1;
-  const totalCount = transactionData?.pagination?.totalCount || 0;
+  const totalPages = (transactionData as any)?.pagination?.totalPages || 1;
+  const totalCount = (transactionData as any)?.pagination?.totalCount || 0;
 
   // ==================== HANDLERS ====================
 

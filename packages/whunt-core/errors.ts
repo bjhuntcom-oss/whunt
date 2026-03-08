@@ -19,9 +19,6 @@ export class WhuntError extends Error {
   }
 }
 
-// Backward-compat alias
-export const DiployError = WhuntError;
-
 export class BadRequestError extends WhuntError {
   constructor(message = "Bad request") {
     super(HTTP_STATUS.BAD_REQUEST, message, true, "BAD_REQUEST");

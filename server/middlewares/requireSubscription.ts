@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -158,7 +158,7 @@
 
 
 import { Request, Response, NextFunction } from "express";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import { and, eq, desc } from "drizzle-orm";
 import { db } from "server/db";
 import { plans, subscriptions, channels, automations, campaigns, contacts, sites } from "@shared/schema";
@@ -193,7 +193,7 @@ export const requireSubscription = (
                 const [channel] = await db
                     .select()
                     .from(channels)
-                    .where(eq(channels.id, site.channelId));
+                    .where(eq(channels.id, site.channelId ?? ''));
 
                 if (!channel) {
                     return res.status(404).json({ error: "Channel not found." });
@@ -220,7 +220,7 @@ const activeSubs = await db
   .from(subscriptions)
   .where(
     and(
-      eq(subscriptions.userId, userId),
+      eq(subscriptions.userId, userId ?? ''),
       eq(subscriptions.status, "active")
     )
   )
@@ -291,7 +291,7 @@ if (activeSubs.length === 0) {
                     .select()
                     .from(contacts)
                     .leftJoin(channels, eq(contacts.channelId, channels.id))
-                    .where(eq(channels.createdBy, userId));
+                    .where(eq(channels.createdBy, userId ?? ''));
 
                 currentCount = data.length;
             }
@@ -300,7 +300,7 @@ if (activeSubs.length === 0) {
                 const data = await db
                     .select()
                     .from(channels)
-                    .where(eq(channels.createdBy, userId));
+                    .where(eq(channels.createdBy, userId ?? ''));
 
                 currentCount = data.length;
             }
@@ -309,7 +309,7 @@ if (activeSubs.length === 0) {
                 const data = await db
                     .select()
                     .from(automations)
-                    .where(eq(automations.createdBy, userId));
+                    .where(eq(automations.createdBy, userId ?? ''));
 
                 currentCount = data.length;
             }
@@ -318,7 +318,7 @@ if (activeSubs.length === 0) {
                 const data = await db
                     .select()
                     .from(campaigns)
-                    .where(eq(campaigns.createdBy, userId));
+                    .where(eq(campaigns.createdBy, userId ?? ''));
 
                 currentCount = data.length;
             }

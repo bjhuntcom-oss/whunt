@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -408,22 +408,23 @@ export function TemplateDialog({
 
   useEffect(() => {
     if (template) {
-      const headerComponent = template.components?.find(
+      const templateAny = template as any;
+      const headerComponent = templateAny.components?.find(
         (c: any) => c.type === "HEADER"
       );
-      const bodyComponent = template.components?.find(
+      const bodyComponent = templateAny.components?.find(
         (c: any) => c.type === "BODY"
       );
-      const footerComponent = template.components?.find(
+      const footerComponent = templateAny.components?.find(
         (c: any) => c.type === "FOOTER"
       );
-      const buttonComponent = template.components?.find(
+      const buttonComponent = templateAny.components?.find(
         (c: any) => c.type === "BUTTONS"
       );
-      const ltoComponent = template.components?.find(
+      const ltoComponent = templateAny.components?.find(
         (c: any) => c.type === "limited_time_offer"
       );
-      const carouselComponent = template.components?.find(
+      const carouselComponent = templateAny.components?.find(
         (c: any) => c.type === "CAROUSEL"
       );
 

@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -116,8 +116,8 @@ export default function Settings() {
 
       {user?.role === "superadmin" && versionData?.version && (
         <div className="mx-6 mt-4 mb-0">
-          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700">
-            <span className="font-medium">Whatsway Version {versionData.version}</span>
+          <div className="flex items-center gap-2 px-4 py-2 bg-[rgba(0,255,136,0.06)] border border-[rgba(0,255,136,0.18)] rounded-lg text-sm text-[#00ff88]">
+            <span className="font-medium font-mono">Whunt v{versionData.version}</span>
           </div>
         </div>
       )}

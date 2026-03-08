@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import type { Express } from "express";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import { storage } from "../storage";
 import { insertWhatsappChannelSchema } from "@shared/schema";
 import { WhatsAppApiService } from "../services/whatsapp-api";
@@ -366,7 +366,7 @@ export function registerWhatsAppRoutes(app: Express) {
 //       direction: "outgoing",
 //       type,
 //       status: "sent",
-//       whatsappMessageId: messageId,
+//       whatsappMessageId: messageId ?? null,
 //     });
 
 //     await storage.updateConversation(conversation.id, {
@@ -585,11 +585,11 @@ if (type === "template") {
 
     await storage.createMessage({
       conversationId: conversation.id,
-      content: newMsg,
+      content: newMsg ?? '',
       direction: "outgoing",
       type,
       status: "sent",
-      whatsappMessageId: messageId,
+      whatsappMessageId: messageId ?? null,
     });
 
     await storage.updateConversation(conversation.id, {
@@ -701,8 +701,8 @@ app.post(
         });
       }
 
-      const mediaFile = Array.isArray(req.files?.mediaFile)
-        ? req.files.mediaFile[0]
+      const mediaFile = Array.isArray((req.files as any)?.mediaFile)
+        ? (req.files as any).mediaFile[0]
         : null;
 
       if (!mediaFile) {
@@ -773,8 +773,8 @@ app.post(
         return res.status(400).json({ message: "Channel is not configured for WhatsApp" });
       }
 
-      const mediaFile = Array.isArray(req.files?.mediaFile)
-        ? req.files.mediaFile[0]
+      const mediaFile = Array.isArray((req.files as any)?.mediaFile)
+        ? (req.files as any).mediaFile[0]
         : null;
 
       if (!mediaFile) {
@@ -827,8 +827,8 @@ app.post(
 
       // 🔥 multer.fields output handling
       const mediaFile =
-        Array.isArray(req.files?.mediaFile)
-          ? req.files.mediaFile[0]
+        Array.isArray((req.files as any)?.mediaFile)
+          ? (req.files as any).mediaFile[0]
           : null;
 
       if (!mediaFile) {
@@ -886,7 +886,7 @@ app.post(
       }
 
       let testPhone = (req.body.phoneNumber || "919310797700").replace(/\D/g, '');
-      const testMessage = req.body.message || "Hello! This is a test message from WhatsWay.";
+      const testMessage = req.body.message || "Hello! This is a test message from Whunt.";
 
       const apiVersion = process.env.WHATSAPP_API_VERSION || "v24.0";
 

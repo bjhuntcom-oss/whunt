@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -77,12 +77,12 @@ export default function Templates({ userId }: TemplatesProps) {
       return json;
     },
     enabled: !!userId,
-    keepPreviousData: true, // React Query feature to prevent flicker
+    placeholderData: (prev: any) => prev,
   });
 
-  const templates = data?.data ?? [];
-  const page = data?.pagination?.page ?? 1;
-  const totalPages = Number(data?.pagination?.totalPages ?? 1);
+  const templates = (data as any)?.data ?? [];
+  const page = (data as any)?.pagination?.page ?? 1;
+  const totalPages = Number((data as any)?.pagination?.totalPages ?? 1);
 
   if (isLoading)
     return (
@@ -131,7 +131,7 @@ export default function Templates({ userId }: TemplatesProps) {
             </tr>
           </thead>
           <tbody>
-            {templates.map((template) => (
+            {templates.map((template: any) => (
               <tr
                 key={template.id}
                 className="hover:bg-[#050505] transition-colors text-sm text-[#999]"
@@ -174,14 +174,14 @@ export default function Templates({ userId }: TemplatesProps) {
       </div>
 
       {/* Pagination */}
-      {data?.pagination && (
+      {(data as any)?.pagination && (
         <div className="w-full mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* LEFT SIDE → Showing X to Y of Total */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <span className="text-sm text-[#999]">
               Showing {(page - 1) * limit + 1} to{" "}
-              {Math.min(page * limit, Number(data.pagination.total))} of{" "}
-              {data.pagination.total} templates
+              {Math.min(page * limit, Number((data as any).pagination.total))} of{" "}
+              {(data as any).pagination.total} templates
             </span>
 
             {/* Optional: Per Page Selector */}

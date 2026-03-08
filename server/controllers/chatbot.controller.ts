@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { Request, Response } from 'express';
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { eq } from 'drizzle-orm';
 import { db } from '../db';
 import { chatbots, trainingData, conversations, messages } from '@shared/schema';
@@ -65,7 +65,7 @@ export const getChatbot = async (req: Request, res: Response) => {
     const [chatbot] = await db
       .select()
       .from(chatbots)
-      .where(eq(chatbots.id, parseInt(id)));
+      .where(eq(chatbots.id, id));
 
     if (!chatbot) {
       return res.status(404).json({
@@ -129,7 +129,7 @@ export const updateChatbot = async (req: Request, res: Response) => {
         ...data,
         updatedAt: new Date(),
       })
-      .where(eq(chatbots.id, parseInt(id)))
+      .where(eq(chatbots.id, id))
       .returning();
 
     if (!updatedChatbot) {
@@ -157,7 +157,7 @@ export const deleteChatbot = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await db.delete(chatbots).where(eq(chatbots.id, parseInt(id)));
+    await db.delete(chatbots).where(eq(chatbots.id, id));
 
     res.json({
       success: true,
@@ -227,7 +227,7 @@ export const getTrainingData = async (req: Request, res: Response) => {
     const data = await db
       .select()
       .from(trainingData)
-      .where(eq(trainingData.chatbotId, parseInt(chatbotId)));
+      .where(eq(trainingData.chatbotId, chatbotId));
 
     res.json({
       success: true,
@@ -247,7 +247,7 @@ export const deleteTrainingData = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await db.delete(trainingData).where(eq(trainingData.id, parseInt(id)));
+    await db.delete(trainingData).where(eq(trainingData.id, id));
 
     res.json({
       success: true,
@@ -334,7 +334,7 @@ export const getConversationMessages = async (req: Request, res: Response) => {
     const conversationMessages = await db
       .select()
       .from(messages)
-      .where(eq(messages.conversationId, parseInt(conversationId)));
+      .where(eq(messages.conversationId, conversationId));
 
     res.json({
       success: true,

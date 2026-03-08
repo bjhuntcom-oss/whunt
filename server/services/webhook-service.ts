@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import crypto from "crypto";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import { db } from "../db";
 import { messages, conversations, messageQueue, webhookConfigs } from "@shared/schema";
 import { eq } from "drizzle-orm";
@@ -169,12 +169,12 @@ export class WebhookService {
    */
   private static async handleIncomingMessage(
     message: NonNullable<WhatsAppWebhookPayload["entry"][0]["changes"][0]["value"]["messages"]>[0],
-    contact: WhatsAppWebhookPayload["entry"][0]["changes"][0]["value"]["contacts"] extends Array<infer T> ? T | undefined : undefined,
+    contact: { profile: { name: string }; wa_id: string } | undefined,
     channelId: string
   ): Promise<void> {
     try {
       // Handle reaction messages before any conversation updates
-      if (message.type === 'reaction' && (message as any).reaction) {
+      if ((message as any).type === 'reaction' && (message as any).reaction) {
         const reaction = (message as any).reaction;
         const emoji = reaction.emoji || '';
         const reactedMessageId = reaction.message_id;
@@ -203,8 +203,8 @@ export class WebhookService {
             });
 
             try {
-              const { getIO } = await import('../socket');
-              const io = getIO();
+              const socketModule = await import('../socket');
+              const io = socketModule.io;
               io.to(`conversation:${reactedMessage.conversationId}`).emit('message_reaction', {
                 conversationId: reactedMessage.conversationId,
                 messageId: reactedMessage.id,
@@ -282,7 +282,7 @@ export class WebhookService {
         await storage.updateMessage(message.id, {
           status: status.status,
           metadata: {
-            ...message.metadata,
+            ...(typeof message.metadata === 'object' && message.metadata !== null ? message.metadata as Record<string, unknown> : {}),
             conversationId: status.conversation?.id,
             pricing: status.pricing,
           },

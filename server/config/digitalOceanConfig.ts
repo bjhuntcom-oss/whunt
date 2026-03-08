@@ -27,7 +27,7 @@ export const createDOClient = async () => {
     cleanEndpoint = cleanEndpoint.replace(/\/$/, '');
     
     // Extract base endpoint (remove bucket name if present)
-    // Example: https://whatsway.blr1.digitaloceanspaces.com -> https://blr1.digitaloceanspaces.com
+    // Example: https://whunt.blr1.digitaloceanspaces.com -> https://blr1.digitaloceanspaces.com
     const urlParts = new URL(cleanEndpoint);
     const hostParts = urlParts.host.split('.');
     

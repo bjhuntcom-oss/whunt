@@ -10,18 +10,10 @@ export {
   WHUNT_HEADER_VALUE,
   WHUNT_BRAND,
   HTTP_STATUS,
-  // Backward-compat
-  DIPLOY_PRODUCT_NAME,
-  DIPLOY_VERSION,
-  DIPLOY_HEADER_KEY,
-  DIPLOY_HEADER_VALUE,
-  DIPLOY_POWERED_BY,
-  DIPLOY_BRAND,
 } from "./constants";
 
 export {
   WhuntError,
-  DiployError,
   BadRequestError,
   UnauthorizedError,
   ForbiddenError,
@@ -32,8 +24,8 @@ export {
   InternalError,
 } from "./errors";
 
-export { WhuntResponse, DiployResponse } from "./response";
-export type { WhuntApiResponse, DiployApiResponse } from "./response";
+export { WhuntResponse } from "./response";
+export type { WhuntApiResponse } from "./response";
 
 export {
   cleanPhoneNumber,
@@ -54,4 +46,4 @@ export {
   sanitizeInput,
 } from "./validate";
 
-export { whuntLogger, diployLogger } from "./logger";
+export { whuntLogger } from "./logger";

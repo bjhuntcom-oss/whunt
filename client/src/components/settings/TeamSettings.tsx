@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -26,7 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Users, Plus, Edit, Trash2, Shield, User, UserCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import type { TeamMember } from "@shared/schema";
+import type { User as TeamMember } from "@shared/schema";
 import { Loading } from "@/components/ui/loading";
 
 export function TeamSettings() {
@@ -190,7 +190,7 @@ export function TeamSettings() {
                     {getRoleIcon(member.role)}
                   </div>
                   <div>
-                    <p className="font-medium">{member.name || member.email}</p>
+                    <p className="font-medium">{(member as any).name || member.firstName || member.email}</p>
                     <p className="text-sm text-[#555]">{member.email}</p>
                   </div>
                   <Badge variant={getRoleBadgeVariant(member.role)}>

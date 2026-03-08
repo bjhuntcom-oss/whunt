@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -47,7 +47,7 @@ const Pricing = () => {
   const { user, currencySymbol, currency } = useAuth();
 
   const [, setLocation] = useLocation();
-  // Fetch payment providers
+
   const { data: paymentProviders, isLoading: isLoadingProviders } =
     useQuery<PaymentProvidersResponse>({
       queryKey: ["/api/payment-providers"],
@@ -59,7 +59,6 @@ const Pricing = () => {
       },
     });
 
-  // Fetch currency map
   const { data: currencyMapData } = useQuery<{
     success: boolean;
     data: {
@@ -108,7 +107,6 @@ const Pricing = () => {
     ? (currencySymbolMap[selectedCurrency] || selectedCurrency + " ")
     : currencySymbol;
 
-  // Icon mapping
   const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     Zap,
     Crown,
@@ -141,15 +139,9 @@ const Pricing = () => {
     fetchPlans();
   }, []);
 
-  // Handle plan selection
   const handleSelectPlan = (plan: Plan) => {
     if (!user) {
       setLocation("/login");
-      // return toast({
-      //   title: t("Landing.pricingSec.authRequired.title"),
-      //   description: t("Landing.pricingSec.authRequired.description"),
-      //   variant: "destructive",
-      // });
     }
     setSelectedPlan(plan);
     setCheckoutOpen(true);
@@ -158,9 +150,9 @@ const Pricing = () => {
   const renderPlansContent = () => {
     if (loading) {
       return (
-        <div className="text-center py-20">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mb-4"></div>
-          <p className="text-[#999] font-medium">
+        <div className="text-center py-16">
+          <div className="inline-block animate-spin h-8 w-8 border-2 border-[#1a1a1a] border-t-[#00ff88] mb-4"></div>
+          <p className="text-[#555] text-sm">
             {t("Landing.pricingSec.loading")}
           </p>
         </div>
@@ -169,90 +161,86 @@ const Pricing = () => {
 
     if (plans.length === 0) {
       return (
-        <div className="text-center py-20 bg-[#050505] rounded-2xl">
-          <AlertCircle className="w-16 h-16 text-[#555] mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-[#e0e0e0] mb-2">
+        <div className="text-center py-16 bg-[#0a0a0a] border border-[#1a1a1a]">
+          <AlertCircle className="w-10 h-10 text-[#333] mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-[#e0e0e0] mb-2">
             {t("Landing.pricingSec.noPlans.title")}
           </h3>
-          <p className="text-[#999]">
+          <p className="text-[#555] text-sm">
             {t("Landing.pricingSec.noPlans.description")}
           </p>
         </div>
       );
     }
+
     const sortedPlans = plans.sort((a, b) => {
       const priceA = Number(isAnnual ? a.annualPrice : a.monthlyPrice);
       const priceB = Number(isAnnual ? b.annualPrice : b.monthlyPrice);
       return priceA - priceB;
     });
+
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8 mb-16">
-        {sortedPlans.map((plan, index) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-px bg-[#1a1a1a] border border-[#1a1a1a] mb-8">
+        {sortedPlans.map((plan) => {
           const IconComponent = iconMap[plan.icon] || Zap;
           const isPopular = plan.popular;
 
           return (
             <div
               key={plan.id}
-              className={`bg-[#0a0a0a] p-8 rounded-2xl shadow-lg border-2 ${
-                isPopular ? "relative transform scale-105" : ""
-              } hover:shadow-xl transition-all flex flex-col h-full`}
-              style={{ borderColor: plan.color || '#e5e7eb' }}
+              className={`bg-[#0a0a0a] p-6 flex flex-col h-full relative ${isPopular ? "border-t-2 border-t-[#00ff88]" : ""
+                }`}
             >
               {/* Popular Badge */}
               {plan.badge && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+                <div className="mb-4">
+                  <span className="bg-[#00ff88] text-black px-3 py-0.5 text-xs font-bold uppercase tracking-wider">
                     {plan.badge}
                   </span>
                 </div>
               )}
 
-              <div className="text-center mb-8 flex-shrink-0">
-                {/* Icon */}
-                <div className="bg-[#0a0a0a] p-3 rounded-xl w-fit mx-auto mb-4">
-                  <IconComponent className="w-8 h-8 text-[#999]" />
+              {/* Icon + Plan Name */}
+              <div className="mb-5">
+                <div className="w-9 h-9 bg-[#0e0e0e] border border-[#1a1a1a] flex items-center justify-center mb-3">
+                  <IconComponent className="w-4 h-4 text-[#00ff88]" />
                 </div>
-
-                {/* Plan Name */}
-                <h3 className="text-2xl font-bold text-[#e0e0e0] mb-2">
+                <h3 className="text-lg font-bold text-[#e0e0e0] mb-1">
                   {plan.name}
                 </h3>
-
-                {/* Description */}
-                <p className="text-[#999] text-sm mb-4 min-h-[40px]">
+                <p className="text-[#555] text-xs leading-relaxed min-h-[32px]">
                   {plan.description}
                 </p>
+              </div>
 
-                {/* Price */}
-                <div className="flex items-baseline justify-center mb-2">
-                  <span className="text-4xl font-bold text-[#e0e0e0]">
+              {/* Price */}
+              <div className="mb-4 pb-4 border-b border-[#1a1a1a]">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold text-[#e0e0e0]">
                     {activeCurrencySymbol}
                     {isAnnual ? plan.annualPrice : plan.monthlyPrice}
                   </span>
-                  <span className="text-[#999] ml-2">
-                    /
-                    {isAnnual
+                  <span className="text-[#555] text-xs">
+                    /{isAnnual
                       ? t("Landing.pricingSec.pricing.year")
                       : t("Landing.pricingSec.pricing.month")}
                   </span>
                 </div>
 
-                {/* Permissions */}
                 {plan.permissions && (
-                  <div className="space-y-1">
-                    <div className="text-[#999] text-sm">
+                  <div className="mt-2 space-y-0.5">
+                    <div className="text-[#555] text-xs">
                       {t("Landing.pricingSec.pricing.upTo")}{" "}
-                      {plan.permissions.contacts}{" "}
+                      <span className="text-[#999]">{plan.permissions.contacts}</span>{" "}
                       {t("Landing.pricingSec.pricing.contacts")}
                     </div>
-                    <div className="text-[#999] text-sm">
-                      {plan.permissions.channel}{" "}
+                    <div className="text-[#555] text-xs">
+                      <span className="text-[#999]">{plan.permissions.channel}</span>{" "}
                       {t("Landing.pricingSec.pricing.channels")}
                     </div>
                     {plan.permissions.automation && (
-                      <div className="text-[#999] text-sm">
-                        {plan.permissions.automation}{" "}
+                      <div className="text-[#555] text-xs">
+                        <span className="text-[#999]">{plan.permissions.automation}</span>{" "}
                         {t("Landing.pricingSec.pricing.automation")}
                       </div>
                     )}
@@ -260,23 +248,22 @@ const Pricing = () => {
                 )}
               </div>
 
-              {/* Features - Grow to fill space */}
-              <ul className="space-y-4 mb-8 flex-grow">
+              {/* Features */}
+              <ul className="space-y-2.5 mb-6 flex-grow">
                 {plan.features && plan.features.length > 0 ? (
                   plan.features.map((feature, featureIndex) => (
                     <li
                       key={`${feature.name}-${featureIndex}`}
-                      className="flex items-start space-x-3"
+                      className="flex items-start gap-2.5"
                     >
                       {feature.included ? (
-                        <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
                       ) : (
-                        <X className="w-5 h-5 text-gray-300 mt-0.5 flex-shrink-0" />
+                        <X className="w-3.5 h-3.5 text-[#333] mt-0.5 flex-shrink-0" />
                       )}
                       <span
-                        className={`text-sm ${
-                          feature.included ? "text-[#999]" : "text-[#555]"
-                        }`}
+                        className={`text-xs leading-relaxed ${feature.included ? "text-[#999]" : "text-[#333]"
+                          }`}
                       >
                         {feature.name}
                       </span>
@@ -284,23 +271,23 @@ const Pricing = () => {
                   ))
                 ) : (
                   <>
-                    <li className="flex items-start space-x-3">
-                      <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-[#999]">
+                    <li className="flex items-start gap-2.5">
+                      <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
+                      <span className="text-xs text-[#999]">
                         {plan.permissions.contacts}{" "}
                         {t("Landing.pricingSec.pricing.contacts")}
                       </span>
                     </li>
-                    <li className="flex items-start space-x-3">
-                      <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-[#999]">
+                    <li className="flex items-start gap-2.5">
+                      <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
+                      <span className="text-xs text-[#999]">
                         {plan.permissions.channel}{" "}
                         {t("Landing.pricingSec.pricing.channels")}
                       </span>
                     </li>
-                    <li className="flex items-start space-x-3">
-                      <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-[#999]">
+                    <li className="flex items-start gap-2.5">
+                      <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
+                      <span className="text-xs text-[#999]">
                         {plan.permissions.automation}{" "}
                         {t("Landing.pricingSec.pricing.automation")}
                       </span>
@@ -309,11 +296,13 @@ const Pricing = () => {
                 )}
               </ul>
 
-              {/* CTA Button - Always at bottom */}
+              {/* CTA Button */}
               <button
                 onClick={() => handleSelectPlan(plan)}
-                className="w-full py-3 rounded-xl font-semibold transition-all transform hover:scale-105 text-white flex-shrink-0 hover:opacity-90"
-                style={{ backgroundColor: plan.buttonColor || '#10b981' }}
+                className={`w-full py-2.5 text-sm font-semibold transition-colors flex-shrink-0 ${isPopular
+                    ? "bg-[#00ff88] text-black hover:bg-[#00e87a]"
+                    : "bg-[#0e0e0e] border border-[#252525] text-[#e0e0e0] hover:border-[#333] hover:bg-[#111]"
+                  }`}
               >
                 {Number.parseFloat(plan.monthlyPrice) === 0
                   ? t("Landing.pricingSec.planCTA.freeButton")
@@ -326,7 +315,6 @@ const Pricing = () => {
     );
   };
 
-  // Get FAQ data from translation
   const faqData = t("Landing.pricingSec.faq.questions") as unknown as Array<{
     q: string;
     a: string;
@@ -334,54 +322,44 @@ const Pricing = () => {
 
   return (
     <>
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Crown className="w-4 h-4 mr-2" />
+      <section id="pricing" className="py-16 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
+              <Crown className="w-3 h-3" />
               {t("Landing.pricingSec.introTagline")}
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] mb-6">
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] tracking-tight leading-tight mb-4">
               {t("Landing.pricingSec.headlinePre")}{" "}
-              <span className="block bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="text-[#00ff88]">
                 {t("Landing.pricingSec.headlineHighlight")}
               </span>
             </h2>
-            <p className="text-xl text-[#999] max-w-3xl mx-auto mb-8">
+            <p className="text-base text-[#999] max-w-2xl mx-auto mb-8">
               {t("Landing.pricingSec.subHeadline")}
             </p>
 
             {/* Billing Toggle */}
-            <div className="flex items-center justify-center space-x-4 mb-12 flex-wrap gap-4">
-              <span
-                className={`font-medium ${
-                  isAnnual ? "text-[#555]" : "text-[#e0e0e0]"
-                }`}
-              >
+            <div className="flex items-center justify-center gap-4 mb-8 flex-wrap">
+              <span className={`text-sm font-medium ${isAnnual ? "text-[#555]" : "text-[#e0e0e0]"}`}>
                 {t("Landing.pricingSec.billingToggle.monthly")}
               </span>
               <button
                 onClick={() => setIsAnnual(!isAnnual)}
-                className={`relative w-14 h-7 rounded-full transition-colors ${
-                  isAnnual ? "bg-green-500" : "bg-gray-300"
-                }`}
+                className={`relative w-12 h-6 transition-colors ${isAnnual ? "bg-[#00ff88]" : "bg-[#1a1a1a]"
+                  }`}
               >
                 <div
-                  className={`absolute w-5 h-5 bg-[#0a0a0a] rounded-full top-1 transition-transform ${
-                    isAnnual ? "translate-x-7" : "translate-x-1"
-                  }`}
+                  className={`absolute w-4 h-4 bg-black top-1 transition-transform ${isAnnual ? "translate-x-7" : "translate-x-1"
+                    }`}
                 ></div>
               </button>
-              <span
-                className={`font-medium ${
-                  isAnnual ? "text-[#e0e0e0]" : "text-[#555]"
-                }`}
-              >
+              <span className={`text-sm font-medium ${isAnnual ? "text-[#e0e0e0]" : "text-[#555]"}`}>
                 {t("Landing.pricingSec.billingToggle.annual")}
               </span>
               {isAnnual && (
-                <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-medium">
+                <span className="bg-[#00ff88]/10 text-[#00ff88] text-xs px-2.5 py-1 font-medium">
                   {t("Landing.pricingSec.billingToggle.saveLabel")}
                 </span>
               )}
@@ -389,7 +367,7 @@ const Pricing = () => {
                 <select
                   value={selectedCurrency}
                   onChange={(e) => setSelectedCurrency(e.target.value)}
-                  className="px-3 py-2 border border-[#252525] rounded-lg text-sm font-medium bg-[#0a0a0a] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer"
+                  className="px-3 py-1.5 border border-[#1a1a1a] text-xs font-medium bg-[#0e0e0e] text-[#999] focus:ring-1 focus:ring-[#00ff88] focus:border-[#00ff88] outline-none cursor-pointer"
                 >
                   {availableCurrencies.map((cur) => (
                     <option key={cur} value={cur}>
@@ -401,47 +379,46 @@ const Pricing = () => {
             </div>
           </div>
 
-          {/* Plans Content */}
+          {/* Plans */}
           {renderPlansContent()}
 
-          {/* FAQ Section */}
-          <div className="bg-[#050505] p-8 rounded-2xl">
-            <h3 className="text-2xl font-bold text-[#e0e0e0] text-center mb-8">
+          {/* FAQ */}
+          <div className="bg-[#050505] border border-[#1a1a1a] p-6 mb-6">
+            <h3 className="text-lg font-bold text-[#e0e0e0] text-center mb-6 tracking-tight">
               {t("Landing.pricingSec.faq.title")}
             </h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[#1a1a1a]">
               {faqData.map((faq, index) => (
                 <div
                   key={`${faq.q}-${index}`}
-                  className="bg-[#0a0a0a] p-6 rounded-xl"
+                  className="bg-[#050505] p-5"
                 >
-                  <h4 className="font-semibold text-[#e0e0e0] mb-2">{faq.q}</h4>
-                  <p className="text-[#999] text-sm">{faq.a}</p>
+                  <h4 className="font-semibold text-[#e0e0e0] text-sm mb-2">{faq.q}</h4>
+                  <p className="text-[#555] text-xs leading-relaxed">{faq.a}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Enterprise CTA */}
-          <div className="mt-16 bg-gradient-to-r from-gray-900 to-gray-800 p-8 rounded-2xl text-center">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="bg-[#0a0a0a] border border-[#1a1a1a] p-6 text-center">
+            <h3 className="text-lg font-bold text-[#e0e0e0] mb-2 tracking-tight">
               {t("Landing.pricingSec.enterprise.title")}
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="text-[#555] text-xs mb-5">
               {t("Landing.pricingSec.enterprise.description")}
             </p>
             <Link
               href="/contact"
-              className="bg-[#0a0a0a] text-[#e0e0e0] px-8 py-3 rounded-xl font-semibold hover:bg-[#0a0a0a] transition-all flex items-center mx-auto group w-fit"
+              className="inline-flex items-center gap-2 bg-[#00ff88] text-black px-6 py-2.5 text-sm font-semibold hover:bg-[#00e87a] transition-colors"
             >
               {t("Landing.pricingSec.enterprise.button")}
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Checkout Modal */}
       {selectedPlan && (
         <CheckoutModal
           plan={selectedPlan}

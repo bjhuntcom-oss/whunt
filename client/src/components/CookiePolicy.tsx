@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -27,37 +27,37 @@ const CookiePolicy = () => {
   const whatAreCookiesParagraphs = t(
     "cookiePolicy.sections.whatAreCookies.paragraphs",
     { returnObjects: true }
-  ) as string[];
+  ) as unknown as string[];
 
   const howWeUseList = t("cookiePolicy.sections.howWeUseCookies.list", {
     returnObjects: true,
-  }) as string[];
+  }) as unknown as string[];
 
   const thirdPartyList = t("cookiePolicy.sections.thirdPartyCookies.list", {
     returnObjects: true,
-  }) as string[];
+  }) as unknown as string[];
 
   const cookieDurationList = t("cookiePolicy.sections.cookieDuration.list", {
     returnObjects: true,
-  }) as string[];
+  }) as unknown as string[];
 
   const browserSettingsList = t(
     "cookiePolicy.sections.managingCookies.browserSettings.list",
     { returnObjects: true }
-  ) as string[];
+  ) as unknown as string[];
 
   const optOutLinks = t(
     "cookiePolicy.sections.managingCookies.optOutLinks.links",
     { returnObjects: true }
-  ) as { label: string; text: string; href: string }[];
+  ) as unknown as { label: string; text: string; href: string }[];
 
   const impactList = t("cookiePolicy.sections.impactDisabling.list", {
     returnObjects: true,
-  }) as string[];
+  }) as unknown as string[];
 
   const updatesParagraphs = t("cookiePolicy.sections.updates.paragraphs", {
     returnObjects: true,
-  }) as string[];
+  }) as unknown as string[];
 
   const { data: brandSettings } = useQuery<AppSettings>({
     queryKey: ["/api/brand-settings"],

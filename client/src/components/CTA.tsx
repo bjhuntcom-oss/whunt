@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -17,6 +17,7 @@
 
 import React from "react";
 import { ArrowRight, MessageCircle, Zap, Shield, Clock } from "lucide-react";
+import { motion } from "framer-motion";
 import { useTranslation } from "@/lib/i18n";
 import { Link } from "wouter";
 
@@ -31,79 +32,115 @@ const CTA: React.FC = () => {
   };
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-emerald-600 via-teal-500 to-cyan-600 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#0a0a0a]/[0.07] rounded-full blur-2xl"></div>
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-[#0a0a0a]/[0.07] rounded-full blur-2xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#0a0a0a]/[0.04] rounded-full blur-3xl"></div>
-        <div className="absolute top-20 left-20 w-2 h-2 bg-[#0a0a0a]/20 rounded-full"></div>
-        <div className="absolute bottom-32 right-40 w-1.5 h-1.5 bg-[#0a0a0a]/25 rounded-full"></div>
-        <div className="absolute top-40 right-1/4 w-1 h-1 bg-[#0a0a0a]/30 rounded-full"></div>
-      </div>
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#050505]">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-10">
+          {/* Eyebrow */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
+              <MessageCircle className="w-3 h-3" />
+              {t("Landing.ctaSec.introTagline")}
+            </span>
+          </motion.div>
 
-      <div className="max-w-6xl mx-auto relative">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center bg-[#0a0a0a]/15 backdrop-blur-md text-white/90 px-5 py-2 rounded-full text-sm font-medium mb-8 border border-white/10">
-            <MessageCircle className="w-4 h-4 mr-2" />
-            {t("Landing.ctaSec.introTagline")}
-          </div>
-
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
+          {/* Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl md:text-6xl font-bold text-[#e0e0e0] tracking-tight mb-4"
+          >
             {t("Landing.ctaSec.headline")}
-          </h2>
+          </motion.h2>
 
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed">
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+            className="text-base text-[#999] max-w-2xl mx-auto mb-8"
+          >
             {t("Landing.ctaSec.subHeadline")}
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-16">
+          {/* CTA button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="flex justify-center mb-12"
+          >
             <Link
               href="/contact"
-              className="bg-[#0a0a0a] text-emerald-700 px-8 py-4 rounded-xl font-semibold hover:bg-[#0a0a0a]/95 transition-all duration-200 transform hover:scale-[1.02] shadow-lg shadow-black/10 flex items-center group text-lg"
+              className="bg-[#00ff88] text-black px-8 py-3.5 font-semibold hover:bg-[#00e87a] transition-colors flex items-center gap-2 text-sm"
             >
               {t("Landing.ctaSec.buttons.startTrial")}
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto">
+          {/* Trust indicators */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-px bg-[#1a1a1a] border border-[#1a1a1a] max-w-4xl mx-auto">
             {(t("Landing.ctaSec.trustIndicators") as unknown as any[]).map(
               (item: any, index: number) => {
                 const IconComponent =
                   iconMap[item.title as keyof typeof iconMap] || Zap;
                 return (
-                  <div
+                  <motion.div
                     key={`${item.title}-${index}`}
-                    className="text-center bg-[#0a0a0a]/[0.08] backdrop-blur-md border border-white/[0.12] rounded-2xl p-6 hover:bg-[#0a0a0a]/[0.12] transition-all duration-200"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: index * 0.06,
+                    }}
+                    className="text-center bg-[#0a0a0a] p-5"
                   >
-                    <div className="bg-[#0a0a0a]/15 p-3 rounded-xl w-fit mx-auto mb-4">
-                      <IconComponent className="w-6 h-6 text-white" />
+                    <div className="w-9 h-9 bg-[#0e0e0e] border border-[#1a1a1a] flex items-center justify-center mx-auto mb-3">
+                      <IconComponent className="w-4 h-4 text-[#00ff88]" />
                     </div>
-                    <h3 className="text-base font-semibold text-white mb-1.5">
+                    <h3 className="text-sm font-semibold text-[#e0e0e0] mb-1">
                       {item.title}
                     </h3>
-                    <p className="text-white/65 text-sm leading-relaxed">{item.desc}</p>
-                  </div>
+                    <p className="text-[#555] text-xs leading-relaxed">{item.desc}</p>
+                  </motion.div>
                 );
               }
             )}
           </div>
         </div>
 
-        <div className="bg-[#0a0a0a]/[0.08] backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/[0.12]">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
+        {/* Stats bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="border-t border-[#1a1a1a] pt-10"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#1a1a1a] border border-[#1a1a1a]">
             {(t("Landing.ctaSec.stats") as unknown as any[]).map(
               (stat: any, index: number) => (
-                <div key={`${stat.label}-${index}`}>
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-1 tracking-tight">
+                <div key={`${stat.label}-${index}`} className="text-center bg-[#0a0a0a] py-6 px-4">
+                  <div className="text-2xl md:text-3xl font-bold text-[#e0e0e0] mb-1 tracking-tight">
                     {stat.number}
                   </div>
-                  <div className="text-white/60 text-sm font-medium">{stat.label}</div>
+                  <div className="text-[#555] text-xs uppercase tracking-wider">{stat.label}</div>
                 </div>
               )
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

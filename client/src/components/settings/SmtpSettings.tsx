@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -222,7 +222,7 @@ export default function SMTPSettings() {
                   <Lock className="w-4 h-4 text-green-600" /> Secure (TLS)
                 </Label>
                 <p className="mt-2 p-3 bg-[#0a0a0a] rounded border">
-                  {displayData.secure === true ? "Enabled" : "Disabled"}
+                  {(displayData.secure === "true" || (displayData.secure as unknown) === true) ? "Enabled" : "Disabled"}
                 </p>
               </div>
 

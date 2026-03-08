@@ -2,6 +2,7 @@
   "name": "@whunt/core",
   "version": "1.0.0",
   "description": "Core utilities and branding for Whunt WhatsApp Marketing Platform",
+  "type": "module",
   "main": "index.ts",
   "types": "index.ts",
   "license": "MIT",

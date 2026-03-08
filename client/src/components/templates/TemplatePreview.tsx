@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -80,7 +80,7 @@ export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {
   };
 
   const getMediaTypeIcon = () => {
-    const mediaComponent = template.components?.find(c => c.type === "HEADER" && c.format !== "TEXT");
+    const mediaComponent = (template as any).components?.find((c: any) => c.type === "HEADER" && c.format !== "TEXT");
     
     if (!mediaComponent) return null;
 
@@ -97,19 +97,19 @@ export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {
   };
 
   const getButtonComponent = () => {
-    return template.components?.find(c => c.type === "BUTTONS");
+    return (template as any).components?.find((c: any) => c.type === "BUTTONS");
   };
 
   const getHeaderComponent = () => {
-    return template.components?.find(c => c.type === "HEADER");
+    return (template as any).components?.find((c: any) => c.type === "HEADER");
   };
 
   const getBodyComponent = () => {
-    return template.components?.find(c => c.type === "BODY");
+    return (template as any).components?.find((c: any) => c.type === "BODY");
   };
 
   const getFooterComponent = () => {
-    return template.components?.find(c => c.type === "FOOTER");
+    return (template as any).components?.find((c: any) => c.type === "FOOTER");
   };
 
   const headerComponent = getHeaderComponent();
@@ -141,7 +141,7 @@ export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">{template.name}</h2>
               <div className="flex items-center gap-2">
-                {getStatusIcon(template.status)}
+                {getStatusIcon(template.status ?? '')}
                 <Badge variant={template.status === "APPROVED" ? "default" : "secondary"}>
                   {template.status}
                 </Badge>
@@ -169,14 +169,14 @@ export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {
               <div>
                 <span className="text-[#555]">Created:</span>
                 <span className="ml-2 font-medium">
-                  {format(new Date(template.createdAt), "MMM d, yyyy")}
+                  {template.createdAt ? format(new Date(template.createdAt), "MMM d, yyyy") : '-'}
                 </span>
               </div>
-              {template.lastUsed && (
+              {(template as any).lastUsed && (
                 <div>
                   <span className="text-[#555]">Last Used:</span>
                   <span className="ml-2 font-medium">
-                    {format(new Date(template.lastUsed), "MMM d, yyyy")}
+                    {format(new Date((template as any).lastUsed), "MMM d, yyyy")}
                   </span>
                 </div>
               )}
@@ -224,7 +224,7 @@ export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {
                 {/* Buttons */}
                 {buttonComponent && buttonComponent.buttons && (
                   <div className="pt-3 space-y-2">
-                    {buttonComponent.buttons.map((button, idx) => (
+                    {buttonComponent.buttons.map((button: any, idx: number) => (
                       <button
                         key={idx}
                         className="w-full py-2 px-4 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600 transition-colors"
@@ -285,7 +285,7 @@ export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {
                 <div>
                   <Label className="text-sm text-[#555]">Buttons</Label>
                   <div className="bg-[#050505] p-3 rounded space-y-2">
-                    {buttonComponent.buttons.map((button, idx) => (
+                    {buttonComponent.buttons.map((button: any, idx: number) => (
                       <div key={idx} className="text-sm">
                         <span className="font-medium">{button.type}:</span> {button.text}
                         {button.url && <span className="text-[#555] ml-2">({button.url})</span>}

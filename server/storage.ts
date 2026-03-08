@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -15,7 +15,7 @@
  * ============================================================
  */
 
-import { DIPLOY_BRAND } from "@whunt/core";
+import { WHUNT_BRAND } from "@whunt/core";
 import {
   type User,
   type InsertUser,
@@ -55,7 +55,7 @@ export interface IStorage {
 
   // Contacts
   getContacts(): Promise<Contact[]>;
-  getContactsByUser(userId: String): Promise<Contact[]>;
+  getContactsByUser(userId: String, page?: number, limit?: number): Promise<any>;
   getContactsByChannel(channelId: string): Promise<Contact[]>;
   getContact(id: string): Promise<Contact | undefined>;
   getContactByPhone(phone: string): Promise<Contact | undefined>;
@@ -67,10 +67,10 @@ export interface IStorage {
   searchContactsByChannel(channelId: string, query: string): Promise<Contact[]>;
 
   // Campaigns
-  getCampaigns(): Promise<Campaign[]>;
+  getCampaigns(page?: number, limit?: number): Promise<any>;
   getScheduledCampaigns(now: Date): Promise<Campaign[]>;
-  getCampaignByUserId(userId: string): Promise<Campaign[]>;
-  getCampaignsByChannel(channelId: string): Promise<Campaign[]>;
+  getCampaignByUserId(userId: string, page?: number, limit?: number): Promise<any>;
+  getCampaignsByChannel(channelId: string, page?: number, limit?: number): Promise<any>;
   getCampaign(id: string): Promise<Campaign | undefined>;
   createCampaign(campaign: InsertCampaign): Promise<Campaign>;
   updateCampaign(id: string, campaign: Partial<Campaign>): Promise<Campaign | undefined>;
@@ -178,9 +178,8 @@ export interface IStorage {
   getMessageQueue(): Promise<MessageQueue>;
   // getQueuedMessages(): Promise<Message[]>;
 
-  getCampaignsByChannel(channelId: string): Promise<Campaign[]>;
 getTemplatesByChannel(channelId: string): Promise<Template[]>;
-getTemplatesByUserId(userId: string): Promise<Template[]>;
+getTemplatesByUserId(userId: string, page?: number, limit?: number): Promise<any>;
 getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<Template[]>;
 getConversationsByChannel(channelId: string): Promise<Conversation[]>;
 deleteConversation(id: string): Promise<boolean>;
@@ -232,10 +231,14 @@ export class MemStorage implements IStorage {
         accessToken: "Bearer EAAxxxxxxx", // User needs to update this with their actual token
         whatsappBusinessAccountId: "123456789012345", // User needs to update this with actual WABA ID
         phoneNumber: "+1234567890", // User needs to update with actual phone number
+        appId: null,
+        isCoexistence: null,
+        connectionMethod: null,
+        createdBy: null,
         isActive: true,
-        healthStatus: "unknown",     // ✅ added
-        lastHealthCheck: null,       // ✅ added
-        healthDetails: null,         // ✅ added
+        healthStatus: "unknown",
+        lastHealthCheck: null,
+        healthDetails: null,
         createdAt: today,
         updatedAt: today,
       };
@@ -364,6 +367,16 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       avatar: insertUser.avatar || null,
       role: insertUser.role || "agent",
       status: insertUser.status || "active",
+      permissions: insertUser.permissions || [],
+      channelId: insertUser.channelId || null,
+      createdBy: insertUser.createdBy || null,
+      fcmToken: insertUser.fcmToken || null,
+      isEmailVerified: insertUser.isEmailVerified ?? false,
+      stripeCustomerId: insertUser.stripeCustomerId || null,
+      razorpayCustomerId: insertUser.razorpayCustomerId || null,
+      paypalCustomerId: insertUser.paypalCustomerId || null,
+      paystackCustomerCode: insertUser.paystackCustomerCode || null,
+      mercadopagoCustomerId: insertUser.mercadopagoCustomerId || null,
       lastLogin: null,
       updatedAt: new Date(),
       createdAt: new Date(),
@@ -399,9 +412,11 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       id,
       channelId: insertContact.channelId || null,
       email: insertContact.email || null,
-      groups: Array.isArray(insertContact.groups)? (insertContact.groups as string[]): [],
-      tags: insertContact.tags || [],
+      groups: Array.isArray(insertContact.groups)? (insertContact.groups as string[]): [] as string[],
+      tags: (insertContact.tags || []) as unknown,
       status: insertContact.status || "active",
+      source: insertContact.source || null,
+      createdBy: insertContact.createdBy || null,
       lastContact: null,
       updatedAt: new Date(),
       createdAt: new Date(),
@@ -462,7 +477,7 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
 
 
   async getCampaignByUserId(userId: string): Promise<Campaign[]> {
-    return this.campaigns.get(userId);
+    return Array.from(this.campaigns.values()).filter(c => c.createdBy === userId);
   }
 
   async createCampaign(insertCampaign: InsertCampaign): Promise<Campaign> {
@@ -470,6 +485,7 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
     const campaign: Campaign = {
       ...insertCampaign,
       id,
+      createdBy: insertCampaign.createdBy || null,
       channelId: insertCampaign.channelId || null,
       status: insertCampaign.status || "draft",
       templateId: insertCampaign.templateId || null,
@@ -552,6 +568,10 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       updatedAt: new Date(),
       whatsappBusinessAccountId: insertChannel.whatsappBusinessAccountId || null,
       phoneNumber: insertChannel.phoneNumber || null,
+      appId: (insertChannel as any).appId || null,
+      isCoexistence: (insertChannel as any).isCoexistence ?? null,
+      connectionMethod: (insertChannel as any).connectionMethod || null,
+      createdBy: (insertChannel as any).createdBy || null,
       isActive: insertChannel.isActive ?? false,
       healthStatus: insertChannel.healthStatus || "unknown",
       lastHealthCheck: null,
@@ -594,6 +614,10 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
     return  this.templates.get(userId)
   }
 
+  async getTemplatesByUserId(userId: string): Promise<Template[]> {
+    return Array.from(this.templates.values()).filter(t => t.createdBy === userId);
+  }
+
 
   async getTemplatesByChannelAndUser(channelId: string, userId: string): Promise<Template[]> {
   const channel = this.channels.get(channelId);
@@ -615,6 +639,7 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       id,
       createdAt: new Date(),
       updatedAt: new Date(),
+      createdBy: insertTemplate.createdBy || null,
       status: insertTemplate.status || "draft",
       channelId: insertTemplate.channelId || null,
       language: insertTemplate.language || "en_US",
@@ -628,7 +653,9 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       mediaUrl: insertTemplate.mediaUrl || null,
       mediaHandle: insertTemplate.mediaHandle || null,
       carouselCards: insertTemplate.carouselCards || [],
+      bodyVariables: insertTemplate.bodyVariables ?? null,
       usage_count: insertTemplate.usage_count ?? 0,
+      headerType: insertTemplate.headerType ?? null,
     };
     this.templates.set(id, template);
     return template;
@@ -714,7 +741,10 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       status: insertConversation.status || "open",
       lastMessageAt: insertConversation.lastMessageAt || null,
       lastMessageText: insertConversation.lastMessageText || null,
+      lastIncomingMessageAt: (insertConversation as any).lastIncomingMessageAt || null,
       type: insertConversation.type || null,
+      chatbotId: (insertConversation as any).chatbotId ?? null,
+      sessionId: (insertConversation as any).sessionId ?? null,
       updatedAt: new Date(),
       createdAt: new Date(),
     };

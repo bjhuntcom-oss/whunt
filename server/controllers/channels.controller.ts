@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import type { Request, Response } from 'express';
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { storage } from '../storage';
 import { insertChannelSchema, Channel, whatsappBusinessAccountsConfig, channelSignupLogs, channels, users } from '@shared/schema';
 import { AppError, asyncHandler } from '../middlewares/error.middleware';
@@ -114,7 +114,7 @@ export const getActiveChannel = asyncHandler(async (req: Request, res: Response)
   }
 
   // 🟩 Team member? use parent user (createdBy)
-  const userId = user.role === "team" ? user.createdBy : user.id;
+  const userId = user.role === "team" ? (user as any).createdBy : user.id;
 
   if (!userId) {
     throw new AppError(404, 'No active channel found');
@@ -162,8 +162,8 @@ export const createChannel = asyncHandler(async (req: Request, res: Response) =>
       }
     });
 
-    const data = await response.json();
-    
+    const data: any = await response.json();
+
     if (response.ok) {
       console.log('Channel health data:', JSON.stringify(data, null, 2));
       
@@ -657,7 +657,7 @@ export const embeddedSignup = asyncHandler(
 
 export const updateChannel = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const userId =  req.user.id ; 
+  const userId = req.user?.id;
 
   if(!userId){
     throw new AppError(404, 'No active channel found');
@@ -721,7 +721,7 @@ export const checkChannelHealth = asyncHandler(async (req: Request, res: Respons
       }
     });
 
-    const data = await response.json();
+    const data: any = await response.json();
     
     if (response.ok) {
       console.log('Channel health API response:', JSON.stringify(data, null, 2));
@@ -805,7 +805,7 @@ export const getDisplayName = asyncHandler(async (req: Request, res: Response) =
       headers: { 'Authorization': `Bearer ${channel.accessToken}` }
     });
 
-    const data = await response.json();
+    const data: any = await response.json();
     if (!response.ok) {
       return res.status(400).json({ error: data.error?.message || 'Failed to fetch display name info' });
     }
@@ -867,7 +867,7 @@ export const updateDisplayName = asyncHandler(async (req: Request, res: Response
       body: JSON.stringify({ display_name: trimmedName }),
     });
 
-    const data = await response.json();
+    const data: any = await response.json();
     if (!response.ok) {
       const errorMsg = data.error?.message || 'Failed to update display name';
       return res.status(400).json({ error: errorMsg, details: data.error });

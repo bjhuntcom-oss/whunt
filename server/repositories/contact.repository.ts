@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -139,7 +139,7 @@ export class ContactRepository {
     return await db
       .select()
       .from(contacts)
-      .where(eq(contacts.tenantId, tenantId))
+      .where(eq((contacts as any).tenantId, tenantId))
       .orderBy(desc(contacts.createdAt));
   }
   async getContactByEmail(email: string): Promise<Contact[]> {
@@ -159,7 +159,7 @@ export class ContactRepository {
 
   async getContactStats(channelId?: string) {
     const todayStart = startOfDay(new Date());
-    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday start
+    const weekStart = startOfWeek(new Date()); // Monday start
     const lastWeekStart = subWeeks(weekStart, 1);
     const lastWeekEnd = weekStart;
     // Build condition dynamically

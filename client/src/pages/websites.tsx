@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -233,16 +233,16 @@ export default function Websites() {
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                       <Label htmlFor={`toggle-${site.id}`} className="text-sm text-muted-foreground">
-                        {site.enabled ? "Enabled" : "Disabled"}
+                        {(site as any).enabled ? "Enabled" : "Disabled"}
                       </Label>
                       <Switch
                         id={`toggle-${site.id}`}
-                        checked={site.enabled}
-                        onCheckedChange={() => handleToggleWebsite(site.id, site.enabled)}
+                        checked={(site as any).enabled}
+                        onCheckedChange={() => handleToggleWebsite(site.id, (site as any).enabled)}
                         data-testid={`switch-website-${site.id}`}
                       />
                     </div>
-                    {site.enabled && (
+                    {(site as any).enabled && (
                       <Badge variant="default" data-testid={`badge-status-${site.id}`}>Active</Badge>
                     )}
                   </div>

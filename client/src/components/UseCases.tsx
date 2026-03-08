@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -25,10 +25,11 @@ import {
   Car,
   ArrowRight,
   TrendingUp,
-  Users,
   MessageCircle,
+  CheckCircle,
 } from "lucide-react";
 import { Link } from "wouter";
+import { motion } from "framer-motion";
 import { useTranslation } from "@/lib/i18n";
 
 const UseCases = () => {
@@ -40,8 +41,6 @@ const UseCases = () => {
       icon: ShoppingCart,
       title: t("Landing.useCasesSec.useCases.0.title"),
       description: t("Landing.useCasesSec.useCases.0.description"),
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
       stats: {
         increase: "300%",
         metric: t("Landing.useCasesSec.useCases.0.stats.metric"),
@@ -57,8 +56,6 @@ const UseCases = () => {
       icon: GraduationCap,
       title: t("Landing.useCasesSec.useCases.1.title"),
       description: t("Landing.useCasesSec.useCases.1.description"),
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
       stats: {
         increase: "85%",
         metric: t("Landing.useCasesSec.useCases.1.stats.metric"),
@@ -74,8 +71,6 @@ const UseCases = () => {
       icon: Heart,
       title: t("Landing.useCasesSec.useCases.2.title"),
       description: t("Landing.useCasesSec.useCases.2.description"),
-      color: "from-red-500 to-red-600",
-      bgColor: "bg-red-50",
       stats: {
         increase: "60%",
         metric: t("Landing.useCasesSec.useCases.2.stats.metric"),
@@ -91,8 +86,6 @@ const UseCases = () => {
       icon: Building,
       title: t("Landing.useCasesSec.useCases.3.title"),
       description: t("Landing.useCasesSec.useCases.3.description"),
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
       stats: {
         increase: "45%",
         metric: t("Landing.useCasesSec.useCases.3.stats.metric"),
@@ -108,8 +101,6 @@ const UseCases = () => {
       icon: Utensils,
       title: t("Landing.useCasesSec.useCases.4.title"),
       description: t("Landing.useCasesSec.useCases.4.description"),
-      color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-50",
       stats: {
         increase: "120%",
         metric: t("Landing.useCasesSec.useCases.4.stats.metric"),
@@ -125,8 +116,6 @@ const UseCases = () => {
       icon: Car,
       title: t("Landing.useCasesSec.useCases.5.title"),
       description: t("Landing.useCasesSec.useCases.5.description"),
-      color: "from-indigo-500 to-indigo-600",
-      bgColor: "bg-indigo-50",
       stats: {
         increase: "75%",
         metric: t("Landing.useCasesSec.useCases.5.stats.metric"),
@@ -141,188 +130,179 @@ const UseCases = () => {
   ];
 
   return (
-    <section id="use-cases" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#050505]/50">
+    <section id="use-cases" className="py-16 px-4 sm:px-6 lg:px-8 bg-[#050505]">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-indigo-100">
-            <Building className="w-4 h-4 mr-2" />
-            {t("Landing.useCasesSec.introTagline")}
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] mb-6">
-            {t("Landing.useCasesSec.headlinePre")}{" "}
-            <span className="block bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              {t("Landing.useCasesSec.headlineHighlight")}
+        {/* Section header */}
+        <div className="text-center mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
+              <Building className="w-3 h-3" />
+              {t("Landing.useCasesSec.introTagline")}
             </span>
-          </h2>
-          <p className="text-lg text-[#555] max-w-3xl mx-auto leading-relaxed">
-            {t("Landing.useCasesSec.subHeadline")}
-          </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] tracking-tight leading-tight mb-4">
+              {t("Landing.useCasesSec.headlinePre")}{" "}
+              <span className="text-[#00ff88]">
+                {t("Landing.useCasesSec.headlineHighlight")}
+              </span>
+            </h2>
+            <p className="text-base text-[#999] max-w-2xl mx-auto leading-relaxed">
+              {t("Landing.useCasesSec.subHeadline")}
+            </p>
+          </motion.div>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        {/* Industry pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-wrap gap-2 justify-center mb-10"
+        >
           {useCases.map((useCase, index) => (
             <button
               key={index}
               onClick={() => setActiveUseCase(index)}
-              className={`flex items-center space-x-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeUseCase === index
-                  ? `bg-gradient-to-r ${useCase.color} text-white shadow-md`
-                  : "bg-[#0a0a0a] text-[#999] hover:text-[#e0e0e0] hover:shadow-sm border border-[#1a1a1a] hover:border-[#252525]"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2 text-xs font-medium transition-all duration-200 ${activeUseCase === index
+                  ? "bg-[#00ff88] text-black"
+                  : "border border-[#1a1a1a] text-[#555] hover:border-[#252525] hover:text-[#999] bg-[#0a0a0a]"
+                }`}
             >
-              <useCase.icon className="w-4 h-4" />
+              <useCase.icon className="w-3.5 h-3.5" />
               <span>{useCase.title}</span>
             </button>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          <div
-            className="p-8 rounded-2xl bg-[#0a0a0a] border border-[#1a1a1a] shadow-sm transition-all duration-500"
+        {/* Selected use case panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-[#1a1a1a] border border-[#1a1a1a]">
+          {/* Left panel */}
+          <motion.div
+            key={`left-${activeUseCase}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="bg-[#0a0a0a] p-6"
           >
-            <div className="flex items-center space-x-4 mb-6">
-              <div
-                className={`p-3.5 rounded-xl bg-gradient-to-r ${useCases[activeUseCase].color} shadow-sm`}
-              >
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-10 h-10 bg-[#00ff88]/10 border border-[#00ff88]/20 flex items-center justify-center">
                 {React.createElement(useCases[activeUseCase].icon, {
-                  className: "w-7 h-7 text-white",
+                  className: "w-5 h-5 text-[#00ff88]",
                 })}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#e0e0e0]">
+                <h3 className="text-base font-semibold text-[#e0e0e0]">
                   {useCases[activeUseCase].title}
                 </h3>
-                <p className="text-[#555] text-sm mt-1">
+                <p className="text-[#555] text-xs mt-0.5">
                   {useCases[activeUseCase].description}
                 </p>
               </div>
             </div>
 
-            <div className="bg-[#050505] p-5 rounded-xl mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[#555] text-sm">
-                  Success Metric
-                </span>
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-4 h-4 text-emerald-500" />
-                  <span className="text-xl font-bold text-emerald-600">
+            {/* Stats metric */}
+            <div className="bg-[#050505] border border-[#1a1a1a] p-4 mb-5">
+              <div className="flex items-center justify-between">
+                <span className="text-[#555] text-xs uppercase tracking-wider">Success Metric</span>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-3.5 h-3.5 text-[#00ff88]" />
+                  <span className="text-lg font-bold text-[#00ff88]">
                     {useCases[activeUseCase].stats.increase}
                   </span>
                 </div>
               </div>
-              <p className="text-[#999] text-sm font-medium">
+              <p className="text-[#999] text-xs font-medium mt-2">
                 {useCases[activeUseCase].stats.metric}
               </p>
             </div>
 
-            <div className="space-y-3">
-              <h4 className="font-semibold text-[#e0e0e0] text-sm mb-3">
-                {t("Landing.useCasesSec.keyFeatures")}
-              </h4>
+            {/* Features */}
+            <h4 className="font-semibold text-[#e0e0e0] text-xs uppercase tracking-wider mb-3">
+              {t("Landing.useCasesSec.keyFeatures")}
+            </h4>
+            <div className="space-y-2 mb-6">
               {useCases[activeUseCase].features.map((feature, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                  <span className="text-[#999] text-sm">{feature}</span>
+                <div key={index} className="flex items-center gap-3">
+                  <CheckCircle className="w-3.5 h-3.5 text-[#00ff88] flex-shrink-0" />
+                  <span className="text-[#999] text-xs">{feature}</span>
                 </div>
               ))}
             </div>
 
             <Link
               href="/case-studies"
-              className="inline-flex w-fit mt-7 bg-gray-900 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition-all items-center group"
+              className="inline-flex items-center gap-2 bg-[#00ff88] text-black px-5 py-2 text-xs font-semibold hover:bg-[#00e87a] transition-colors"
             >
               {t("Landing.useCasesSec.cta.viewCaseStudyButton")}
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="space-y-5">
-            <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-[#1a1a1a] shadow-sm">
-              <div className="flex items-center space-x-4 mb-5">
-                <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-emerald-100 ring-offset-2">
-                  <img
-                    src="https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
+          {/* Right panel */}
+          <motion.div
+            key={`right-${activeUseCase}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+            className="bg-[#0a0a0a] p-6 space-y-px"
+          >
+            {/* Quote card */}
+            <div className="bg-[#050505] border border-[#1a1a1a] p-5 mb-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 overflow-hidden bg-[#00ff88] flex items-center justify-center flex-shrink-0">
+                  <span className="text-black font-bold text-xs">CS</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#e0e0e0]">
+                  <h4 className="font-semibold text-[#e0e0e0] text-sm">
                     Customer Success Story
                   </h4>
-                  <p className="text-[#555] text-xs">
-                    Real results from our platform
-                  </p>
+                  <p className="text-[#333] text-xs">Real results from our platform</p>
                 </div>
               </div>
-              <blockquote className="text-[#999] italic text-sm leading-relaxed mb-5 pl-4 border-l-2 border-emerald-200">
+              <blockquote className="text-[#999] italic text-xs leading-relaxed mb-4 pl-3 border-l-2 border-[#00ff88]/30">
                 {String(t("Landing.useCasesSec.cta.customerSuccessQuote"))
-                  .replace(
-                    "{industry}",
-                    useCases[activeUseCase].title.toLowerCase()
-                  )
-                  .replace(
-                    "{increase}",
-                    useCases[activeUseCase].stats.increase
-                  )}
+                  .replace("{industry}", useCases[activeUseCase].title.toLowerCase())
+                  .replace("{increase}", useCases[activeUseCase].stats.increase)}
               </blockquote>
-              <div className="flex items-center space-x-3">
-                <div>
-                  <p className="font-semibold text-[#e0e0e0] text-sm">
-                    {t("Landing.useCasesSec.cta.testimonialName")}
-                  </p>
-                  <p className="text-[#555] text-xs">
-                    {t("Landing.useCasesSec.cta.testimonialPosition")}
-                  </p>
-                </div>
+              <div>
+                <p className="font-semibold text-[#e0e0e0] text-sm">
+                  {t("Landing.useCasesSec.cta.testimonialName")}
+                </p>
+                <p className="text-[#555] text-xs">
+                  {t("Landing.useCasesSec.cta.testimonialPosition")}
+                </p>
               </div>
             </div>
 
-            <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-[#1a1a1a] shadow-sm">
-              <div className="flex items-center space-x-3 mb-5">
-                <div className="p-2 bg-indigo-50 rounded-lg">
-                  <MessageCircle className="w-5 h-5 text-indigo-600" />
+            {/* Quick stats card */}
+            <div className="bg-[#050505] border border-[#1a1a1a] p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 bg-[#0e0e0e] border border-[#1a1a1a] flex items-center justify-center">
+                  <MessageCircle className="w-4 h-4 text-[#00ff88]" />
                 </div>
-                <h4 className="font-semibold text-[#e0e0e0]">
+                <h4 className="font-semibold text-[#e0e0e0] text-sm">
                   {t("Landing.useCasesSec.quickStatsTitle")}
                 </h4>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-3 bg-blue-50/50 rounded-xl">
-                  <div className="text-xl font-bold text-blue-600">
-                    {t("Landing.useCasesSec.quickStats.0.value")}
+              <div className="grid grid-cols-2 gap-px bg-[#1a1a1a]">
+                {[0, 1, 2, 3].map((i) => (
+                  <div key={i} className="bg-[#050505] p-3 text-center">
+                    <div className="text-lg font-bold text-[#e0e0e0]">
+                      {t(`Landing.useCasesSec.quickStats.${i}.value`)}
+                    </div>
+                    <div className="text-[#555] text-xs mt-0.5">
+                      {t(`Landing.useCasesSec.quickStats.${i}.label`)}
+                    </div>
                   </div>
-                  <div className="text-[#555] text-xs mt-1">
-                    {t("Landing.useCasesSec.quickStats.0.label")}
-                  </div>
-                </div>
-                <div className="text-center p-3 bg-emerald-50/50 rounded-xl">
-                  <div className="text-xl font-bold text-emerald-600">
-                    {t("Landing.useCasesSec.quickStats.1.value")}
-                  </div>
-                  <div className="text-[#555] text-xs mt-1">
-                    {t("Landing.useCasesSec.quickStats.1.label")}
-                  </div>
-                </div>
-                <div className="text-center p-3 bg-violet-50/50 rounded-xl">
-                  <div className="text-xl font-bold text-violet-600">
-                    {t("Landing.useCasesSec.quickStats.2.value")}
-                  </div>
-                  <div className="text-[#555] text-xs mt-1">
-                    {t("Landing.useCasesSec.quickStats.2.label")}
-                  </div>
-                </div>
-                <div className="text-center p-3 bg-amber-50/50 rounded-xl">
-                  <div className="text-xl font-bold text-amber-600">
-                    {t("Landing.useCasesSec.quickStats.3.value")}
-                  </div>
-                  <div className="text-[#555] text-xs mt-1">
-                    {t("Landing.useCasesSec.quickStats.3.label")}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

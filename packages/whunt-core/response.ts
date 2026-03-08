@@ -14,9 +14,6 @@ export interface WhuntApiResponse<T = any> {
   };
 }
 
-// Backward-compat alias
-export type DiployApiResponse<T = any> = WhuntApiResponse<T>;
-
 function setBrandHeader(res: Response): void {
   if (!res.headersSent) {
     res.setHeader(WHUNT_HEADER_KEY, WHUNT_HEADER_VALUE);
@@ -24,7 +21,7 @@ function setBrandHeader(res: Response): void {
 }
 
 export class WhuntResponse {
-  static success<T>(res: Response, data?: T, message?: string, statusCode = HTTP_STATUS.OK): Response {
+  static success<T>(res: Response, data?: T, message?: string, statusCode: number = HTTP_STATUS.OK): Response {
     setBrandHeader(res);
     const body: WhuntApiResponse<T> = {
       success: true,
@@ -78,5 +75,3 @@ export class WhuntResponse {
   }
 }
 
-// Backward-compat alias
-export const DiployResponse = WhuntResponse;

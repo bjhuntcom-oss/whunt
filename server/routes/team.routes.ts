@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { Router } from "express";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
+import { whuntLogger, HTTP_STATUS, WHUNT_BRAND } from "@whunt/core";
 import { db } from "../db";
 import {
   users,
@@ -187,7 +187,7 @@ router.get(
 
       const ownerUserId =
         loggedInUser.role === "team"
-          ? loggedInUser.createdBy
+          ? (loggedInUser as any).createdBy
           : loggedInUser.id;
 
       const page = parseInt(req.query.page as string) || 1;
@@ -647,15 +647,15 @@ router.delete("/members/:id", requireAuth, requirePermission(PERMISSIONS.TEAM_DE
 // get activity logs
 router.get("/activity-logs", async (req, res) => {
   try {
-    const loggedInUserId = req?.session?.user?.id;
-    const role = req?.session?.user?.role;   // <-- Make sure role is stored in session or JWT
+    const loggedInUserId = (req?.session as any)?.user?.id;
+    const role = (req?.session as any)?.user?.role;   // <-- Make sure role is stored in session or JWT
 
     if (!loggedInUserId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
     // Base query
-    let query = db
+    const baseQuery = db
       .select({
         id: userActivityLogs.id,
         userId: userActivityLogs.userId,
@@ -671,15 +671,12 @@ router.get("/activity-logs", async (req, res) => {
       })
       .from(userActivityLogs)
       .leftJoin(users, eq(userActivityLogs.userId, users.id))
-      .orderBy(desc(userActivityLogs.createdAt))
-      .limit(100);
+      .orderBy(desc(userActivityLogs.createdAt));
 
     // Apply restriction only if not superadmin
-    if (role !== "superadmin") {
-      query = query.where(eq(users.createdBy, loggedInUserId));
-    }
-
-    const logs = await query;
+    const logs = await (role !== "superadmin"
+      ? baseQuery.where(eq(users.createdBy, loggedInUserId)).limit(100)
+      : baseQuery.limit(100));
 
     res.json(logs);
   } catch (error) {

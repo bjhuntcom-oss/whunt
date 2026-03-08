@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -40,10 +40,17 @@ const connectedUsers = new Map<string, SocketUser>();
 const conversationRooms = new Map<string, Set<string>>(); // conversationId -> Set of socketIds
 
 export function initializeSocket(httpServer: HTTPServer) {
+  const socketOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+    : process.env.NODE_ENV === "production"
+      ? false
+      : "*";
+
   const io = new SocketIOServer(httpServer, {
     cors: {
-      origin: "*", // In production, specify your domains
-      methods: ["GET", "POST"]
+      origin: socketOrigins,
+      methods: ["GET", "POST"],
+      credentials: true,
     },
     transports: ['websocket', 'polling']
   });
@@ -398,7 +405,7 @@ export function initializeSocket(httpServer: HTTPServer) {
   });
 
   // Helper function to get online agents
-  io.getOnlineAgents = function(siteId?: string) {
+  (io as any).getOnlineAgents = function(siteId?: string) {
     const agents: SocketUser[] = [];
     connectedUsers.forEach(user => {
       if (user.role === 'agent' || user.role === 'admin') {
@@ -411,7 +418,7 @@ export function initializeSocket(httpServer: HTTPServer) {
   };
 
   // Helper function to check if conversation has active participants
-  io.isConversationActive = function(conversationId: string) {
+  (io as any).isConversationActive = function(conversationId: string) {
     const room = conversationRooms.get(conversationId);
     return room && room.size > 0;
   };

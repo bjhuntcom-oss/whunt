@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import { asyncHandler } from "../utils/async-handler";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { storage } from "../storage";
 import { z } from "zod";
 import type { Contact } from "@shared/schema";
@@ -250,7 +250,7 @@ export const campaignsController = {
   };
 
   // Save campaign to DB
-  const campaign = await storage.createCampaign(campaignDataToSave);
+  const campaign = await storage.createCampaign(campaignDataToSave as any);
 
   // If active and not scheduled, start campaign immediately
   if (data.status === "active" && !data.scheduledAt) {
@@ -359,8 +359,9 @@ export const campaignsController = {
     const { apiKey } = req.params;
 
     // Find campaign by API key
-    const campaigns = await storage.getCampaigns();
-    const campaign = campaigns.find((c) => c.apiKey === apiKey);
+    const campaignsResult = await storage.getCampaigns();
+    const campaignsList = Array.isArray(campaignsResult) ? campaignsResult : (campaignsResult as any).data ?? [];
+    const campaign = campaignsList.find((c: any) => c.apiKey === apiKey);
 
     if (!campaign || campaign.campaignType !== "api") {
       return res.status(401).json({ error: "Invalid API key" });
@@ -618,11 +619,11 @@ export async function startCampaignExecution(
             if (mapObj.type === "custom") {
               textValue = mapObj.value || "";
             } else if (mapObj.type === "firstName") {
-              textValue = contact.firstName || contact.name || "";
+              textValue = (contact as any).firstName || contact.name || "";
             } else if (mapObj.type === "lastName") {
-              textValue = contact.lastName || "";
+              textValue = (contact as any).lastName || "";
             } else if (mapObj.type === "fullName") {
-              textValue = (contact.firstName || contact.name || "") + (contact.lastName ? " " + contact.lastName : "");
+              textValue = ((contact as any).firstName || contact.name || "") + ((contact as any).lastName ? " " + (contact as any).lastName : "");
             } else if (mapObj.type === "phone") {
               textValue = contact.phone;
             }
@@ -653,14 +654,14 @@ if (bodyVars.length > 0) {
         // custom value
         textValue = mapObj.value || "";
       } else if (mapObj.type === "firstName") {
-        textValue = contact.firstName || contact.name || "";
+        textValue = (contact as any).firstName || contact.name || "";
       } else if (mapObj.type === "lastName") {
-        textValue = contact.lastName || "";
+        textValue = (contact as any).lastName || "";
       } else if (mapObj.type === "fullName") {
         // fullName fallback
         textValue =
-          (contact.firstName || contact.name || "") +
-          (contact.lastName ? " " + contact.lastName : "");
+          ((contact as any).firstName || contact.name || "") +
+          ((contact as any).lastName ? " " + (contact as any).lastName : "");
       } else if (mapObj.type === "phone") {
         textValue = contact.phone;
       }
@@ -688,11 +689,11 @@ if (bodyVars.length > 0) {
               if (mapObj.type === "custom") {
                 textValue = mapObj.value || "";
               } else if (mapObj.type === "firstName") {
-                textValue = contact.firstName || "";
+                textValue = (contact as any).firstName || "";
               } else if (mapObj.type === "lastName") {
-                textValue = contact.lastName || "";
+                textValue = (contact as any).lastName || "";
               } else if (mapObj.type === "fullName") {
-                textValue = `${contact.firstName || ""} ${contact.lastName || ""}`.trim();
+                textValue = `${(contact as any).firstName || ""} ${(contact as any).lastName || ""}`.trim();
               } else if (mapObj.type === "phone") {
                 textValue = contact.phone;
               }

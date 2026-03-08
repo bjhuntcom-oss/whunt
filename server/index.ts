@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -232,7 +232,6 @@ io.on("connection", (socket) => {
         await storage.updateConversation(conversationId, {
           status: "assigned",
           assignedTo: agentId,
-          assignedToName: agentName,
         });
       } catch (error) {
         console.error("Error updating conversation:", error);
@@ -376,7 +375,7 @@ socket.on('leave_conversation', ({ conversationId, userId }) => {
 
     try {
       // Mark messages as read
-      await storage.markMessagesAsRead(conversationId);
+      await (storage as any).markMessagesAsRead(conversationId);
 
       socket.to(`conversation:${conversationId}`).emit("messages_read", {
         conversationId,
@@ -435,7 +434,7 @@ socket.on('leave_conversation', ({ conversationId, userId }) => {
 });
 
 // Helper functions
-io.getOnlineAgents = function (siteId?: string) {
+(io as any).getOnlineAgents = function (siteId?: string) {
   const agents: any[] = [];
   connectedUsers.forEach((user) => {
     if (user.role === "agent" || user.role === "admin") {
@@ -447,7 +446,7 @@ io.getOnlineAgents = function (siteId?: string) {
   return agents;
 };
 
-io.isConversationActive = function (conversationId: string) {
+(io as any).isConversationActive = function (conversationId: string) {
   const room = conversationRooms.get(conversationId);
   return room && room.size > 0;
 };
@@ -499,7 +498,7 @@ app.use(
 // Get online agents
 app.get("/api/agents/online", (req, res) => {
   const { siteId } = req.query;
-  const agents = io.getOnlineAgents?.(siteId as string) || [];
+  const agents = (io as any).getOnlineAgents?.(siteId as string) || [];
   res.json({ agents });
 });
 

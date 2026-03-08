@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -175,7 +175,7 @@ export function CampaignsTable({
               return (
                 <TableRow key={campaign.id}>
                   <TableCell className="font-medium">{campaign.name}</TableCell>
-                  <TableCell>{isDemoUser(user?.username) ? maskName(campaign.createdByName) : campaign.createdByName}</TableCell>
+                  <TableCell>{isDemoUser(user?.username) ? maskName(campaign.createdBy) : campaign.createdBy}</TableCell>
                   <TableCell>{getStatusBadge(campaign.status)}</TableCell>
                   <TableCell>{campaign.templateName || "-"}</TableCell>
                   <TableCell>{campaign.recipientCount || 0}</TableCell>
@@ -358,7 +358,7 @@ export function CampaignsTable({
                         Created By
                       </div>
                       <div className="font-medium">
-                        {isDemoUser(user?.username) ? maskName(campaign.createdByName) : campaign.createdByName}
+                        {isDemoUser(user?.username) ? maskName(campaign.createdBy) : campaign.createdBy}
                       </div>
                     </div>
                   </div>

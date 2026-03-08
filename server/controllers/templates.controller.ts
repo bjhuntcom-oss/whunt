@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -16,7 +16,7 @@
  */
 
 import type { Request, Response } from 'express';
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { storage } from '../storage';
 import { insertTemplateSchema } from '@shared/schema';
 import { AppError, asyncHandler } from '../middlewares/error.middleware';
@@ -120,14 +120,15 @@ export const getTemplateByUserID = asyncHandler(async (req: Request, res: Respon
     return res.status(404).json({ status: 'error', message: 'Template not found' });
   }
 
+  const templatesAny = templates as any;
   res.json({
     status: 'success',
-    data: templates.data,
+    data: templatesAny.data,
     pagination: {
-      page: templates.page,
-      limit: templates.limit,
-      total: templates.total,
-      totalPages: templates.totalPages,
+      page: templatesAny.page,
+      limit: templatesAny.limit,
+      total: templatesAny.total,
+      totalPages: Math.ceil((templatesAny.total || 0) / (templatesAny.limit || 10)),
     },
   });
 });
@@ -135,7 +136,7 @@ export const getTemplateByUserID = asyncHandler(async (req: Request, res: Respon
 export const createTemplate = asyncHandler(
   async (req: RequestWithChannel, res: Response) => {
     const mediaFile =
-      Array.isArray(req.files?.mediaFile) ? req.files.mediaFile[0] : undefined;
+      Array.isArray((req.files as any)?.mediaFile) ? (req.files as any).mediaFile[0] : undefined;
 
     const validatedTemplate = req.body;
 
@@ -495,7 +496,7 @@ export const updateTemplate = asyncHandler(
        MEDIA FILE
     ------------------------------------------------ */
     const mediaFile =
-      Array.isArray(req.files?.mediaFile) ? req.files.mediaFile[0] : undefined;
+      Array.isArray((req.files as any)?.mediaFile) ? (req.files as any).mediaFile[0] : undefined;
 
 
     /* ------------------------------------------------
@@ -528,7 +529,7 @@ export const updateTemplate = asyncHandler(
     );
 
     const placeholders = placeholderMatches
-      .map((m) => parseInt(m[1], 10))
+      .map((m: any) => parseInt(m[1], 10))
       .sort((a, b) => a - b);
 
     for (let i = 0; i < placeholders.length; i++) {
@@ -780,7 +781,7 @@ export const updateTemplate = asyncHandler(
 
           // Update status in DB
           if (result?.id) {
-            await storage.updateTemplate(updatedTemplate.id, {
+            await storage.updateTemplate(updatedTemplate!.id, {
               whatsappTemplateId: result.id,
               status: (result.status || "PENDING").toUpperCase(),
             });
@@ -808,7 +809,7 @@ export const updateTemplate = asyncHandler(
       }
 
       if (result?.id) {
-        await storage.updateTemplate(updatedTemplate.id, {
+        await storage.updateTemplate(updatedTemplate!.id, {
           whatsappTemplateId: result.id,
           status: (result.status || "PENDING").toUpperCase(),
         });
@@ -845,7 +846,7 @@ export const updateTemplate4JANNN2026 = asyncHandler(
        MEDIA FILE
     ------------------------------------------------ */
     const mediaFile =
-      Array.isArray(req.files?.mediaFile) ? req.files.mediaFile[0] : undefined;
+      Array.isArray((req.files as any)?.mediaFile) ? (req.files as any).mediaFile[0] : undefined;
 
 
     /* ------------------------------------------------
@@ -878,7 +879,7 @@ export const updateTemplate4JANNN2026 = asyncHandler(
     );
 
     const placeholders = placeholderMatches
-      .map((m) => parseInt(m[1], 10))
+      .map((m: any) => parseInt(m[1], 10))
       .sort((a, b) => a - b);
 
     for (let i = 0; i < placeholders.length; i++) {
@@ -1092,7 +1093,7 @@ export const updateTemplate4JANNN2026 = asyncHandler(
       const result = await whatsappApi.createTemplate(templatePayload);
 
       if (result?.id) {
-        await storage.updateTemplate(updatedTemplate.id, {
+        await storage.updateTemplate(updatedTemplate!.id, {
           whatsappTemplateId: result.id,
           status: (result.status || "PENDING").toUpperCase(),
         });
@@ -1291,7 +1292,7 @@ export const syncTemplates30DECCE = asyncHandler(
             bodyVariables,
             channelId,
             whatsappTemplateId: waId,
-          });
+          } as any);
 
           if (created) {
             detailedResults.push({
@@ -1842,7 +1843,7 @@ export const syncTemplatesAKKKK = asyncHandler(
           bodyVariables,     // 👈 IMPORTANT
           channelId,
           whatsappTemplateId: waId, // 👈 UNIQUE
-        });
+        } as any);
 
         createdCount++;
       }
@@ -1903,7 +1904,7 @@ export const seedTemplates = asyncHandler(async (req: RequestWithChannel, res: R
   ];
 
   const createdTemplates = await Promise.all(
-    templates.map(template => storage.createTemplate(template))
+    templates.map((template: any) => storage.createTemplate(template as any))
   );
 
   res.json({ message: "Templates seeded successfully", templates: createdTemplates });

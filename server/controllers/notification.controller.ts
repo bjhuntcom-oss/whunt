@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -17,7 +17,7 @@
 
 
 import { notifications, sentNotifications, notificationTemplates, userNotificationPreferences, users } from "@shared/schema";
-import { DiployError, asyncHandler as _dHandler, diployLogger, HTTP_STATUS } from "@whunt/core";
+import { WhuntError, asyncHandler as _dHandler, whuntLogger, HTTP_STATUS } from "@whunt/core";
 import { and, desc, eq, inArray, or, isNull } from "drizzle-orm";
 import { Request, Response } from "express";
 import { db } from "server/db";
@@ -36,7 +36,7 @@ export const adminCreateNotification = async (req: Request, res: Response) => {
         type: req.body.type ?? "general",
         targetType: req.body.targetType,
         targetIds: req.body.targetIds ?? [],
-        createdBy: req.user.id,
+        createdBy: req.user!.id,
         status: "draft",
       })
       .returning();
@@ -56,7 +56,7 @@ export const adminSendNotification = async (req: Request, res: Response) => {
     const [notif] = await db
       .select()
       .from(notifications)
-      .where(eq(notifications.id, req.params.id));
+      .where(eq(notifications.id, Number(req.params.id)));
 
     if (!notif) {
       return res.status(404).json({ error: "Notification not found" });
@@ -70,12 +70,12 @@ export const adminSendNotification = async (req: Request, res: Response) => {
       targetUsers = await db
         .select({ id: users.id })
         .from(users)
-        .where(inArray(users.id, notif.targetIds));
+        .where(inArray(users.id, notif.targetIds as string[]));
     } else if (notif.targetType === "single") {
       targetUsers = await db
         .select({ id: users.id })
         .from(users)
-        .where(eq(users.id, notif.targetIds[0]));
+        .where(eq(users.id, (notif.targetIds as string[])[0]));
     }
 
     for (const u of targetUsers) {
@@ -123,7 +123,7 @@ export const userGetNotifications = async (req: Request, res: Response) => {
   try {
     const channelId = req.query.channelId as string | undefined;
 
-    const conditions: any[] = [eq(sentNotifications.userId, req.user.id)];
+    const conditions: any[] = [eq(sentNotifications.userId, req.user!.id)];
     if (channelId) {
       conditions.push(
         or(eq(notifications.channelId, channelId), isNull(notifications.channelId))
@@ -166,8 +166,8 @@ export const userMarkAsRead = async (req: Request, res: Response) => {
       })
       .where(
         and(
-          eq(sentNotifications.id, req.params.id),
-          eq(sentNotifications.userId, req.user.id)
+          eq(sentNotifications.id, Number(req.params.id)),
+          eq(sentNotifications.userId, req.user!.id)
         )
       );
 
@@ -187,7 +187,7 @@ export const userMarkAllRead = async (req: Request, res: Response) => {
     await db
     .update(sentNotifications)
     .set({ isRead: true, readAt: new Date() })
-    .where(eq(sentNotifications.userId, req.user.id));
+    .where(eq(sentNotifications.userId, req.user!.id));
 
   res.json({ success: true });
   } catch (err) {
@@ -276,7 +276,7 @@ export const updateNotificationTemplate = async (req: Request, res: Response) =>
 
 export const getUserPreferences = async (req: Request, res: Response) => {
   try {
-    const prefs = await getUserNotificationPreferences(req.user.id);
+    const prefs = await getUserNotificationPreferences(req.user!.id);
     res.json(prefs);
   } catch (err) {
     console.error("Get User Preferences Error:", err);
@@ -292,7 +292,7 @@ export const updateUserPreference = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "eventType is required" });
     }
 
-    const updated = await updateUserNotificationPreference(req.user.id, eventType, {
+    const updated = await updateUserNotificationPreference(req.user!.id, eventType, {
       inAppEnabled,
       emailEnabled,
       soundEnabled,
@@ -314,7 +314,7 @@ export const deleteNotification = async (req: Request, res: Response) => {
       .where(
         and(
           eq(sentNotifications.id, parseInt(id)),
-          eq(sentNotifications.userId, req.user.id)
+          eq(sentNotifications.userId, req.user!.id)
         )
       );
 

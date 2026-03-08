@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -123,7 +123,7 @@ async function seed() {
     const superadminUser = await createUserIfNotExists({
       username: "superadmin",
       password: "Superadmin@123",
-      email: "superadmin@whatsway.com",
+      email: "superadmin@whunt.io",
       firstName: "Super",
       lastName: "Admin",
       role: "superadmin",
@@ -135,7 +135,7 @@ async function seed() {
     await createUserIfNotExists({
       username: "demoadmin",
       password: "Admin@123",
-      email: "demoadmin@whatsway.com",
+      email: "demoadmin@whunt.io",
       firstName: "Demo",
       lastName: "Admin",
       role: "superadmin",
@@ -216,7 +216,7 @@ async function seed() {
       console.log("  Panel config already exists");
     } else {
       await db.insert(panelConfig).values({
-        name: "Whatsway",
+        name: "Whunt",
         tagline: "WhatsApp Marketing Platform",
         description: "A comprehensive SaaS platform for WhatsApp marketing, customer engagement, and business growth.",
         defaultLanguage: "en",
@@ -224,8 +224,8 @@ async function seed() {
         currency: "USD",
         country: "US",
         embeddedSignupEnabled: true,
-        companyName: "Your Company",
-        supportEmail: "support@example.com",
+        companyName: "Whunt",
+        supportEmail: "support@whunt.io",
       });
       console.log("  ✅ Default panel config created");
     }

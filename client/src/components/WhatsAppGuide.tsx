@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -57,11 +57,11 @@ const WhatsAppGuide = () => {
   // Get translated data with proper type assertions
   const sections = (t("whatsappGuide.sections", {
     returnObjects: true,
-  }) || []) as Section[];
+  }) || []) as unknown as Section[];
 
   const quickTips = (t("whatsappGuide.quickTips.tips", {
     returnObjects: true,
-  }) || []) as QuickTip[];
+  }) || []) as unknown as QuickTip[];
 
   // Icon mapping for sections
   const sectionIcons: Record<
@@ -90,7 +90,7 @@ const WhatsAppGuide = () => {
   const getCurrentContent = (): SectionContent => {
     const content = t(`whatsappGuide.content.${activeSection}`, {
       returnObjects: true,
-    });
+    }) as unknown;
 
     // Default fallback structure
     const defaultContent: SectionContent = {

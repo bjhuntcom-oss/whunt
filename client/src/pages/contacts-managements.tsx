@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -888,7 +888,7 @@ export default function ContactsManagements() {
                             {isDemoUser(user?.username) ? maskPhone(contact.phone) : contact.phone}
                           </td>
                           <td className="px-4 xl:px-6 py-4 text-sm text-[#e0e0e0]">
-                            {isDemoUser(user?.username) ? maskName(contact?.createdByName?.trim() || "-") : (contact?.createdByName?.trim() || "-")}
+                            {isDemoUser(user?.username) ? maskName(((contact as any)?.createdByName)?.trim() || "-") : (((contact as any)?.createdByName)?.trim() || "-")}
                           </td>
                           <td className="px-4 xl:px-6 py-4">
                             <Badge
@@ -998,7 +998,7 @@ export default function ContactsManagements() {
                             <div className="flex items-center justify-between">
                               <span className="text-[#555]">Created By:</span>
                               <span className="text-[#e0e0e0]">
-                                {isDemoUser(user?.username) ? maskName(contact?.createdByName?.trim() || "-") : (contact?.createdByName?.trim() || "-")}
+                                {isDemoUser(user?.username) ? maskName(((contact as any)?.createdByName)?.trim() || "-") : (((contact as any)?.createdByName)?.trim() || "-")}
                               </span>
                             </div>
                             <div className="flex items-center justify-between">

@@ -1,9 +1,9 @@
 /**
  * ============================================================
- * © 2025 Diploy — a brand of Bisht Technologies Private Limited
+ * © 2025 Whunt — WhatsApp Marketing Platform
  * Original Author: BTPL Engineering Team
- * Website: https://diploy.in
- * Contact: cs@diploy.in
+ * Website: https://whunt.io
+ * Contact: support@whunt.io
  *
  * Distributed under the Envato / CodeCanyon License Agreement.
  * Licensed to the purchaser for use as defined by the
@@ -95,9 +95,9 @@ const {user} = useAuth()
         appId: editingChannel.appId || "", 
         accessToken: editingChannel.accessToken,
         businessAccountId: "",
-        mmLiteEnabled: editingChannel.mmLiteEnabled || false,
-        mmLiteApiUrl: editingChannel.mmLiteApiUrl || "",
-        mmLiteApiKey: editingChannel.mmLiteApiKey || "",
+        mmLiteEnabled: (editingChannel as any).mmLiteEnabled || false,
+        mmLiteApiUrl: (editingChannel as any).mmLiteApiUrl || "",
+        mmLiteApiKey: (editingChannel as any).mmLiteApiKey || "",
       });
     } else {
       channelForm.reset();
@@ -152,7 +152,7 @@ const {user} = useAuth()
       onSuccess();
     },
     onError: (error) => {
-      let errorData = error?.response?.data;
+      let errorData = (error as any)?.response?.data;
     
       // If response.data is missing, try to extract JSON from error.message
       if (!errorData && typeof error?.message === "string") {
