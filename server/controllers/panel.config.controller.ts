@@ -335,7 +335,7 @@ export const createBrandSettings = async (req: Request, res: Response) => {
         file.cloudUrl ||
         `/uploads/${path.basename(path.dirname(file.path))}/${file.filename}`;
     } else if (parsed.logo2?.includes("base64,")) {
-      logo2Path = await processBase64Image(parsed.logo2, "logo2");
+      logo2Path = await processBase64Image(parsed.logo2, "logo");
     }
 
 

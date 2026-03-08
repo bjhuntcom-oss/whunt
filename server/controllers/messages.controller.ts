@@ -387,7 +387,7 @@ export const createMessagennn = asyncHandler(async (req: Request, res: Response)
           result = await whatsappApi.sendMediaMessage(
             conversation.contactPhone,
             mediaId,
-            messageType,
+            [messageType],
             caption || content || `[${messageType}]`
           );
           msgBody = caption || `[${messageType}]`;
