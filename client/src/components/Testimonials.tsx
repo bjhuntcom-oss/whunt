@@ -33,7 +33,7 @@ const AvatarWithFallback: React.FC<{ src: string; name: string }> = ({ src, name
 
   if (imgFailed || !src) {
     return (
-      <div className="w-9 h-9 bg-[#00ff88] flex items-center justify-center flex-shrink-0 text-black font-bold text-xs">
+      <div className="w-9 h-9 bg-[#0a0a0a] border border-[#1a1a1a] flex items-center justify-center flex-shrink-0 text-[#00ff88] font-black text-[10px] rounded-none uppercase tracking-tighter">
         {getInitials(name)}
       </div>
     );
@@ -43,7 +43,7 @@ const AvatarWithFallback: React.FC<{ src: string; name: string }> = ({ src, name
     <img
       src={src}
       alt={name}
-      className="w-9 h-9 object-cover flex-shrink-0"
+      className="w-9 h-9 object-cover flex-shrink-0 transition-all border border-[#1a1a1a] rounded-none hover:border-[#00ff88]/50"
       onError={() => setImgFailed(true)}
     />
   );
@@ -95,27 +95,27 @@ const Testimonials: React.FC = () => {
   const gridTestimonials = testimonials.slice(0, 3);
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#050505]">
+    <section className="py-14 px-4 sm:px-6 lg:px-8 bg-[#050505]">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
+            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#00ff88] mb-4">
               <Star className="w-3 h-3 fill-[#00ff88]" />
               {t("Landing.testimonialsSec.introTagline")}
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] tracking-tight leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4 uppercase">
               {t("Landing.testimonialsSec.headlinePre")}{" "}
               <span className="text-[#00ff88]">
                 {t("Landing.testimonialsSec.headlineHighlight")}
               </span>
             </h2>
-            <p className="text-base text-[#999] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm text-[#555] max-w-2xl mx-auto leading-relaxed font-medium uppercase tracking-wide">
               {t("Landing.testimonialsSec.subHeadline")}
             </p>
           </motion.div>
@@ -134,22 +134,23 @@ const Testimonials: React.FC = () => {
                 ease: [0.22, 1, 0.36, 1],
                 delay: index * 0.08,
               }}
-              className={`bg-[#0a0a0a] p-6 transition-colors cursor-pointer ${
-                currentTestimonial === index
-                  ? "border-l-2 border-l-[#00ff88]"
-                  : "hover:bg-[#0e0e0e]"
-              }`}
+              className={`bg-[#050505] p-6 transition-all cursor-pointer relative group ${currentTestimonial === index
+                ? "bg-[#080808]"
+                : "hover:bg-[#080808]"
+                }`}
               onClick={() => setCurrentTestimonial(index)}
             >
+              <div className={`h-[2px] absolute top-0 left-0 transition-all duration-500 ${currentTestimonial === index ? "w-full bg-[#00ff88]" : "w-0 bg-[#00ff88]"}`} />
+
               {/* Stars */}
               <div className="flex gap-0.5 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 text-[#00ff88] fill-[#00ff88]" />
+                  <Star key={i} className="w-3 h-3 text-[#00ff88] fill-[#00ff88]" />
                 ))}
               </div>
 
               {/* Quote */}
-              <blockquote className="text-[#999] text-sm leading-relaxed mb-5">
+              <blockquote className="text-[#888] text-xs leading-relaxed mb-6 font-medium italic">
                 "{testimonial.text}"
               </blockquote>
 
@@ -157,18 +158,18 @@ const Testimonials: React.FC = () => {
               <div className="flex items-center gap-3">
                 <AvatarWithFallback src={testimonial.image} name={testimonial.name} />
                 <div className="min-w-0">
-                  <p className="font-semibold text-[#e0e0e0] text-sm truncate">
+                  <p className="font-black text-white text-[11px] uppercase tracking-wider truncate">
                     {testimonial.name}
                   </p>
-                  <p className="text-[#555] text-xs truncate">
+                  <p className="text-[#444] text-[9px] font-bold uppercase tracking-widest truncate mt-0.5">
                     {testimonial.role} · {testimonial.company}
                   </p>
                 </div>
               </div>
 
               {/* Results tag */}
-              <div className="mt-4">
-                <span className="text-xs text-[#00ff88] font-medium bg-[#00ff88]/10 px-2.5 py-1">
+              <div className="mt-5">
+                <span className="text-[9px] font-black text-[#00ff88] uppercase tracking-[0.2em] border border-[#00ff88]/20 px-2 py-1 bg-[#00ff88]/5">
                   {testimonial.results}
                 </span>
               </div>
@@ -180,31 +181,30 @@ const Testimonials: React.FC = () => {
         <div className="flex justify-center gap-3 mb-12">
           <button
             onClick={prevTestimonial}
-            className="p-2 border border-[#1a1a1a] bg-[#0a0a0a] hover:border-[#252525] hover:bg-[#0e0e0e] transition-colors"
+            className="p-3 border border-[#1a1a1a] bg-[#050505] hover:border-[#00ff88] hover:bg-[#080808] transition-all rounded-none group"
             aria-label={navButtons.previous}
           >
-            <ArrowLeft className="w-4 h-4 text-[#555]" />
+            <ArrowLeft className="w-3.5 h-3.5 text-[#555] group-hover:text-[#00ff88]" />
           </button>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentTestimonial(index)}
-                className={`h-1 transition-all duration-300 ${
-                  index === currentTestimonial
-                    ? "bg-[#00ff88] w-6"
-                    : "bg-[#252525] w-2 hover:bg-[#333]"
-                }`}
+                className={`h-[2px] transition-all duration-500 ${index === currentTestimonial
+                  ? "bg-[#00ff88] w-8"
+                  : "bg-[#1a1a1a] w-3 hover:bg-[#333]"
+                  }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>
           <button
             onClick={nextTestimonial}
-            className="p-2 border border-[#1a1a1a] bg-[#0a0a0a] hover:border-[#252525] hover:bg-[#0e0e0e] transition-colors"
+            className="p-3 border border-[#1a1a1a] bg-[#050505] hover:border-[#00ff88] hover:bg-[#080808] transition-all rounded-none group"
             aria-label={navButtons.next}
           >
-            <ArrowRight className="w-4 h-4 text-[#555]" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#555] group-hover:text-[#00ff88]" />
           </button>
         </div>
 
@@ -219,12 +219,12 @@ const Testimonials: React.FC = () => {
           {statsGrid.map((stat, index) => (
             <div
               key={index}
-              className="text-center py-8 px-4 bg-[#0a0a0a]"
+              className="text-center py-7 px-4 bg-[#050505]"
             >
-              <div className="text-3xl font-bold text-[#e0e0e0] mb-1 tracking-tight">
+              <div className="text-3xl font-black text-white mb-1 tracking-tighter font-mono">
                 {stat.number}
               </div>
-              <div className="text-[#555] text-xs uppercase tracking-wider">{stat.label}</div>
+              <div className="text-[#333] text-[9px] uppercase tracking-[0.2em] font-black">{stat.label}</div>
             </div>
           ))}
         </motion.div>

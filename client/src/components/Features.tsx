@@ -76,27 +76,27 @@ const Features = () => {
   );
 
   return (
-    <section id="features" className="pt-14 pb-20 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
+    <section id="features" className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
+            <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-[#00ff88] mb-4">
               <Smartphone className="w-3 h-3" />
-              {t("Landing.featuresSec.introTagline")}
+              {t("Landing.featuresSec.introTagline").toUpperCase()}
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] tracking-tight leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4 uppercase">
               {t("Landing.featuresSec.headlinePre")}{" "}
               <span className="text-[#00ff88]">
                 {t("Landing.featuresSec.headlineHighlight")}
               </span>
             </h2>
-            <p className="text-base text-[#999] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[11px] text-[#555] max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-widest">
               {t("Landing.featuresSec.subHeadline")}
             </p>
           </motion.div>
@@ -115,17 +115,17 @@ const Features = () => {
                 ease: [0.22, 1, 0.36, 1],
                 delay: index * 0.06,
               }}
-              className="bg-[#0a0a0a] p-6 hover:bg-[#0e0e0e] transition-colors group"
+              className="bg-[#050505] p-5 hover:bg-[#080808] transition-colors group relative overflow-hidden"
             >
-              <div className="w-9 h-9 bg-[#0e0e0e] border border-[#1a1a1a] flex items-center justify-center mb-4 group-hover:border-[#00ff88]/30 transition-colors">
+              <div className="w-8 h-8 bg-[#0a0a0a] border border-[#1a1a1a] flex items-center justify-center mb-4 group-hover:border-[#00ff88]/50 transition-colors">
                 {React.createElement(feature.icon, {
-                  className: "w-4 h-4 text-[#00ff88]",
+                  className: "w-3.5 h-3.5 text-[#00ff88]",
                 })}
               </div>
-              <h3 className="font-semibold text-[#e0e0e0] mb-2 text-sm tracking-wide">
+              <h3 className="font-black text-white mb-2 text-[11px] uppercase tracking-widest">
                 {feature.title}
               </h3>
-              <p className="text-xs text-[#555] leading-relaxed">
+              <p className="text-[10px] text-[#444] leading-relaxed font-mono">
                 {feature.description}
               </p>
             </motion.div>
@@ -147,17 +147,17 @@ const Features = () => {
                     ease: [0.22, 1, 0.36, 1],
                     delay: index * 0.06,
                   }}
-                  className="bg-[#0a0a0a] p-6 hover:bg-[#0e0e0e] transition-colors group"
+                  className="bg-[#050505] p-5 hover:bg-[#080808] transition-colors group relative overflow-hidden"
                 >
-                  <div className="w-9 h-9 bg-[#0e0e0e] border border-[#1a1a1a] flex items-center justify-center mb-4 group-hover:border-[#00ff88]/30 transition-colors">
+                  <div className="w-8 h-8 bg-[#0a0a0a] border border-[#1a1a1a] flex items-center justify-center mb-4 group-hover:border-[#00ff88]/50 transition-colors">
                     {React.createElement(additionalIcons[index] || Globe, {
-                      className: "w-4 h-4 text-[#00ff88]",
+                      className: "w-3.5 h-3.5 text-[#00ff88]",
                     })}
                   </div>
-                  <h3 className="font-semibold text-[#e0e0e0] mb-2 text-sm tracking-wide">
+                  <h3 className="font-black text-white mb-2 text-[11px] uppercase tracking-widest">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-[#555] leading-relaxed">
+                  <p className="text-[10px] text-[#444] leading-relaxed font-mono">
                     {item.desc}
                   </p>
                 </motion.div>

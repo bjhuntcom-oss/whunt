@@ -79,68 +79,62 @@ export function ContactsToolbar({
 
   return (
     <>
-      <Card>
-        <CardContent className="p-3 sm:p-4 md:p-6">
-          <div className="flex flex-col gap-3 sm:gap-4">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#555]" />
+      <Card className="rounded-none border-[#1a1a1a] bg-[#0a0a0a]">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col gap-4">
+            <div className="relative w-full group">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#444] group-focus-within:text-[#00ff88] transition-colors" />
               <Input
-                placeholder={`${t("contacts.searchContacts")}`}
+                placeholder={t("contacts.searchContacts").toUpperCase()}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 w-full"
+                className="pl-10 w-full h-11 bg-transparent border-[#1a1a1a] focus:border-[#00ff88] text-xs font-bold uppercase tracking-widest placeholder:text-[#333] transition-all rounded-none"
               />
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs sm:text-sm"
+                    className="h-9 px-4 rounded-none border-[#1a1a1a] bg-transparent hover:border-white text-[10px] font-bold uppercase tracking-[0.2em] transition-all"
                   >
-                    <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
+                    <Filter className="w-3.5 h-3.5 mr-2" />
                     <span className="hidden sm:inline">
-                      {selectedGroup || `${t("contacts.allGroups")}`}
+                      {selectedGroup || t("contacts.allGroups")}
                     </span>
                     <span className="sm:hidden">
-                      {selectedGroup
-                        ? selectedGroup.substring(0, 8) + "..."
-                        : "Groups"}
+                      {selectedGroup ? selectedGroup.substring(0, 8) + "..." : "GROUPS"}
                     </span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="start" className="w-56">
                   <DropdownMenuItem
                     onClick={() => setSelectedGroup(null)}
-                    className={!selectedGroup ? "bg-[#0a0a0a]" : ""}
+                    className={!selectedGroup ? "bg-white/10" : ""}
                   >
                     {t("contacts.allGroups")}
                   </DropdownMenuItem>
 
                   <DropdownMenuItem
                     onClick={() => setLocation("/groups")}
-                    className="text-green-600"
+                    className="text-[#00ff88]"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    {t("groups.createButton") || "Create Group"}
+                    {t("groups.createButton") || "CREATE GROUP"}
                   </DropdownMenuItem>
                   {groupsData?.length > 0 && (
                     <>
-                      <DropdownMenuItem disabled className="py-1">
-                        <span className="text-xs text-[#555] uppercase">
-                          {t("contacts.availableGroups")}
-                        </span>
+                      <DropdownMenuItem disabled className="opacity-50 text-[9px] font-bold tracking-widest">
+                        {t("contacts.availableGroups").toUpperCase()}
                       </DropdownMenuItem>
 
                       {groupsData?.map((group) => (
                         <DropdownMenuItem
                           key={group.id}
                           onClick={() => setSelectedGroup(group.name)}
-                          className={
-                            selectedGroup === group.name ? "bg-[#0a0a0a]" : ""
-                          }
+                          className={selectedGroup === group.name ? "bg-white/10" : ""}
                         >
                           {group.name}
                         </DropdownMenuItem>
@@ -155,165 +149,158 @@ export function ContactsToolbar({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs sm:text-sm"
+                    className="h-9 px-4 rounded-none border-[#1a1a1a] bg-transparent hover:border-white text-[10px] font-bold uppercase tracking-[0.2em] transition-all"
                   >
-                    <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
+                    <Filter className="w-3.5 h-3.5 mr-2" />
                     <span className="hidden sm:inline">
-                      {selectedStatus || `${t("contacts.allStatuses")}`}
+                      {selectedStatus || t("contacts.allStatuses")}
                     </span>
-                    <span className="sm:hidden">Status</span>
+                    <span className="sm:hidden">STATUS</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuContent align="start" className="w-48">
                   <DropdownMenuItem
                     onClick={() => setSelectedStatus(null)}
-                    className={!selectedStatus ? "bg-[#0a0a0a]" : ""}
+                    className={!selectedStatus ? "bg-white/10" : ""}
                   >
                     {t("contacts.allStatuses")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setSelectedStatus("active")}
-                    className={
-                      selectedStatus === "active" ? "bg-[#0a0a0a]" : ""
-                    }
+                    className={selectedStatus === "active" ? "bg-white/10" : ""}
                   >
                     {t("contacts.active")}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setSelectedStatus("blocked")}
-                    className={
-                      selectedStatus === "blocked" ? "bg-[#0a0a0a]" : ""
-                    }
+                    className={selectedStatus === "blocked" ? "bg-white/10" : ""}
                   >
                     {t("contacts.blocked")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleExportAllContacts}
-                disabled={user?.username === "demouser"}
-                className="text-xs sm:text-sm"
-              >
-                <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                <span className="hidden sm:inline">
-                  {t("contacts.exportAllContacts")}
-                </span>
-                <span className="sm:hidden">Export</span>
-              </Button>
+              <div className="h-4 w-px bg-[#1a1a1a] mx-2 hidden md:block" />
 
-              {user?.username === "demouser" ? (
+              <div className="flex items-center gap-2 ml-auto">
                 <Button
-                  disabled={true}
                   variant="outline"
                   size="sm"
-                  className="text-xs sm:text-sm"
-                  asChild
+                  onClick={handleExportAllContacts}
+                  disabled={user?.username === "demouser"}
+                  className="h-9 px-4 rounded-none border-[#1a1a1a] bg-transparent hover:border-[#00ff88] hover:text-[#00ff88] text-[10px] font-bold uppercase tracking-[0.2em] transition-all"
                 >
-                  <span>
-                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                    <span className="hidden sm:inline">
-                      {t("contacts.importContacts")}
-                    </span>
-                    <span className="sm:hidden">Import</span>
+                  <Upload className="w-3.5 h-3.5 mr-2" />
+                  <span className="hidden lg:inline">
+                    {t("contacts.exportAllContacts")}
                   </span>
+                  <span className="lg:hidden">EXPORT</span>
                 </Button>
-              ) : (
-                <label className="cursor-pointer">
-                  <input
-                    type="file"
-                    accept=".csv,.xlsx"
-                    className="hidden"
-                    onChange={(e) => {
-                      if (e.target.files?.[0]?.name.endsWith(".csv")) {
-                        handleCSVUpload(e);
-                      } else {
-                        handleExcelUpload(e);
-                      }
-                    }}
-                  />
+
+                {user?.username === "demouser" ? (
                   <Button
+                    disabled={true}
                     variant="outline"
                     size="sm"
-                    className="text-xs sm:text-sm"
-                    asChild
+                    className="h-9 px-4 rounded-none border-[#1a1a1a] opacity-50 text-[10px] font-bold uppercase tracking-[0.2em]"
                   >
-                    <span>
-                      <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                      <span className="hidden sm:inline">
-                        {t("contacts.importContacts")}
-                      </span>
-                      <span className="sm:hidden">Import</span>
+                    <Download className="w-3.5 h-3.5 mr-2" />
+                    <span className="hidden lg:inline">
+                      {t("contacts.importContacts")}
                     </span>
+                    <span className="lg:hidden">IMPORT</span>
                   </Button>
-                </label>
-              )}
+                ) : (
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept=".csv,.xlsx"
+                      className="hidden"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]?.name.endsWith(".csv")) {
+                          handleCSVUpload(e);
+                        } else {
+                          handleExcelUpload(e);
+                        }
+                      }}
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-9 px-4 rounded-none border-[#1a1a1a] bg-transparent hover:border-white text-[10px] font-bold uppercase tracking-[0.2em] transition-all"
+                      asChild
+                    >
+                      <span>
+                        <Download className="w-3.5 h-3.5 mr-2" />
+                        <span className="hidden lg:inline">
+                          {t("contacts.importContacts")}
+                        </span>
+                        <span className="lg:hidden">IMPORT</span>
+                      </span>
+                    </Button>
+                  </label>
+                )}
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleExcelDownload}
-                className="text-xs sm:text-sm"
-              >
-                <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                <span className="hidden lg:inline">
-                  {t("contacts.downloadSampleExcel")}
-                </span>
-                <span className="lg:hidden">Sample</span>
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExcelDownload}
+                  className="h-9 px-4 rounded-none border-[#1a1a1a] bg-[#050505] hover:bg-white/5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all"
+                >
+                  <Download className="w-3.5 h-3.5 mr-2" />
+                  <span className="hidden xl:inline">
+                    {t("contacts.downloadSampleExcel")}
+                  </span>
+                  <span className="xl:hidden text-[#555]">SAMPLE</span>
+                </Button>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {selectedContactIds.length > 0 && (
-        <Card>
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <span className="text-xs sm:text-sm font-medium">
-                {selectedContactIds.length} {t("contacts.contact")}
-                {selectedContactIds.length > 1 ? "s" : ""}{" "}
-                {t("contacts.selected")}
-              </span>
-              <div className="flex gap-2">
+        <Card className="rounded-none border-[#1a1a1a] bg-[#050505] border-t-0">
+          <CardContent className="p-3 sm:p-4 animate-in slide-in-from-top-2 duration-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#00ff88] flex items-center justify-center text-black font-bold text-xs">
+                  {selectedContactIds.length}
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#999]">
+                  {t("contacts.selected").toUpperCase()}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handleExportSelectedContacts}
                   disabled={user?.username === "demouser"}
-                  className="flex-1 sm:flex-none text-xs sm:text-sm"
+                  className="h-8 px-3 rounded-none border-[#1a1a1a] bg-transparent hover:border-[#00ff88] text-[9px] font-bold uppercase tracking-widest transition-all"
                 >
-                  <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                  <span className="hidden sm:inline">
-                    {t("contacts.exportSelected")}
-                  </span>
-                  <span className="sm:hidden">Export</span>
+                  <Download className="w-3 h-3 mr-2" />
+                  EXPORT
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => handleOpenAssignGroup(selectedContactIds)}
                   disabled={user?.username === "demouser"}
-                  className="flex-1 sm:flex-none text-xs sm:text-sm"
+                  className="h-8 px-3 rounded-none border-[#1a1a1a] bg-transparent hover:border-white text-[9px] font-bold uppercase tracking-widest transition-all"
                 >
-                  <FolderPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                  <span className="hidden sm:inline">Add to Group</span>
-                  <span className="sm:hidden">Group</span>
+                  <FolderPlus className="w-3 h-3 mr-2" />
+                  ASSIGN GROUP
                 </Button>
                 <Button
                   disabled={user?.username === "demouser"}
                   variant="outline"
                   size="sm"
-                  className="flex-1 sm:flex-none text-red-600 text-xs sm:text-sm"
+                  className="h-8 px-3 rounded-none border-[#1a1a1a] hover:border-red-500 hover:text-red-500 text-[9px] font-bold uppercase tracking-widest transition-all"
                   onClick={() => setShowBulkDeleteDialog(true)}
                 >
-                  <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
-                  <span className="hidden sm:inline">
-                    {t("contacts.deleteSelected")}
-                  </span>
-                  <span className="sm:hidden">Delete</span>
+                  <Trash2 className="w-3 h-3 mr-2" />
+                  DELETE
                 </Button>
               </div>
             </div>

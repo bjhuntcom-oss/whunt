@@ -1524,6 +1524,26 @@
         }
       ]
     },
+    "signupPopup": {
+      "welcomeTitle": "Bienvenue sur {{appName}} !",
+      "redirecting": "Redirection vers la fin de votre inscription...",
+      "headline": "Démarrez votre aventure Marketing WhatsApp",
+      "subheadline": "Rejoignez des milliers d'entreprises qui se développent déjà avec notre plateforme",
+      "benefit1": "Configuration en moins de 5 minutes",
+      "benefit2": "Gratuit jusqu'à 1 000 contacts",
+      "benefit3": "Hausse moyenne du ROI de 300%",
+      "formTitle": "Commencer Gratuitement",
+      "formSubtitle": "Aucune carte de crédit requise. Lancez vos campagnes en quelques minutes.",
+      "emailLabel": "E-mail Professionnel",
+      "emailPlaceholder": "Entrez votre e-mail professionnel",
+      "submitButton": "Créer un Compte Gratuit",
+      "termsPrefix": "En vous inscrivant, vous acceptez nos",
+      "termsLink": "Conditions d'utilisation",
+      "andText": "et notre",
+      "privacyLink": "Politique de confidentialité",
+      "noSetupFees": "Pas de frais d'installation",
+      "cancelAnytime": "Annulation à tout moment"
+    },
     "ctaSec": {
       "introTagline": "Rejoignez plus de 10 000 entreprises qui se développent déjà",
       "headline": "Prêt à développer votre entreprise avec le marketing WhatsApp ?",

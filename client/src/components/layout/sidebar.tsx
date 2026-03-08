@@ -227,20 +227,20 @@ function getNavItems(role: string): NavItem[] {
 }
 
 const sidebarItemsCategories = [
-  { name: "navigation.dashboard",          icon: LayoutDashboard,       path: "/dashboard" },
-  { name: "navigation.users",              icon: Users,                 path: "/users" },
-  { name: "navigation.channels",           icon: Smartphone,            path: "/channels-management" },
-  { name: "navigation.master_campaigns",   icon: Megaphone,             path: "/campaigns" },
-  { name: "navigation.master_templates",   icon: FileText,              path: "/templates" },
-  { name: "navigation.master_contacts",    icon: Users,                 path: "/contacts-management" },
-  { name: "navigation.analytics",          icon: BarChart3,             path: "/analytics" },
-  { name: "navigation.notifications",      icon: Bell,                  path: "/notifications" },
-  { name: "navigation.subscription_plans", icon: MdOutlinePayment,      path: "/plans" },
-  { name: "navigation.master_subscriptions",icon: CheckCircle,          path: "/master-subscriptions" },
-  { name: "navigation.transactions_logs",  icon: AiOutlineTransaction,  path: "/transactions-logs" },
-  { name: "navigation.message_logs",       icon: MessageSquare,         path: "/message-logs" },
-  { name: "navigation.payment_gateway",    icon: RiSecurePaymentFill,   path: "/gateway" },
-  { name: "navigation.support_tickets",    icon: MdOutlineSupportAgent, path: "/support-tickets" },
+  { name: "navigation.dashboard", icon: LayoutDashboard, path: "/dashboard" },
+  { name: "navigation.users", icon: Users, path: "/users" },
+  { name: "navigation.channels", icon: Smartphone, path: "/channels-management" },
+  { name: "navigation.master_campaigns", icon: Megaphone, path: "/campaigns" },
+  { name: "navigation.master_templates", icon: FileText, path: "/templates" },
+  { name: "navigation.master_contacts", icon: Users, path: "/contacts-management" },
+  { name: "navigation.analytics", icon: BarChart3, path: "/analytics" },
+  { name: "navigation.notifications", icon: Bell, path: "/notifications" },
+  { name: "navigation.subscription_plans", icon: MdOutlinePayment, path: "/plans" },
+  { name: "navigation.master_subscriptions", icon: CheckCircle, path: "/master-subscriptions" },
+  { name: "navigation.transactions_logs", icon: AiOutlineTransaction, path: "/transactions-logs" },
+  { name: "navigation.message_logs", icon: MessageSquare, path: "/message-logs" },
+  { name: "navigation.payment_gateway", icon: RiSecurePaymentFill, path: "/gateway" },
+  { name: "navigation.support_tickets", icon: MdOutlineSupportAgent, path: "/support-tickets" },
 ];
 
 export default function Sidebar() {
@@ -346,7 +346,7 @@ export default function Sidebar() {
         href={path}
         onClick={toggle}
         className={cn(
-          "group flex items-center gap-2.5 px-3 py-2 rounded-md text-[11.5px] font-mono font-medium transition-all duration-150",
+          "group flex items-center gap-2.5 px-3 py-2 rounded-none text-[11.5px] font-mono font-medium transition-all duration-150",
           isActive
             ? "bg-[rgba(0,255,136,0.07)] text-[#00ff88] border border-[rgba(0,255,136,0.18)]"
             : "text-[#999] hover:text-[#e0e0e0] hover:bg-[#141414] border border-transparent"
@@ -355,7 +355,7 @@ export default function Sidebar() {
         <Icon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-[#00ff88]" : "text-[#555] group-hover:text-[#999]")} />
         <span className="flex-1 truncate">{name}</span>
         {badge && (
-          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[rgba(0,255,136,0.15)] text-[#00ff88] border border-[rgba(0,255,136,0.2)]">
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-none bg-[rgba(0,255,136,0.15)] text-[#00ff88] border border-[rgba(0,255,136,0.2)]">
             {badge}
           </span>
         )}
@@ -422,20 +422,20 @@ export default function Sidebar() {
         <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
           {isSuper
             ? sidebarItemsCategories.map((item) =>
-                renderNavLink(t(item.name), item.icon, item.path)
-              )
+              renderNavLink(t(item.name), item.icon, item.path)
+            )
             : navItems
-                .filter(canView)
-                .map((item) =>
-                  renderNavLink(t(item.labelKey), item.icon, item.href, item.badge)
-                )}
+              .filter(canView)
+              .map((item) =>
+                renderNavLink(t(item.labelKey), item.icon, item.href, item.badge)
+              )}
         </nav>
 
         {/* ── AI TOGGLE (admin only) ── */}
         {isAdmin && (
-          <div className="mx-3 mb-3 p-3 bg-[#0e0e0e] border border-[#1a1a1a] rounded-md">
+          <div className="mx-3 mb-3 p-3 bg-[#0e0e0e] border border-[#1a1a1a] rounded-none">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded bg-[rgba(0,255,136,0.07)] border border-[rgba(0,255,136,0.15)] flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-none bg-[rgba(0,255,136,0.07)] border border-[rgba(0,255,136,0.15)] flex items-center justify-center shrink-0">
                 <Bot className="w-3.5 h-3.5 text-[#00ff88]" />
               </div>
               <div className="flex-1 min-w-0">
@@ -445,7 +445,7 @@ export default function Sidebar() {
                 <div className="flex items-center gap-1.5">
                   <span
                     className={cn(
-                      "inline-block w-1.5 h-1.5 rounded-full shrink-0",
+                      "inline-block w-1.5 h-1.5 rounded-none shrink-0",
                       isAIActive ? "bg-[#00ff88] shadow-[0_0_6px_rgba(0,255,136,0.6)]" : "bg-[#333]"
                     )}
                   />
@@ -459,20 +459,20 @@ export default function Sidebar() {
                   onClick={handleToggleAI}
                   disabled={!aiSettings}
                   className={cn(
-                    "relative inline-flex h-4 w-7 items-center rounded-full transition-colors focus:outline-none",
+                    "relative inline-flex h-4 w-7 items-center rounded-none transition-colors focus:outline-none",
                     !aiSettings ? "opacity-40 cursor-not-allowed" : "cursor-pointer",
                     isAIActive ? "bg-[#00ff88]" : "bg-[#252525]"
                   )}
                 >
                   <span
                     className={cn(
-                      "inline-block h-2.5 w-2.5 transform rounded-full bg-[#0a0a0a] shadow transition-transform",
+                      "inline-block h-2.5 w-2.5 transform rounded-none bg-[#0a0a0a] shadow transition-transform",
                       isAIActive ? "translate-x-3.5" : "translate-x-0.5"
                     )}
                   />
                 </button>
                 <Link href="/settings?tab=ai_setting">
-                  <button className="p-1 rounded text-[#555] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.07)] transition-colors" title="AI Settings">
+                  <button className="p-1 rounded-none text-[#555] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.07)] transition-colors" title="AI Settings">
                     <SlidersHorizontal className="w-3 h-3" />
                   </button>
                 </Link>
@@ -490,8 +490,8 @@ export default function Sidebar() {
         <div className="border-t border-[#1a1a1a] p-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-full flex items-center gap-2.5 p-2 rounded-md text-left hover:bg-[#141414] transition-colors group">
-                <div className="w-7 h-7 rounded-full bg-[#00ff88] flex items-center justify-center shrink-0">
+              <button className="w-full flex items-center gap-2.5 p-2 rounded-none text-left hover:bg-[#141414] transition-colors group">
+                <div className="w-7 h-7 rounded-none bg-[#00ff88] flex items-center justify-center shrink-0">
                   <span className="text-[11px] font-mono font-black text-black">
                     {userInitial}
                   </span>

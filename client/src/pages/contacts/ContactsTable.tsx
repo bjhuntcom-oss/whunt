@@ -147,13 +147,13 @@ export function ContactsTable({
             action={
               !(searchQuery || selectedGroup || selectedStatus)
                 ? {
-                    label: `${t("contacts.addYourFirstContact")}`,
-                    onClick: () => setShowAddDialog(true),
-                  }
+                  label: `${t("contacts.addYourFirstContact")}`,
+                  onClick: () => setShowAddDialog(true),
+                }
                 : {
-                    label: ` ${t("contacts.clearFilters")}`,
-                    onClick: clearAllFilters,
-                  }
+                  label: ` ${t("contacts.clearFilters")}`,
+                  onClick: clearAllFilters,
+                }
             }
             className="py-8 sm:py-12"
           />
@@ -163,242 +163,158 @@ export function ContactsTable({
               <table className="w-full">
                 <thead className="bg-[#050505]">
                   <tr>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a]">
                       <input
                         type="checkbox"
-                        className="rounded border-[#252525]"
+                        className="rounded-none border-[#252525] bg-transparent"
                         checked={allSelected}
                         onChange={toggleSelectAll}
                       />
                     </th>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a]">
                       {t("contacts.contact")}
                     </th>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a]">
                       {t("contacts.phone")}
                     </th>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider hidden lg:table-cell">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a] hidden lg:table-cell">
                       {t("contacts.groups")}
                     </th>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a]">
                       {t("contacts.status")}
                     </th>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider hidden xl:table-cell">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a] hidden xl:table-cell">
                       {t("contacts.lastContact")}
                     </th>
-                    <th className="text-left px-3 lg:px-6 py-3 lg:py-4 text-xs font-medium text-[#555] uppercase tracking-wider">
+                    <th className="text-left px-3 lg:px-6 py-4 text-[10px] font-bold text-[#555] uppercase tracking-[0.2em] border-b border-[#1a1a1a]">
                       {t("contacts.actions")}
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-[#0a0a0a] divide-y divide-gray-200">
+                <tbody className="bg-[#0a0a0a] divide-y divide-[#151515]">
                   {contacts.map((contact: Contact) => (
                     <tr
                       key={contact.id}
-                      className="hover:bg-[#050505] transition-colors"
+                      className="hover:bg-[#080808] transition-all duration-300 group"
                     >
-                      <td className="px-3 lg:px-6 py-3 lg:py-4">
+                      <td className="px-3 lg:px-6 py-4">
                         <input
                           type="checkbox"
-                          className="rounded border-[#252525]"
+                          className="rounded-none border-[#252525] bg-transparent"
                           checked={selectedContactIds.includes(contact.id)}
                           onChange={() => toggleSelectOne(contact.id)}
                         />
                       </td>
-                      <td className="px-3 lg:px-6 py-3 lg:py-4">
+                      <td className="px-3 lg:px-6 py-4">
                         <div className="flex items-center">
-                          <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs lg:text-sm font-medium text-white">
+                          <div className="w-8 h-8 lg:w-9 lg:h-9 bg-[#111] border border-[#1a1a1a] rounded-none flex items-center justify-center flex-shrink-0 group-hover:border-[#00ff88] transition-colors">
+                            <span className="text-[10px] font-bold text-[#00ff88]">
                               {contact.name.charAt(0).toUpperCase()}
                             </span>
                           </div>
                           <div className="ml-2 lg:ml-4 min-w-0">
-                            <div className="text-xs lg:text-sm font-medium text-[#e0e0e0] truncate">
+                            <div className="text-xs lg:text-sm font-bold text-[#e0e0e0] truncate group-hover:text-white transition-colors">
                               {user?.username === "demouser"
                                 ? contact.name
-                                    .slice(0, -1)
-                                    .replace(/./g, "*") +
-                                  contact.name.slice(-1)
+                                  .slice(0, -1)
+                                  .replace(/./g, "*") +
+                                contact.name.slice(-1)
                                 : contact.name}
                             </div>
                             {contact.email && (
-                              <div className="text-xs text-[#555] truncate">
+                              <div className="text-[10px] text-[#555] truncate font-mono">
                                 {user?.username === "demouser"
                                   ? contact.email
-                                      .split("@")[0]
-                                      .slice(0, -2)
-                                      .replace(/./g, "*") +
-                                    contact.email.slice(
-                                      contact.email.indexOf("@") - 2
-                                    )
+                                    .split("@")[0]
+                                    .slice(0, -2)
+                                    .replace(/./g, "*") +
+                                  contact.email.slice(
+                                    contact.email.indexOf("@") - 2
+                                  )
                                   : contact.email}
                               </div>
                             )}
                           </div>
                         </div>
                       </td>
-                      <td className="px-3 lg:px-6 py-3 lg:py-4 text-xs lg:text-sm text-[#e0e0e0]">
+                      <td className="px-3 lg:px-6 py-4 text-xs lg:text-sm text-[#999] font-mono group-hover:text-[#ccc] transition-colors">
                         {user?.username === "demouser"
                           ? contact.phone.slice(0, -4).replace(/\d/g, "*") +
-                            contact.phone.slice(-4)
+                          contact.phone.slice(-4)
                           : contact.phone}
                       </td>
-                      <td className="px-3 lg:px-6 py-3 lg:py-4 hidden lg:table-cell">
+                      <td className="px-3 lg:px-6 py-4 hidden lg:table-cell">
                         <div className="flex flex-wrap gap-1">
                           {Array.isArray(contact.groups) &&
-                          contact.groups.length > 0 ? (
+                            contact.groups.length > 0 ? (
                             contact.groups.map(
                               (group: string, index: number) => (
                                 <Badge
                                   key={index}
                                   variant="secondary"
-                                  className="text-xs"
+                                  className="text-[9px] h-5"
                                 >
                                   {group}
                                 </Badge>
                               )
                             )
                           ) : (
-                            <span className="text-xs text-[#555]">
+                            <span className="text-[10px] text-[#444] uppercase font-mono tracking-wider italic">
                               {t("contacts.noGroups")}
                             </span>
                           )}
                         </div>
                       </td>
-                      <td className="px-3 lg:px-6 py-3 lg:py-4">
+                      <td className="px-3 lg:px-6 py-4">
                         <Badge
-                          variant={
-                            contact.status === "active"
-                              ? "default"
-                              : "secondary"
-                          }
-                          className={`text-xs ${
-                            contact.status === "active"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
-                          }`}
+                          variant={contact.status === "active" ? "default" : "destructive"}
+                          className="h-5 px-1.5"
                         >
                           {contact.status?.toLocaleUpperCase() || "N/A"}
                         </Badge>
                       </td>
-                      <td className="px-3 lg:px-6 py-3 lg:py-4 text-xs lg:text-sm text-[#e0e0e0] hidden xl:table-cell">
+                      <td className="px-3 lg:px-6 py-4 text-[10px] text-[#555] font-mono hidden xl:table-cell">
                         {contact.lastContact
                           ? new Date(
-                              contact.lastContact
-                            ).toLocaleDateString()
-                          : "Never"}
+                            contact.lastContact
+                          ).toLocaleDateString()
+                          : "-"}
                       </td>
-                      <td className="px-3 lg:px-6 py-3 lg:py-4">
-                        <div className="flex space-x-1">
+                      <td className="px-3 lg:px-6 py-4">
+                        <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon"
                             onClick={() => handleMessageClick(contact)}
-                            disabled={!channels || channels.length === 0 }
-                            className="h-8 w-8 p-0"
+                            disabled={!channels || channels.length === 0}
+                            className="h-8 w-8 hover:bg-[#00ff88]/10 hover:text-[#00ff88] transition-all"
                           >
-                            <MessageSquare className="w-4 h-4 text-blue-600" />
+                            <MessageSquare className="w-4 h-4" />
                           </Button>
                           <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon"
                             onClick={() => {
                               setSelectedContact(contact);
                               setShowEditDialog(true);
                             }}
-                            className="h-8 w-8 p-0 hidden lg:flex"
+                            className="h-8 w-8 hover:bg-white/10 hidden lg:flex"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
                           <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon"
                             onClick={() => handleDeleteContact(contact.id)}
                             disabled={
                               user?.username === "demouser"
                                 ? true
                                 : deleteContactMutation.isPending
                             }
-                            className="h-8 w-8 p-0 hidden lg:flex"
+                            className="h-8 w-8 hover:bg-red-500/10 text-[#555] hover:text-red-500 hidden lg:flex"
                           >
-                            <Trash2 className="w-4 h-4 text-red-600" />
+                            <Trash2 className="w-4 h-4" />
                           </Button>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                              >
-                                <MoreHorizontal className="w-4 h-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                              align="end"
-                              className="w-48"
-                            >
-                              <DropdownMenuItem
-                                onClick={() => {
-                                  setSelectedContact(contact);
-                                  setShowEditDialog(true);
-                                }}
-                              >
-                                <Edit className="h-4 w-4 mr-2" />
-                                {t("contacts.editContact.title")}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleOpenAssignGroup([contact.id])}
-                              >
-                                <FolderPlus className="h-4 w-4 mr-2" />
-                                Add to Group
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleMessageClick(contact)}
-                                disabled={
-                                  !channels || channels.length === 0
-                                }
-                              >
-                                <MessageSquare className="h-4 w-4 mr-2" />
-                                {t("contacts.sendMessage.title")}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleToggleContactStatus(
-                                    contact.id,
-                                    contact.status
-                                  )
-                                }
-                                className={
-                                  contact.status === "active"
-                                    ? "text-red-600"
-                                    : "text-green-600"
-                                }
-                                disabled={user?.username === "demouser"}
-                              >
-                                {contact.status === "active" ? (
-                                  <>
-                                    <Shield className="h-4 w-4 mr-2" />
-                                    {t("contacts.blockContact")}
-                                  </>
-                                ) : (
-                                  <>
-                                    <CheckCircle className="h-4 w-4 mr-2" />
-                                    {t("contacts.unblockContact")}
-                                  </>
-                                )}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleDeleteContact(contact.id)
-                                }
-                                className="text-red-600"
-                                disabled={user?.username === "demouser"}
-                              >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                {t("contacts.deleteContact.title")}
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
                         </div>
                       </td>
                     </tr>
@@ -408,123 +324,54 @@ export function ContactsTable({
             </div>
 
             {/* Mobile Card View */}
-            <div className="md:hidden space-y-3 p-3">
+            <div className="md:hidden space-y-3 p-3 bg-[#0a0a0a]">
               {contacts.map((contact: Contact) => (
                 <div
                   key={contact.id}
-                  className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-[#050505] border border-[#1a1a1a] rounded-none p-4 transition-all duration-300 active:border-[#00ff88]"
                 >
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center space-x-3 flex-1 min-w-0">
                       <input
                         type="checkbox"
-                        className="rounded border-[#252525] mt-1 flex-shrink-0"
+                        className="rounded-none border-[#252525] mt-1 flex-shrink-0 bg-transparent"
                         checked={selectedContactIds.includes(contact.id)}
                         onChange={() => toggleSelectOne(contact.id)}
                       />
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                        <span className="text-lg font-medium text-white">
+                      <div className="w-10 h-10 bg-[#111] border border-[#1a1a1a] rounded-none flex items-center justify-center flex-shrink-0">
+                        <span className="text-xs font-bold text-[#00ff88]">
                           {contact.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-[#e0e0e0] truncate">
+                        <div className="text-sm font-bold text-[#e0e0e0] truncate">
                           {user?.username === "demouser"
                             ? contact.name.slice(0, -1).replace(/./g, "*") +
-                              contact.name.slice(-1)
+                            contact.name.slice(-1)
                             : contact.name}
                         </div>
-                        {contact.email && (
-                          <div className="text-xs text-[#555] truncate">
-                            {user?.username === "demouser"
-                              ? contact.email
-                                  .split("@")[0]
-                                  .slice(0, -2)
-                                  .replace(/./g, "*") +
-                                contact.email.slice(
-                                  contact.email.indexOf("@") - 2
-                                )
-                              : contact.email}
-                          </div>
-                        )}
+                        <div className="text-[10px] text-[#555] font-mono truncate">
+                          {contact.phone}
+                        </div>
                       </div>
                     </div>
                     <Badge
-                      variant={
-                        contact.status === "active"
-                          ? "default"
-                          : "secondary"
-                      }
-                      className={`text-xs whitespace-nowrap ${
-                        contact.status === "active"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
+                      variant={contact.status === "active" ? "default" : "destructive"}
+                      className="h-5"
                     >
                       {contact.status?.toLocaleUpperCase() || "N/A"}
                     </Badge>
                   </div>
 
-                  <div className="space-y-2 text-sm border-t border-[#1a1a1a] pt-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#555] font-medium text-xs">
-                        Phone:
-                      </span>
-                      <span className="text-[#999] text-xs">
-                        {user?.username === "demouser"
-                          ? contact.phone.slice(0, -4).replace(/\d/g, "*") +
-                            contact.phone.slice(-4)
-                          : contact.phone}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-start">
-                      <span className="text-[#555] font-medium text-xs">
-                        Groups:
-                      </span>
-                      <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
-                        {Array.isArray(contact.groups) &&
-                        contact.groups.length > 0 ? (
-                          contact.groups.map(
-                            (group: string, index: number) => (
-                              <Badge
-                                key={index}
-                                variant="secondary"
-                                className="text-xs"
-                              >
-                                {group}
-                              </Badge>
-                            )
-                          )
-                        ) : (
-                          <span className="text-xs text-[#555]">
-                            {t("contacts.noGroups")}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[#555] font-medium text-xs">
-                        Last Contact:
-                      </span>
-                      <span className="text-[#999] text-xs">
-                        {contact.lastContact
-                          ? new Date(
-                              contact.lastContact
-                            ).toLocaleDateString()
-                          : "Never"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between gap-2 mt-4 pt-3 border-t border-[#1a1a1a]">
+                  <div className="flex justify-between gap-2 mt-4 pt-4 border-t border-[#1a1a1a]">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleMessageClick(contact)}
                       disabled={!channels || channels.length === 0}
-                      className="flex-1 text-xs"
+                      className="flex-1 h-9 bg-transparent border-[#1a1a1a] hover:border-[#00ff88] hover:text-[#00ff88] transition-all text-[10px] font-bold uppercase tracking-widest"
                     >
-                      <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
+                      <MessageSquare className="w-3.5 h-3.5 mr-2" />
                       Message
                     </Button>
                     <Button
@@ -534,58 +381,20 @@ export function ContactsTable({
                         setSelectedContact(contact);
                         setShowEditDialog(true);
                       }}
-                      className="flex-1 text-xs"
+                      className="flex-1 h-9 bg-transparent border-[#1a1a1a] hover:border-white transition-all text-[10px] font-bold uppercase tracking-widest"
                     >
-                      <Edit className="w-3.5 h-3.5 mr-1.5" />
+                      <Edit className="w-3.5 h-3.5 mr-2" />
                       Edit
                     </Button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="px-2"
-                        >
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-48">
-                        <DropdownMenuItem
-                          onClick={() =>
-                            handleToggleContactStatus(
-                              contact.id,
-                              contact.status
-                            )
-                          }
-                          className={
-                            contact.status === "active"
-                              ? "text-red-600"
-                              : "text-green-600"
-                          }
-                          disabled={user?.username === "demouser"}
-                        >
-                          {contact.status === "active" ? (
-                            <>
-                              <Shield className="h-4 w-4 mr-2" />
-                              {t("contacts.blockContact")}
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle className="h-4 w-4 mr-2" />
-                              {t("contacts.unblockContact")}
-                            </>
-                          )}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleDeleteContact(contact.id)}
-                          className="text-red-600"
-                          disabled={user?.username === "demouser"}
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          {t("contacts.deleteContact.title")}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDeleteContact(contact.id)}
+                      disabled={user?.username === "demouser"}
+                      className="w-10 h-9 p-0 bg-transparent border-[#1a1a1a] hover:border-red-500 hover:text-red-500 transition-all"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -648,11 +457,10 @@ export function ContactsTable({
                     variant={page === pageNum ? "default" : "outline"}
                     size="sm"
                     onClick={() => goToPage(pageNum)}
-                    className={`text-xs px-2 sm:px-3 min-w-[32px] ${
-                      page === pageNum
+                    className={`text-xs px-2 sm:px-3 min-w-[32px] ${page === pageNum
                         ? "bg-green-600 text-white hover:bg-green-700"
                         : ""
-                    }`}
+                      }`}
                   >
                     {pageNum}
                   </Button>

@@ -76,14 +76,14 @@ const Footer: React.FC = () => {
       {link.href.startsWith("/") ? (
         <Link
           to={link.href}
-          className="text-xs text-[#555] hover:text-[#00ff88] transition-colors block mb-2.5"
+          className="text-xs text-[#999] hover:text-[#00ff88] transition-all block mb-3 hover:translate-x-1 duration-300"
         >
           {link.name}
         </Link>
       ) : (
         <a
           href={link.href}
-          className="text-xs text-[#555] hover:text-[#00ff88] transition-colors block mb-2.5"
+          className="text-xs text-[#999] hover:text-[#00ff88] transition-all block mb-3 hover:translate-x-1 duration-300"
         >
           {link.name}
         </a>
@@ -206,7 +206,7 @@ const Footer: React.FC = () => {
       <div className="border-t border-[#1a1a1a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-[#333]">
+            <p className="text-xs text-[#666]">
               {t("Landing.footerSec.bottomBar.copyrightText", {
                 appName: brandSettings?.title ?? "",
               })}
@@ -214,19 +214,19 @@ const Footer: React.FC = () => {
             <div className="flex items-center gap-6">
               <Link
                 to="/terms"
-                className="text-xs text-[#333] hover:text-[#00ff88] transition-colors"
+                className="text-xs text-[#666] hover:text-[#00ff88] transition-colors"
               >
                 {t("Landing.footerSec.bottomBar.termsLink")}
               </Link>
               <Link
                 to="/privacy-policy"
-                className="text-xs text-[#333] hover:text-[#00ff88] transition-colors"
+                className="text-xs text-[#666] hover:text-[#00ff88] transition-colors"
               >
                 {t("Landing.footerSec.bottomBar.privacyLink")}
               </Link>
               <Link
                 to="/cookie-policy"
-                className="text-xs text-[#333] hover:text-[#00ff88] transition-colors"
+                className="text-xs text-[#666] hover:text-[#00ff88] transition-colors"
               >
                 {t("Landing.footerSec.bottomBar.cookieLink")}
               </Link>

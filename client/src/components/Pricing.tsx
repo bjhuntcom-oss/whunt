@@ -180,7 +180,7 @@ const Pricing = () => {
     });
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-px bg-[#1a1a1a] border border-[#1a1a1a] mb-8">
+      <div className="flex flex-wrap justify-center gap-px bg-[#1a1a1a] border border-[#1a1a1a] max-w-5xl mx-auto">
         {sortedPlans.map((plan) => {
           const IconComponent = iconMap[plan.icon] || Zap;
           const isPopular = plan.popular;
@@ -188,81 +188,63 @@ const Pricing = () => {
           return (
             <div
               key={plan.id}
-              className={`bg-[#0a0a0a] p-6 flex flex-col h-full relative ${isPopular ? "border-t-2 border-t-[#00ff88]" : ""
+              className={`flex-1 min-w-[260px] md:max-w-[280px] bg-[#050505] p-6 flex flex-col transition-all relative group h-full ${isPopular ? "z-10 bg-[#080808]" : ""
                 }`}
             >
+              <div className={`h-[2px] absolute top-0 left-0 transition-all duration-500 ${isPopular ? "w-full bg-[#00ff88]" : "w-0 bg-[#00ff88]"}`} />
+
               {/* Popular Badge */}
               {plan.badge && (
                 <div className="mb-4">
-                  <span className="bg-[#00ff88] text-black px-3 py-0.5 text-xs font-bold uppercase tracking-wider">
+                  <span className="bg-[#00ff88] text-black px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em]">
                     {plan.badge}
                   </span>
                 </div>
               )}
 
               {/* Icon + Plan Name */}
-              <div className="mb-5">
-                <div className="w-9 h-9 bg-[#0e0e0e] border border-[#1a1a1a] flex items-center justify-center mb-3">
-                  <IconComponent className="w-4 h-4 text-[#00ff88]" />
+              <div className="mb-6">
+                <div className="w-8 h-8 bg-[#0a0a0a] border border-[#1a1a1a] flex items-center justify-center mb-3 group-hover:border-[#333] transition-colors">
+                  <IconComponent className="w-3.5 h-3.5 text-[#00ff88]" />
                 </div>
-                <h3 className="text-lg font-bold text-[#e0e0e0] mb-1">
+                <h3 className="text-lg font-black text-white mb-1 uppercase tracking-tight">
                   {plan.name}
                 </h3>
-                <p className="text-[#555] text-xs leading-relaxed min-h-[32px]">
+                <p className="text-[#444] text-[11px] leading-relaxed font-mono">
                   {plan.description}
                 </p>
               </div>
 
               {/* Price */}
-              <div className="mb-4 pb-4 border-b border-[#1a1a1a]">
+              <div className="mb-6 pb-6 border-b border-[#1a1a1a]">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-[#e0e0e0]">
+                  <span className="text-3xl font-black text-white font-mono tracking-tighter">
                     {activeCurrencySymbol}
                     {isAnnual ? plan.annualPrice : plan.monthlyPrice}
                   </span>
-                  <span className="text-[#555] text-xs">
+                  <span className="text-[#444] text-[10px] font-bold uppercase tracking-widest">
                     /{isAnnual
                       ? t("Landing.pricingSec.pricing.year")
                       : t("Landing.pricingSec.pricing.month")}
                   </span>
                 </div>
-
-                {plan.permissions && (
-                  <div className="mt-2 space-y-0.5">
-                    <div className="text-[#555] text-xs">
-                      {t("Landing.pricingSec.pricing.upTo")}{" "}
-                      <span className="text-[#999]">{plan.permissions.contacts}</span>{" "}
-                      {t("Landing.pricingSec.pricing.contacts")}
-                    </div>
-                    <div className="text-[#555] text-xs">
-                      <span className="text-[#999]">{plan.permissions.channel}</span>{" "}
-                      {t("Landing.pricingSec.pricing.channels")}
-                    </div>
-                    {plan.permissions.automation && (
-                      <div className="text-[#555] text-xs">
-                        <span className="text-[#999]">{plan.permissions.automation}</span>{" "}
-                        {t("Landing.pricingSec.pricing.automation")}
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
 
               {/* Features */}
-              <ul className="space-y-2.5 mb-6 flex-grow">
+              <ul className="space-y-3 mb-8 flex-grow">
                 {plan.features && plan.features.length > 0 ? (
                   plan.features.map((feature, featureIndex) => (
                     <li
                       key={`${feature.name}-${featureIndex}`}
-                      className="flex items-start gap-2.5"
+                      className="flex items-start gap-3"
                     >
                       {feature.included ? (
                         <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
                       ) : (
-                        <X className="w-3.5 h-3.5 text-[#333] mt-0.5 flex-shrink-0" />
+                        <X className="w-3.5 h-3.5 text-[#222] mt-0.5 flex-shrink-0" />
                       )}
                       <span
-                        className={`text-xs leading-relaxed ${feature.included ? "text-[#999]" : "text-[#333]"
+                        className={`text-[11px] font-bold uppercase tracking-wide leading-none ${feature.included ? "text-[#888]" : "text-[#222]"
                           }`}
                       >
                         {feature.name}
@@ -271,23 +253,23 @@ const Pricing = () => {
                   ))
                 ) : (
                   <>
-                    <li className="flex items-start gap-2.5">
+                    <li className="flex items-start gap-3">
                       <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
-                      <span className="text-xs text-[#999]">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-[#888]">
                         {plan.permissions.contacts}{" "}
                         {t("Landing.pricingSec.pricing.contacts")}
                       </span>
                     </li>
-                    <li className="flex items-start gap-2.5">
+                    <li className="flex items-start gap-3">
                       <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
-                      <span className="text-xs text-[#999]">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-[#888]">
                         {plan.permissions.channel}{" "}
                         {t("Landing.pricingSec.pricing.channels")}
                       </span>
                     </li>
-                    <li className="flex items-start gap-2.5">
+                    <li className="flex items-start gap-3">
                       <Check className="w-3.5 h-3.5 text-[#00ff88] mt-0.5 flex-shrink-0" />
-                      <span className="text-xs text-[#999]">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-[#888]">
                         {plan.permissions.automation}{" "}
                         {t("Landing.pricingSec.pricing.automation")}
                       </span>
@@ -299,14 +281,14 @@ const Pricing = () => {
               {/* CTA Button */}
               <button
                 onClick={() => handleSelectPlan(plan)}
-                className={`w-full py-2.5 text-sm font-semibold transition-colors flex-shrink-0 ${isPopular
-                    ? "bg-[#00ff88] text-black hover:bg-[#00e87a]"
-                    : "bg-[#0e0e0e] border border-[#252525] text-[#e0e0e0] hover:border-[#333] hover:bg-[#111]"
+                className={`w-full py-3.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-none border ${isPopular
+                  ? "bg-[#00ff88] border-[#00ff88] text-black hover:bg-black hover:text-[#00ff88]"
+                  : "bg-transparent border-[#1a1a1a] text-[#888] hover:border-white hover:text-white"
                   }`}
               >
                 {Number.parseFloat(plan.monthlyPrice) === 0
-                  ? t("Landing.pricingSec.planCTA.freeButton")
-                  : t("Landing.pricingSec.planCTA.paidButton")}
+                  ? t("Landing.pricingSec.planCTA.freeButton").toUpperCase()
+                  : t("Landing.pricingSec.planCTA.paidButton").toUpperCase()}
               </button>
             </div>
           );
@@ -322,8 +304,8 @@ const Pricing = () => {
 
   return (
     <>
-      <section id="pricing" className="py-16 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
-        <div className="max-w-5xl mx-auto">
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
@@ -347,7 +329,7 @@ const Pricing = () => {
               </span>
               <button
                 onClick={() => setIsAnnual(!isAnnual)}
-                className={`relative w-12 h-6 transition-colors ${isAnnual ? "bg-[#00ff88]" : "bg-[#1a1a1a]"
+                className={`relative w-12 h-6 transition-colors rounded-none ${isAnnual ? "bg-[#00ff88]" : "bg-[#1a1a1a]"
                   }`}
               >
                 <div
@@ -410,7 +392,7 @@ const Pricing = () => {
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-[#00ff88] text-black px-6 py-2.5 text-sm font-semibold hover:bg-[#00e87a] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#00ff88] text-black px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#00e87a] transition-all rounded-none"
             >
               {t("Landing.pricingSec.enterprise.button")}
               <ArrowRight className="w-4 h-4" />

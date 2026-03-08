@@ -81,7 +81,7 @@ const Hero = () => {
   ];
 
   return (
-    <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-[#050505] overflow-hidden">
+    <section className="pt-16 pb-10 px-4 sm:px-6 lg:px-8 bg-[#050505] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
           {/* Eyebrow */}
@@ -91,9 +91,9 @@ const Hero = () => {
             animate="animate"
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-5">
+            <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-[#00ff88] mb-6">
               <span className="w-1.5 h-1.5 bg-[#00ff88] inline-block"></span>
-              {t("Landing.heroSec.animatedBgGreenText")}
+              {t("Landing.heroSec.animatedBgGreenText").toUpperCase()}
             </span>
           </motion.div>
 
@@ -103,12 +103,12 @@ const Hero = () => {
             initial="initial"
             animate="animate"
             transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold text-[#e0e0e0] tracking-tight leading-[0.95] mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[0.9] mb-8 uppercase"
           >
             {t("Landing.heroSec.headline")}
-            <span className="block mt-3 text-[#00ff88] min-h-[1em]">
+            <span className="block mt-4 text-[#00ff88] min-h-[1em]">
               {displayText}
-              <span className="inline-block w-[3px] h-[0.8em] bg-[#00ff88] ml-1 align-middle animate-[blink_1s_step-end_infinite]"></span>
+              <span className="inline-block w-[4px] h-[0.8em] bg-[#00ff88] ml-2 align-middle animate-[blink_1s_step-end_infinite]"></span>
             </span>
           </motion.h1>
 
@@ -118,7 +118,7 @@ const Hero = () => {
             initial="initial"
             animate="animate"
             transition={{ duration: 0.5, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lg text-[#999] max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-sm md:text-base text-[#555] max-w-xl mx-auto mb-12 leading-relaxed font-medium uppercase tracking-wider"
           >
             {t("Landing.heroSec.subHeadline")}
           </motion.p>
@@ -129,20 +129,20 @@ const Hero = () => {
             initial="initial"
             animate="animate"
             transition={{ duration: 0.5, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-14"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
           >
             <Link
               href="/contact"
-              className="bg-[#00ff88] text-black px-8 py-3.5 text-sm font-semibold hover:bg-[#00e87a] transition-colors flex items-center gap-2"
+              className="bg-[#00ff88] text-black px-12 py-4 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#00cc6a] transition-all rounded-none flex items-center gap-2 border border-[#00ff88]"
             >
-              {t("Landing.heroSec.startTrialButton")}
+              {t("Landing.heroSec.startTrialButton").toUpperCase()}
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/#features"
-              className="border border-[#252525] text-[#999] px-8 py-3.5 text-sm font-medium hover:border-[#333333] hover:text-[#e0e0e0] transition-colors"
+              className="border border-[#1a1a1a] text-[#555] px-12 py-4 text-[11px] font-black uppercase tracking-[0.2em] hover:border-white hover:text-white transition-all rounded-none"
             >
-              {t("Landing.heroSec.learnMore") !== "Landing.heroSec.learnMore" ? t("Landing.heroSec.learnMore") : "Learn more"}
+              {(t("Landing.heroSec.learnMore") !== "Landing.heroSec.learnMore" ? t("Landing.heroSec.learnMore") : "Learn more").toUpperCase()}
             </Link>
           </motion.div>
 
@@ -152,15 +152,15 @@ const Hero = () => {
             initial="initial"
             animate="animate"
             transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row items-center justify-center max-w-xl mx-auto border border-[#1a1a1a] bg-[#0a0a0a]"
+            className="flex flex-col sm:flex-row items-center justify-center max-w-3xl mx-auto border border-[#1a1a1a] bg-[#080808]"
           >
             {stats.map((stat, index) => (
-              <div key={index} className="flex items-center w-full sm:w-auto">
-                <div className="flex flex-col items-center px-8 py-5 flex-1 sm:flex-auto">
-                  <span className="text-2xl font-bold text-[#e0e0e0] tracking-tight">
+              <div key={index} className="flex items-center w-full sm:w-auto flex-1">
+                <div className="flex flex-col items-center px-8 py-6 flex-1">
+                  <span className="text-3xl font-black text-white font-mono tracking-tighter">
                     {stat.value}
                   </span>
-                  <span className="text-xs text-[#555] mt-0.5 uppercase tracking-wider">
+                  <span className="text-[9px] text-[#333] mt-1 uppercase font-black tracking-[0.3em]">
                     {stat.label}
                   </span>
                 </div>
@@ -177,17 +177,17 @@ const Hero = () => {
             initial="initial"
             animate="animate"
             transition={{ duration: 0.5, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-10"
+            className="mt-14"
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#333] mb-5">
-              {t("Landing.heroSec.trustedByText")}
+            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#222] mb-6">
+              {t("Landing.heroSec.trustedByText").toUpperCase()}
             </p>
-            <div className="flex flex-wrap justify-center items-center gap-2">
+            <div className="flex flex-wrap justify-center items-center gap-4">
               {["Shopify", "WooCommerce", "Salesforce", "HubSpot", "Zapier"].map(
                 (brand, index) => (
                   <span
                     key={index}
-                    className="px-4 py-1.5 text-xs font-medium text-[#555] bg-[#0a0a0a] border border-[#1a1a1a] tracking-wide"
+                    className="px-5 py-2 text-[10px] font-black text-[#444] bg-[#080808] border border-[#1a1a1a] tracking-[0.2em] uppercase"
                   >
                     {brand}
                   </span>

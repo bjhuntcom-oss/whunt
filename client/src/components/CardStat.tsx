@@ -22,7 +22,7 @@ interface CardStatProps {
   label: string;
   value: number | string;
   icon: React.ReactNode;
-  subtitle?: string; // Optional subtitle (jaise "Across all algorithms")
+  subtitle?: string;
   iconClassName?: string;
   valueClassName?: string;
   borderColor?: string;
@@ -33,27 +33,27 @@ export function CardStat({
   value,
   icon,
   subtitle,
-  iconClassName = "bg-green-50 text-green-600",
-  valueClassName = "text-[#e0e0e0]",
-  borderColor = "border-l-green-500",
+  iconClassName = "bg-[rgba(0,255,136,0.07)] text-[#00ff88]",
+  valueClassName = "text-white",
+  borderColor = "border-l-[#00ff88]",
 }: CardStatProps) {
   return (
     <Card
-      className={`rounded-lg border-l-4 ${borderColor} shadow-sm hover:shadow-md transition-shadow duration-200 bg-[#0a0a0a]`}
+      className={`border-l-4 ${borderColor} bg-[#0a0a0a] border-[#1a1a1a] hover:border-[#252525] transition-all duration-200`}
     >
-      <CardContent className="px-6 py-4">
+      <CardContent className="px-5 py-4">
         {/* Icon and Label Row */}
-        <div className="flex items-center gap-3 mb-1">
-          <div className={`rounded-lg p-2.5 ${iconClassName}`}>{icon}</div>
-          <h3 className="text-sm font-medium text-[#999]">{label}</h3>
+        <div className="flex items-center gap-3 mb-2">
+          <div className={`p-2.5 ${iconClassName}`}>{icon}</div>
+          <h3 className="text-[11px] font-mono uppercase tracking-wider text-[#555]">{label}</h3>
         </div>
 
         {/* Value */}
-        <div className={`text-3xl font-bold  ${valueClassName}`}>{value}</div>
+        <div className={`text-3xl font-black tracking-tight ${valueClassName}`}>{value}</div>
 
         {/* Optional Subtitle */}
         {subtitle && (
-          <p className="text-sm text-[#555] font-normal">{subtitle}</p>
+          <p className="text-[11px] font-mono text-[#444] mt-1">{subtitle}</p>
         )}
       </CardContent>
     </Card>

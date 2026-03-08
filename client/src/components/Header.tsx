@@ -125,34 +125,34 @@ const Header = () => {
   }) => (
     <div
       className={`fixed left-0 right-0 w-screen bg-[#0a0a0a] border-b border-[#1a1a1a] z-50 transition-all duration-300 ease-out max-h-[80vh] overflow-y-auto ${isVisible
-          ? "opacity-100 translate-y-0 visible"
-          : "opacity-0 -translate-y-2 invisible pointer-events-none"
+        ? "opacity-100 translate-y-0 visible"
+        : "opacity-0 -translate-y-2 invisible pointer-events-none"
         }`}
       style={{ top: isScrolled ? "64px" : "72px" }}
     >
       <div className="max-w-7xl mx-auto p-6 lg:p-8">
         <div
           className={`grid gap-4 ${items.length === 4
-              ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-              : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+            : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             }`}
         >
           {items.map((item, index) => (
             <Link
               key={`${item.title}-${index}`}
               href={item.path}
-              className="group bg-[#0e0e0e] p-4 hover:bg-[#141414] border border-[#1a1a1a] transition-all duration-200"
+              className="group bg-[#0e0e0e] p-5 hover:bg-[#111] border border-[#1a1a1a] transition-all duration-300 rounded-none h-full"
               onClick={closeMegaMenus}
             >
               <div className="relative overflow-hidden mb-3">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-28 object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-32 object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 rounded-none"
                   loading="lazy"
                 />
-                <div className="absolute bottom-2 right-2 bg-[#0a0a0a] p-1.5 border border-[#1a1a1a]">
-                  <item.icon className="w-4 h-4 text-[#00ff88]" />
+                <div className="absolute bottom-3 right-3 bg-[#0a0a0a] p-2 border border-[#1a1a1a] rounded-none">
+                  <item.icon className="w-5 h-5 text-[#00ff88]" />
                 </div>
               </div>
               <h3 className="font-semibold text-[#e0e0e0] mb-1 text-sm group-hover:text-[#00ff88] transition-colors">
@@ -169,8 +169,8 @@ const Header = () => {
           ))}
         </div>
 
-        <div className="mt-6 pt-5 border-t border-[#1a1a1a] hidden md:block">
-          <div className="bg-[#0e0e0e] p-5 border border-[#1a1a1a]">
+        <div className="mt-8 pt-6 border-t border-[#1a1a1a] hidden md:block">
+          <div className="bg-[#0e0e0e] p-6 border border-[#1a1a1a] rounded-none">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h3 className="text-sm font-semibold text-[#e0e0e0] mb-1">
@@ -184,7 +184,7 @@ const Header = () => {
               </div>
               <Link
                 href="/signup"
-                className="bg-[#00ff88] text-black px-5 py-2.5 text-sm font-semibold hover:bg-[#00e87a] transition-colors flex items-center gap-2 whitespace-nowrap"
+                className="bg-[#00ff88] text-black px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#00e87a] transition-all flex items-center gap-2 whitespace-nowrap rounded-none"
                 onClick={closeMegaMenus}
               >
                 {t("Landing.header.start")}
@@ -194,15 +194,15 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out ${isScrolled
-            ? "bg-[#050505]/95 backdrop-blur-xl border-b border-[#1a1a1a]"
-            : "bg-[#050505]"
+          ? "bg-[#050505]/95 backdrop-blur-xl border-b border-[#1a1a1a]"
+          : "bg-[#050505]"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -220,6 +220,7 @@ const Header = () => {
               ) : (
                 <span className="font-bold text-[#e0e0e0] text-xl tracking-tight">
                   Whunt
+                  <span className="w-1.5 h-1.5 bg-[#00ff88] ml-1"></span>
                 </span>
               )}
             </Link>
@@ -227,9 +228,9 @@ const Header = () => {
             <nav className="hidden lg:flex items-center gap-1">
               <Link
                 href="/"
-                className={`text-sm font-medium px-4 py-2 transition-colors ${location === "/"
-                    ? "text-[#e0e0e0] bg-[#0e0e0e]"
-                    : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
+                className={`text-[10px] font-bold uppercase tracking-widest px-4 py-2 transition-all rounded-none ${location === "/"
+                  ? "text-[#00ff88] bg-[#0e0e0e]"
+                  : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
                   }`}
               >
                 {t("Landing.header.Navlinks.0")}
@@ -241,9 +242,9 @@ const Header = () => {
                 onMouseLeave={() => setShowAboutMega(false)}
               >
                 <button
-                  className={`flex items-center text-sm font-medium px-4 py-2 transition-colors cursor-pointer bg-transparent border-none ${showAboutMega
-                      ? "text-[#e0e0e0] bg-[#0e0e0e]"
-                      : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
+                  className={`flex items-center text-[10px] font-bold uppercase tracking-widest px-4 py-2 transition-all cursor-pointer bg-transparent border-none rounded-none ${showAboutMega
+                    ? "text-[#00ff88] bg-[#0e0e0e]"
+                    : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
                     }`}
                   aria-haspopup="true"
                   aria-expanded={showAboutMega}
@@ -269,9 +270,9 @@ const Header = () => {
                 onMouseLeave={() => setShowResourcesMega(false)}
               >
                 <button
-                  className={`flex items-center text-sm font-medium px-4 py-2 transition-colors cursor-pointer bg-transparent border-none ${showResourcesMega
-                      ? "text-[#e0e0e0] bg-[#0e0e0e]"
-                      : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
+                  className={`flex items-center text-[10px] font-bold uppercase tracking-widest px-4 py-2 transition-all cursor-pointer bg-transparent border-none rounded-none ${showResourcesMega
+                    ? "text-[#00ff88] bg-[#0e0e0e]"
+                    : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
                     }`}
                   aria-haspopup="true"
                   aria-expanded={showResourcesMega}
@@ -299,13 +300,13 @@ const Header = () => {
                 <div className="flex items-center gap-2 ml-2">
                   <Link
                     href="/login"
-                    className="text-sm font-medium text-[#555] hover:text-[#e0e0e0] px-4 py-2 hover:bg-[#0e0e0e] transition-colors"
+                    className="text-[10px] font-bold uppercase tracking-widest text-[#555] hover:text-[#e0e0e0] px-4 py-2 hover:bg-[#0e0e0e] transition-all rounded-none"
                   >
                     {t("Landing.header.Navlinks.3")}
                   </Link>
                   <Link
                     href="/signup"
-                    className="bg-[#00ff88] text-black text-sm font-semibold px-5 py-2.5 hover:bg-[#00e87a] transition-colors flex items-center gap-2"
+                    className="bg-[#00ff88] text-black text-[10px] font-bold uppercase tracking-widest px-6 py-3 hover:bg-[#00e87a] transition-all flex items-center gap-2 rounded-none"
                   >
                     {t("Landing.header.getstart")}
                     <ArrowRight className="w-4 h-4" />
@@ -317,26 +318,26 @@ const Header = () => {
                 <div className="flex items-center gap-3 ml-2">
                   <Link
                     href="/dashboard"
-                    className="text-sm font-medium text-[#555] hover:text-[#e0e0e0] px-4 py-2 hover:bg-[#0e0e0e] transition-colors"
+                    className="text-[10px] font-bold uppercase tracking-widest text-[#555] hover:text-[#e0e0e0] px-4 py-2 hover:bg-[#0e0e0e] transition-all rounded-none"
                   >
                     {t("Landing.header.dash")}
                   </Link>
                   <div className="relative" ref={dropdownRef}>
                     <button
-                      className="w-9 h-9 overflow-hidden border-2 border-[#1a1a1a] hover:border-[#00ff88]/50 transition-colors"
+                      className="w-9 h-9 overflow-hidden border border-[#1a1a1a] hover:border-[#00ff88] transition-all rounded-none"
                       onClick={() => setDropdownOpen(!dropdownOpen)}
                     >
                       <img
-                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=00ff88&color=000000`}
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=00ff88&color=000000&rounded=false`}
                         alt="User Profile"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-none"
                       />
                     </button>
 
                     <div
-                      className={`absolute right-0 mt-2 w-56 bg-[#0a0a0a] border border-[#1a1a1a] z-50 overflow-hidden transition-all duration-200 origin-top-right ${dropdownOpen
-                          ? "opacity-100 scale-100 visible"
-                          : "opacity-0 scale-95 invisible pointer-events-none"
+                      className={`absolute right-0 mt-2 w-56 bg-[#0a0a0a] border border-[#1a1a1a] z-50 overflow-hidden transition-all duration-300 origin-top-right rounded-none ${dropdownOpen
+                        ? "opacity-100 scale-100 visible"
+                        : "opacity-0 scale-95 invisible pointer-events-none"
                         }`}
                     >
                       <div className="px-4 py-3 border-b border-[#1a1a1a]">
@@ -346,34 +347,34 @@ const Header = () => {
                       </div>
                       <div className="p-1.5">
                         <button
-                          className="flex items-center w-full px-3 py-2.5 text-sm text-[#555] hover:bg-[#0e0e0e] hover:text-[#e0e0e0] transition-colors"
+                          className="flex items-center w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[#555] hover:bg-[#0e0e0e] hover:text-[#e0e0e0] transition-all rounded-none"
                           onClick={() => {
                             setLocation("/settings");
                             setDropdownOpen(false);
                           }}
                         >
-                          <Settings className="w-4 h-4 mr-2.5 opacity-60" />
+                          <Settings className="w-4 h-4 mr-3 opacity-60 text-[#00ff88]" />
                           {t("Landing.header.Settings")}
                         </button>
                         <button
-                          className="flex items-center w-full px-3 py-2.5 text-sm text-[#555] hover:bg-[#0e0e0e] hover:text-[#e0e0e0] transition-colors"
+                          className="flex items-center w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[#555] hover:bg-[#0e0e0e] hover:text-[#e0e0e0] transition-all rounded-none"
                           onClick={() => {
                             setLocation("/account");
                             setDropdownOpen(false);
                           }}
                         >
-                          <User className="w-4 h-4 mr-2.5 opacity-60" />
+                          <User className="w-4 h-4 mr-3 opacity-60 text-[#00ff88]" />
                           {t("Landing.header.Account")}
                         </button>
                         <div className="my-1 border-t border-[#1a1a1a]"></div>
                         <button
-                          className="flex items-center w-full px-3 py-2.5 text-sm text-[#ff3b3b] hover:bg-[#ff3b3b]/10 transition-colors"
+                          className="flex items-center w-full px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[#ff3b3b] hover:bg-[#ff3b3b]/5 transition-all rounded-none"
                           onClick={() => {
                             logout();
                             setDropdownOpen(false);
                           }}
                         >
-                          <LogOut className="w-4 h-4 mr-2.5 opacity-70" />
+                          <LogOut className="w-4 h-4 mr-3 opacity-70" />
                           {t("Landing.header.logout")}
                         </button>
                       </div>
@@ -418,8 +419,8 @@ const Header = () => {
             <Link
               href="/"
               className={`block px-4 py-3 text-sm font-medium transition-colors ${location === "/"
-                  ? "text-[#e0e0e0] bg-[#0e0e0e]"
-                  : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
+                ? "text-[#e0e0e0] bg-[#0e0e0e]"
+                : "text-[#555] hover:text-[#e0e0e0] hover:bg-[#0e0e0e]"
                 }`}
               onClick={() => setIsMenuOpen(false)}
             >

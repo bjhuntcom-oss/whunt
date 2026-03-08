@@ -1607,6 +1607,26 @@
         }
       ]
     },
+    "signupPopup": {
+      "welcomeTitle": "Welcome to {{appName}}!",
+      "redirecting": "Redirecting you to complete your registration...",
+      "headline": "Start Your WhatsApp Marketing Journey",
+      "subheadline": "Join thousands of businesses already growing with our platform",
+      "benefit1": "Setup in under 5 minutes",
+      "benefit2": "Free for up to 1,000 contacts",
+      "benefit3": "300% average ROI increase",
+      "formTitle": "Get Started Free",
+      "formSubtitle": "No credit card required. Start sending campaigns in minutes.",
+      "emailLabel": "Work Email",
+      "emailPlaceholder": "Enter your work email",
+      "submitButton": "Create Free Account",
+      "termsPrefix": "By signing up, you agree to our",
+      "termsLink": "Terms of Service",
+      "andText": "and",
+      "privacyLink": "Privacy Policy",
+      "noSetupFees": "No setup fees",
+      "cancelAnytime": "Cancel anytime"
+    },
     "ctaSec": {
       "introTagline": "Join 10,000+ Businesses Already Growing",
       "headline": "Ready to Scale Your Business with WhatsApp Marketing?",

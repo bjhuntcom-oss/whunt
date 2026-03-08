@@ -75,27 +75,27 @@ const HowItWorks: React.FC = () => {
   };
 
   return (
-    <section id="how-it-works" className="py-16 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
+    <section id="how-it-works" className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#00ff88] mb-4">
-              <Play className="w-3 h-3" />
-              {t("Landing.howItWorksSec.introTagline")}
+            <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-[#00ff88] mb-4">
+              <Play className="w-3 h-3 fill-[#00ff88]" />
+              {t("Landing.howItWorksSec.introTagline").toUpperCase()}
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] tracking-tight leading-tight mb-4">
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4 uppercase">
               {t("Landing.howItWorksSec.headlinePre")}{" "}
               <span className="text-[#00ff88]">
                 {t("Landing.howItWorksSec.headlineHighlight")}
               </span>
             </h2>
-            <p className="text-base text-[#999] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[11px] text-[#555] max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-widest">
               {t("Landing.howItWorksSec.subHeadline")}
             </p>
           </motion.div>
@@ -114,32 +114,32 @@ const HowItWorks: React.FC = () => {
                 ease: [0.22, 1, 0.36, 1],
                 delay: index * 0.08,
               }}
-              className={`bg-[#0a0a0a] p-6 cursor-pointer transition-colors ${
-                index <= activeStep
-                  ? "border-t-2 border-t-[#00ff88]"
-                  : "hover:bg-[#0e0e0e]"
-              }`}
+              className={`bg-[#050505] p-6 cursor-pointer transition-colors relative group ${index <= activeStep
+                ? "bg-[#080808]"
+                : "hover:bg-[#080808]"
+                }`}
               onClick={() => setActiveStep(index)}
             >
-              <div className="text-5xl font-bold text-[#1a1a1a] leading-none mb-4 select-none">
+              <div className={`h-[2px] absolute top-0 left-0 transition-all duration-500 ${index <= activeStep ? "w-full bg-[#00ff88]" : "w-0 bg-[#00ff88]"}`} />
+
+              <div className="text-5xl font-black text-[#111] leading-none mb-4 select-none group-hover:text-[#151515] transition-colors font-mono">
                 {String(index + 1).padStart(2, "0")}
               </div>
               <div
-                className={`w-9 h-9 flex items-center justify-center mb-4 ${
-                  index <= activeStep
-                    ? "bg-[#00ff88]/10 border border-[#00ff88]/20"
-                    : "bg-[#0e0e0e] border border-[#1a1a1a]"
-                }`}
+                className={`w-8 h-8 flex items-center justify-center mb-4 transition-colors ${index <= activeStep
+                  ? "bg-[#00ff88]/10 border border-[#00ff88]/20"
+                  : "bg-[#0a0a0a] border border-[#1a1a1a]"
+                  }`}
               >
                 {(() => {
                   const Icon = LucideIcons[step.icon] as unknown as React.ComponentType<{ className?: string }>;
                   return Icon ? (
-                    <Icon className={`w-4 h-4 ${index <= activeStep ? "text-[#00ff88]" : "text-[#555]"}`} />
+                    <Icon className={`w-3.5 h-3.5 ${index <= activeStep ? "text-[#00ff88]" : "text-[#444]"}`} />
                   ) : null;
                 })()}
               </div>
-              <h3 className="text-sm font-semibold text-[#e0e0e0] mb-2 tracking-wide">{step.title}</h3>
-              <p className="text-xs text-[#555] leading-relaxed">{step.description}</p>
+              <h3 className="text-[11px] font-black text-white mb-2 uppercase tracking-widest">{step.title}</h3>
+              <p className="text-[10px] text-[#444] leading-relaxed font-mono">{step.description}</p>
             </motion.div>
           ))}
         </div>
@@ -151,9 +151,9 @@ const HowItWorks: React.FC = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-[#0a0a0a] p-6"
+            className="bg-[#050505] p-8"
           >
-            <div className="flex items-start gap-4 mb-5">
+            <div className="flex items-start gap-4 mb-6">
               <div className="w-10 h-10 bg-[#00ff88]/10 border border-[#00ff88]/20 flex items-center justify-center flex-shrink-0">
                 {(() => {
                   const Icon = LucideIcons[steps[activeStep].icon] as unknown as React.ComponentType<{ className?: string }>;
@@ -161,19 +161,19 @@ const HowItWorks: React.FC = () => {
                 })()}
               </div>
               <div>
-                <h3 className="text-base font-semibold text-[#e0e0e0] mb-1">
+                <h3 className="text-[13px] font-black text-white uppercase tracking-widest mb-1">
                   {steps[activeStep].title}
                 </h3>
-                <p className="text-[#555] text-xs leading-relaxed">
+                <p className="text-[#555] text-[11px] leading-relaxed font-medium uppercase tracking-wide">
                   {steps[activeStep].description}
                 </p>
               </div>
             </div>
-            <div className="space-y-2.5 mb-5">
+            <div className="space-y-3 mb-8">
               {steps[activeStep].details.map((detail, idx) => (
                 <div key={idx} className="flex items-center gap-3">
-                  <CheckCircle className="w-3.5 h-3.5 text-[#00ff88] flex-shrink-0" />
-                  <span className="text-[#999] text-xs">{detail}</span>
+                  <CheckCircle className="w-3 h-3 text-[#00ff88] flex-shrink-0" />
+                  <span className="text-[#888] text-[11px] font-medium">{detail}</span>
                 </div>
               ))}
             </div>
@@ -181,16 +181,16 @@ const HowItWorks: React.FC = () => {
               <button
                 onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
                 disabled={activeStep === 0}
-                className="px-4 py-2 border border-[#1a1a1a] text-[#999] text-xs font-medium bg-[#0e0e0e] hover:border-[#252525] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="px-5 py-2.5 border border-[#1a1a1a] text-[#444] text-[10px] font-black uppercase tracking-widest bg-[#0a0a0a] hover:border-[#333] hover:text-[#888] disabled:opacity-20 disabled:cursor-not-allowed transition-all rounded-none"
               >
-                {progressBarLabels.previous}
+                {progressBarLabels.previous.toUpperCase()}
               </button>
               <button
                 onClick={() => setActiveStep(Math.min(steps.length - 1, activeStep + 1))}
                 disabled={activeStep === steps.length - 1}
-                className="px-4 py-2 bg-[#00ff88] text-black text-xs font-semibold hover:bg-[#00e87a] disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                className="px-5 py-2.5 bg-[#00ff88] text-black text-[10px] font-black uppercase tracking-widest hover:bg-[#00cc6a] disabled:opacity-20 disabled:cursor-not-allowed transition-all flex items-center gap-2 rounded-none"
               >
-                {progressBarLabels.nextStep}
+                {progressBarLabels.nextStep.toUpperCase()}
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -202,21 +202,22 @@ const HowItWorks: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="bg-[#050505] p-3"
+            className="bg-[#080808] p-4"
           >
-            <div className="flex items-center gap-1.5 mb-3 px-2">
-              <div className="w-2 h-2 bg-[#ff3b3b]"></div>
-              <div className="w-2 h-2 bg-[#ff8c00]"></div>
-              <div className="w-2 h-2 bg-[#00ff88]"></div>
-              <span className="text-[#333] text-xs ml-2 font-medium tracking-wide uppercase">
+            <div className="flex items-center gap-1.5 mb-4 px-2">
+              <div className="w-1.5 h-1.5 bg-[#ff3b3b]"></div>
+              <div className="w-1.5 h-1.5 bg-[#ff8c00]"></div>
+              <div className="w-1.5 h-1.5 bg-[#00ff88]"></div>
+              <span className="text-[#333] text-[9px] ml-2 font-black tracking-[0.3em] uppercase">
                 {visualDemoLabel}
               </span>
             </div>
-            <div className="overflow-hidden bg-[#0a0a0a]">
+            <div className="overflow-hidden bg-[#050505] border border-[#1a1a1a] relative group">
+              <div className="absolute inset-0 bg-[#00ff88]/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
               <img
                 src={stepImages[activeStep]}
                 alt={`Step ${activeStep + 1}: ${steps[activeStep].title}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
             </div>
           </motion.div>
@@ -230,15 +231,15 @@ const HowItWorks: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="text-center bg-[#050505] border border-[#1a1a1a] p-8"
         >
-          <h3 className="text-xl font-bold text-[#e0e0e0] mb-2 tracking-tight">
+          <h3 className="text-lg font-black text-white mb-2 uppercase tracking-widest">
             {cta.readyToGetStarted}
           </h3>
-          <p className="text-[#555] text-sm mb-6 max-w-lg mx-auto">{cta.joinText}</p>
+          <p className="text-[#555] text-[11px] mb-6 max-w-lg mx-auto font-medium uppercase tracking-wide">{cta.joinText}</p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-[#00ff88] text-black px-6 py-2.5 text-sm font-semibold hover:bg-[#00e87a] transition-colors"
+            className="inline-flex items-center gap-2 bg-[#00ff88] text-black px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#00cc6a] transition-all rounded-none"
           >
-            {cta.startFreeTrial}
+            {cta.startFreeTrial.toUpperCase()}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>

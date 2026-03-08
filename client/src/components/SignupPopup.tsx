@@ -58,10 +58,10 @@ const SignupPopup: React.FC<SignupPopupProps> = ({ onClose }) => {
 
   if (isSubmitted) {
     return (
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div className="bg-[#0a0a0a] border border-[#1a1a1a] p-8 max-w-md w-full text-center">
-          <div className="w-12 h-12 bg-[#00ff88]/10 border border-[#00ff88]/20 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-6 h-6 text-[#00ff88]" />
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+        <div className="bg-[#050505] border border-[#1a1a1a] p-10 max-w-sm w-full text-center rounded-none shadow-2xl">
+          <div className="w-16 h-16 bg-[#00ff88]/5 border border-[#00ff88]/10 flex items-center justify-center mx-auto mb-6 rounded-none">
+            <CheckCircle className="w-8 h-8 text-[#00ff88]" />
           </div>
           <h3 className="text-xl font-bold text-[#e0e0e0] mb-2">
             {t("Landing.signupPopup.welcomeTitle") !== "Landing.signupPopup.welcomeTitle"
@@ -79,113 +79,77 @@ const SignupPopup: React.FC<SignupPopupProps> = ({ onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-[#0a0a0a] border border-[#1a1a1a] max-w-2xl w-full overflow-hidden">
+    <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+      <div className="bg-[#050505] border border-[#1a1a1a] max-w-2xl w-full overflow-hidden rounded-none shadow-2xl">
         <div className="relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-[#1a1a1a] transition-colors z-10"
+            className="absolute top-4 right-4 p-2 hover:bg-[#1a1a1a] transition-all z-10 rounded-none group"
           >
-            <X className="w-5 h-5 text-[#555]" />
+            <X className="w-5 h-5 text-[#555] group-hover:text-[#00ff88]" />
           </button>
 
           <div className="grid grid-cols-1 md:grid-cols-2">
             {/* Left Side - Benefits */}
-            <div className="bg-[#00ff88] p-8 text-black">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="bg-black/10 p-2">
-                  <MessageCircle className="w-5 h-5" />
+            <div className="bg-[#00ff88] p-10 text-black flex flex-col justify-center">
+              <div className="flex items-center space-x-3 mb-8">
+                <div className="bg-black/10 p-2 rounded-none">
+                  <MessageCircle className="w-6 h-6" />
                 </div>
-                <span className="text-lg font-bold">{appName || "Whunt"}</span>
+                <span className="text-xl font-black uppercase tracking-tighter">{appName || "Whunt"}</span>
               </div>
 
-              <h2 className="text-xl font-bold mb-3">
-                {t("Landing.signupPopup.headline") !== "Landing.signupPopup.headline"
-                  ? t("Landing.signupPopup.headline")
-                  : "Start Your WhatsApp Marketing Journey"}
+              <h2 className="text-3xl font-black leading-tight mb-4 tracking-tight">
+                {t("Landing.signupPopup.headline")}
               </h2>
-              <p className="text-black/70 mb-6 text-sm">
-                {t("Landing.signupPopup.subheadline") !== "Landing.signupPopup.subheadline"
-                  ? t("Landing.signupPopup.subheadline")
-                  : "Join thousands of businesses already growing with our platform"}
+              <p className="text-black/60 mb-8 text-sm font-medium">
+                {t("Landing.signupPopup.subheadline")}
               </p>
 
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-black/10 p-1">
-                    <Zap className="w-3.5 h-3.5" />
+              <div className="space-y-4">
+                {[1, 2, 3].map((num) => (
+                  <div key={num} className="flex items-center space-x-4">
+                    <div className="bg-black/10 p-1.5 rounded-none">
+                      {num === 1 ? <Zap className="w-4 h-4" /> : num === 2 ? <Users className="w-4 h-4" /> : <TrendingUp className="w-4 h-4" />}
+                    </div>
+                    <span className="text-sm font-bold tracking-tight">
+                      {t(`Landing.signupPopup.benefit${num}`)}
+                    </span>
                   </div>
-                  <span className="text-sm font-medium">
-                    {t("Landing.signupPopup.benefit1") !== "Landing.signupPopup.benefit1"
-                      ? t("Landing.signupPopup.benefit1")
-                      : "Setup in under 5 minutes"}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="bg-black/10 p-1">
-                    <Users className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-sm font-medium">
-                    {t("Landing.signupPopup.benefit2") !== "Landing.signupPopup.benefit2"
-                      ? t("Landing.signupPopup.benefit2")
-                      : "Free for up to 1,000 contacts"}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="bg-black/10 p-1">
-                    <TrendingUp className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-sm font-medium">
-                    {t("Landing.signupPopup.benefit3") !== "Landing.signupPopup.benefit3"
-                      ? t("Landing.signupPopup.benefit3")
-                      : "300% average ROI increase"}
-                  </span>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* Right Side - Form */}
-            <div className="p-8 bg-[#0a0a0a]">
-              <h3 className="text-xl font-bold text-[#e0e0e0] mb-1">
-                {t("Landing.signupPopup.formTitle") !== "Landing.signupPopup.formTitle"
-                  ? t("Landing.signupPopup.formTitle")
-                  : "Get Started Free"}
+            <div className="p-10 bg-[#050505]">
+              <h3 className="text-2xl font-black text-[#e0e0e0] mb-2 tracking-tight">
+                {t("Landing.signupPopup.formTitle")}
               </h3>
-              <p className="text-[#555] text-sm mb-6">
-                {t("Landing.signupPopup.formSubtitle") !== "Landing.signupPopup.formSubtitle"
-                  ? t("Landing.signupPopup.formSubtitle")
-                  : "No credit card required. Start sending campaigns in minutes."}
+              <p className="text-[#555] text-sm mb-8 leading-relaxed">
+                {t("Landing.signupPopup.formSubtitle")}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-[#999] mb-2 uppercase tracking-wider">
-                    {t("Landing.signupPopup.emailLabel") !== "Landing.signupPopup.emailLabel"
-                      ? t("Landing.signupPopup.emailLabel")
-                      : "Work Email"}
+                  <label className="block text-[10px] font-bold text-[#999] mb-3 uppercase tracking-widest">
+                    {t("Landing.signupPopup.emailLabel")}
                   </label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={
-                      t("Landing.signupPopup.emailPlaceholder") !== "Landing.signupPopup.emailPlaceholder"
-                        ? t("Landing.signupPopup.emailPlaceholder")
-                        : "Enter your work email"
-                    }
-                    className="w-full px-4 py-3 border border-[#1a1a1a] bg-[#050505] text-[#e0e0e0] focus:outline-none focus:ring-1 focus:ring-[#00ff88] focus:border-[#00ff88] text-sm placeholder-[#333]"
+                    placeholder={t("Landing.signupPopup.emailPlaceholder")}
+                    className="w-full px-5 py-4 border border-[#1a1a1a] bg-[#0a0a0a] text-[#e0e0e0] focus:outline-none focus:ring-1 focus:ring-[#00ff88] focus:border-[#00ff88] text-sm placeholder-[#333] rounded-none transition-all"
                     required
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#00ff88] text-black py-3 font-semibold hover:bg-[#00e87a] transition-colors flex items-center justify-center gap-2 text-sm"
+                  className="w-full bg-[#00ff88] text-black py-4 font-bold uppercase tracking-widest hover:bg-[#00e87a] transition-all flex items-center justify-center gap-3 text-xs rounded-none shadow-lg shadow-[#00ff88]/10"
                 >
-                  {t("Landing.signupPopup.submitButton") !== "Landing.signupPopup.submitButton"
-                    ? t("Landing.signupPopup.submitButton")
-                    : "Create Free Account"}
-                  <ArrowRight className="w-4 h-4" />
+                  {t("Landing.signupPopup.submitButton")}
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </form>
 

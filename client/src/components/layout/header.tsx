@@ -74,66 +74,67 @@ export default function Header({
   // UI unchanged --------------------------------------
   return (
     <>
-      <header className="bg-[#0a0a0a] shadow-sm border-b border-[#1a1a1a]  px-4 sm:px-6 py-4">
+      <header className="bg-[#050505] border-b border-[#1a1a1a] px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-3">
             <button
               onClick={toggle}
-              className="lg:hidden   p-2 bg-[#0a0a0a] rounded-lg shadow-md hover:bg-[#050505]"
+              className="lg:hidden p-2 bg-[#0a0a0a] border border-[#1a1a1a] rounded-none hover:bg-[#111] transition-colors"
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-4 h-4 text-[#999]" />
             </button>
             <div>
-              <h1 className="  text-base sm:text-lg lg:text-2xl font-bold text-[#e0e0e0]">
+              <h1 className="text-sm sm:text-base lg:text-xl font-black text-white uppercase tracking-tighter">
                 {title}
               </h1>
               {subtitle && (
-                <p className="text-sm text-[#999] hidden lg:block  ">
+                <p className="text-[10px] text-[#555] font-bold uppercase tracking-[0.2em] hidden lg:block mt-1">
                   {subtitle}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-4 ">
-            <div className=" w-fit  ">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="w-fit">
               {action && (
                 <Button
                   onClick={action.onClick}
-                  className="bg-green-600 text-white px-2 py-1 "
+                  className="bg-[#00ff88] hover:bg-[#00cc6a] text-black rounded-none h-9 px-4 text-[10px] font-bold uppercase tracking-widest shadow-none"
                 >
-                  <Plus className=" w-2 h-2 sm:w-4 sm:h-4 " />{" "}
-                  <span className="hidden lg:block  ">{action.label}</span>
+                  <Plus className="w-3.5 h-3.5 mr-2" />
+                  <span className="hidden lg:block">{action.label.toUpperCase()}</span>
+                  <span className="lg:hidden">ADD</span>
                 </Button>
               )}
             </div>
-            <div className=" w-fit hidden sm:block ">
+            <div className="w-fit hidden sm:block">
               <LanguageSelector />
             </div>
 
-            {user?.role != "superadmin" && (
-              <>
+            {user?.role !== "superadmin" && (
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => setLocation("/settings?tab=support")}
-                  className="p-2 rounded-lg hover:bg-[#0a0a0a] transition-colors"
+                  className="p-2 rounded-none hover:bg-white/5 transition-colors border border-transparent hover:border-[#1a1a1a]"
                   title="Support"
                 >
-                  <Headphones className="w-5 h-5 text-[#999]" />
+                  <Headphones className="w-4 h-4 text-[#555]" />
                 </button>
                 <button
                   onClick={() => setLocation("/settings?tab=message_logs")}
-                  className="p-2 rounded-lg hover:bg-[#0a0a0a] transition-colors"
+                  className="p-2 rounded-none hover:bg-white/5 transition-colors border border-transparent hover:border-[#1a1a1a]"
                   title="Message Logs"
                 >
-                  <ScrollText className="w-5 h-5 text-[#999]" />
+                  <ScrollText className="w-4 h-4 text-[#555]" />
                 </button>
                 <NotificationBell />
-              </>
+              </div>
             )}
 
             <div className="relative" ref={dropdownRef}>
               <button
-                className="w-10 h-10 rounded-full overflow-hidden border-2"
+                className="w-9 h-9 rounded-none overflow-hidden border border-[#1a1a1a] hover:border-[#333] transition-colors bg-[#0a0a0a]"
                 onClick={() => setDropdownOpen((x) => !x)}
               >
                 <img
@@ -141,44 +142,48 @@ export default function Header({
                     userPhotoUrl ||
                     `https://ui-avatars.com/api/?name=${encodeURIComponent(
                       username
-                    )}`
+                    )}&background=0a0a0a&color=00ff88`
                   }
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all"
                 />
               </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#0a0a0a] border rounded-lg shadow-lg z-50">
-                  <div className="px-4 py-2 border-b text-[#e0e0e0] font-semibold">
+                <div className="absolute right-0 mt-3 w-48 bg-[#0a0a0a] border border-[#1a1a1a] rounded-none shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="px-4 py-3 border-b border-[#1a1a1a] text-[10px] font-bold text-white uppercase tracking-widest bg-[#050505]">
                     {username}
                   </div>
 
-                  <button
-                    className="flex items-center w-full px-4 py-2 hover:bg-[#0a0a0a]"
-                    onClick={() => {
-                      setLocation("/settings");
-                      setDropdownOpen(false);
-                    }}
-                  >
-                    <Settings className="w-4 h-4 mr-2" /> Settings
-                  </button>
+                  <div className="p-1">
+                    <button
+                      className="flex items-center w-full px-4 py-2 text-[10px] font-bold text-[#999] uppercase tracking-widest hover:bg-white/5 hover:text-white transition-colors text-left"
+                      onClick={() => {
+                        setLocation("/settings");
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      <Settings className="w-3.5 h-3.5 mr-3 text-[#555]" /> SETTINGS
+                    </button>
 
-                  <button
-                    className="flex items-center w-full px-4 py-2 hover:bg-[#0a0a0a]"
-                    onClick={() => {
-                      setLocation("/account");
-                      setDropdownOpen(false);
-                    }}
-                  >
-                    <User className="w-4 h-4 mr-2" /> Account
-                  </button>
+                    <button
+                      className="flex items-center w-full px-4 py-2 text-[10px] font-bold text-[#999] uppercase tracking-widest hover:bg-white/5 hover:text-white transition-colors text-left"
+                      onClick={() => {
+                        setLocation("/account");
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      <User className="w-3.5 h-3.5 mr-3 text-[#555]" /> ACCOUNT
+                    </button>
 
-                  <button
-                    className="flex items-center w-full px-4 py-2 hover:bg-[#0a0a0a]"
-                    onClick={logout}
-                  >
-                    <LogOut className="w-4 h-4 mr-2" /> Logout
-                  </button>
+                    <div className="h-px bg-[#1a1a1a] my-1" />
+
+                    <button
+                      className="flex items-center w-full px-4 py-2 text-[10px] font-bold text-red-500/80 uppercase tracking-widest hover:bg-red-500/10 hover:text-red-500 transition-colors text-left"
+                      onClick={logout}
+                    >
+                      <LogOut className="w-3.5 h-3.5 mr-3" /> LOGOUT
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
