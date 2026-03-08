@@ -25,7 +25,7 @@ import bcrypt from "bcryptjs";
 import { validateRequest } from "../middlewares/validateRequest.middleware";
 import { resolveUserPermissions } from "server/utils/role-permissions";
 import country from "../config/country.json"
-import {sendOTPEmail} from "../services/email.service"
+import { sendOTPEmail } from "../services/email.service"
 import { otpVerifications } from "@shared/schema";
 
 
@@ -57,13 +57,13 @@ router.post("/login", validateRequest(loginSchema), async (req, res) => {
 
     // Check if user is active
     if ((user.status || "").trim().toLowerCase() !== "active") {
-  return res.status(403).json({ error: "Account is inactive. Please contact administrator." });
-}
+      return res.status(403).json({ error: "Account is inactive. Please contact administrator." });
+    }
 
     // Check if email is verified
-if (user.isEmailVerified === false) {
-  return res.status(403).json({ error: "Email not verified. Please verify your email first." });
-}
+    if (user.isEmailVerified === false) {
+      return res.status(403).json({ error: "Email not verified. Please verify your email first." });
+    }
 
     // Ensure password field exists
     if (!user.password) {
@@ -159,7 +159,7 @@ router.post("/logout", (req, res) => {
       return res.status(500).json({ error: "Logout failed" });
     }
 
-    res.clearCookie("connect.sid");
+    res.clearCookie("whunt.sid");
     res.json({ message: "Logout successful" });
   });
 });

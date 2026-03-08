@@ -38,6 +38,7 @@ import { securityHeaders } from "./middlewares/security.middleware";
 import { whuntLogger, WHUNT_HEADER_KEY, WHUNT_HEADER_VALUE, WHUNT_VERSION } from "@whunt/core";
 
 const app = express();
+app.set("trust proxy", 1); // Trust first proxy (Traefik/nginx)
 const httpServer = createServer(app);
 
 // ============================================
@@ -76,8 +77,8 @@ if (process.env.REDIS_URL) {
       const pubClient = new Redis(redisUrl, redisOpts);
       const subClient = new Redis(redisUrl, redisOpts);
 
-      pubClient.on("error", () => {});
-      subClient.on("error", () => {});
+      pubClient.on("error", () => { });
+      subClient.on("error", () => { });
 
       const timeout = (ms: number) => new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms));
 
@@ -145,14 +146,14 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
   // BUG-M01 FIX: Log only essential user info, not full user object
   const user = socket.data.user;
-  console.log("Socket.io client connected:", { 
-    socketId: socket.id, 
-    userId: user?.userId, 
-    role: user?.role 
+  console.log("Socket.io client connected:", {
+    socketId: socket.id,
+    userId: user?.userId,
+    role: user?.role
   });
 
   // Extract validated user info from socket.data
-  
+
   if (!user || !user.userId) {
     console.error("WebSocket connection missing validated user data");
     socket.disconnect();
@@ -176,23 +177,23 @@ io.on("connection", (socket) => {
     socket.leave(room);
   });
 
-  
-  
-       // ============================================
-    // GET CONVERSATIONS LIST (AGENT SIDE)
-    // ============================================
-    socket.on("get_conversations", async ({ channelId }) => {
-      try {
-        const list = await fetchConversationList(channelId);
-        socket.emit("conversations_list", list);
-      } catch (err) {
-        console.error("Error fetching conversations via socket:", err);
-      }
-    });
-  
-  
-  
-  
+
+
+  // ============================================
+  // GET CONVERSATIONS LIST (AGENT SIDE)
+  // ============================================
+  socket.on("get_conversations", async ({ channelId }) => {
+    try {
+      const list = await fetchConversationList(channelId);
+      socket.emit("conversations_list", list);
+    } catch (err) {
+      console.error("Error fetching conversations via socket:", err);
+    }
+  });
+
+
+
+
 
   // ==========================================
   // AGENT EVENTS
@@ -200,7 +201,7 @@ io.on("connection", (socket) => {
 
   // Agent joins a conversation
 
-   socket.on(
+  socket.on(
     "agent_join_conversation",
     async ({ conversationId, agentId, agentName }) => {
       console.log(`Agent ${agentName} joining conversation ${conversationId}`);
@@ -236,7 +237,7 @@ io.on("connection", (socket) => {
       } catch (error) {
         console.error("Error updating conversation:", error);
       }
-      
+
       console.log(`✅ Agent joined both room formats for ${conversationId}`);
     }
   );
@@ -320,41 +321,41 @@ io.on("connection", (socket) => {
     }
   });
 
-  
 
-socket.on('join_all_conversations', ({ channelId, userId }) => {
-  console.log(`✅ JOIN_ALL_CONVERSATIONS: User ${userId} joining channel ${channelId}`);
-  socket.join(`channel:${channelId}`);
-  socket.join(`user:${userId}`);
-  console.log(`✅ Successfully joined channel:${channelId}`);
-  
-  socket.emit('joined_channel', {
-    channelId,
-    userId,
-    message: 'Successfully joined channel room'
+
+  socket.on('join_all_conversations', ({ channelId, userId }) => {
+    console.log(`✅ JOIN_ALL_CONVERSATIONS: User ${userId} joining channel ${channelId}`);
+    socket.join(`channel:${channelId}`);
+    socket.join(`user:${userId}`);
+    console.log(`✅ Successfully joined channel:${channelId}`);
+
+    socket.emit('joined_channel', {
+      channelId,
+      userId,
+      message: 'Successfully joined channel room'
+    });
   });
-});
 
-socket.on('join_conversation', ({ conversationId, userId }) => {
-  console.log(`✅ JOIN_CONVERSATION: ${userId} joining ${conversationId}`);
-  socket.join(`conversation_${conversationId}`);
-  socket.join(`conversation:${conversationId}`);
-  
-  if (!conversationRooms.has(conversationId)) {
-    conversationRooms.set(conversationId, new Set());
-  }
-  conversationRooms.get(conversationId)?.add(socket.id);
-  console.log(`✅ Joined conversation_${conversationId}`);
-});
+  socket.on('join_conversation', ({ conversationId, userId }) => {
+    console.log(`✅ JOIN_CONVERSATION: ${userId} joining ${conversationId}`);
+    socket.join(`conversation_${conversationId}`);
+    socket.join(`conversation:${conversationId}`);
 
-socket.on('leave_conversation', ({ conversationId, userId }) => {
-  socket.leave(`conversation_${conversationId}`);
-  socket.leave(`conversation:${conversationId}`);
-  const room = conversationRooms.get(conversationId);
-  if (room) {
-    room.delete(socket.id);
-  }
-});
+    if (!conversationRooms.has(conversationId)) {
+      conversationRooms.set(conversationId, new Set());
+    }
+    conversationRooms.get(conversationId)?.add(socket.id);
+    console.log(`✅ Joined conversation_${conversationId}`);
+  });
+
+  socket.on('leave_conversation', ({ conversationId, userId }) => {
+    socket.leave(`conversation_${conversationId}`);
+    socket.leave(`conversation:${conversationId}`);
+    const room = conversationRooms.get(conversationId);
+    if (room) {
+      room.delete(socket.id);
+    }
+  });
   // Visitor is typing
   socket.on("user_typing", ({ conversationId }) => {
     socket.to(`conversation:${conversationId}`).emit("user_typing", {
@@ -480,10 +481,10 @@ app.use(
   express.static(path.join(process.cwd(), "public"), {
     setHeaders: (res) => {
       // Use specific allowed domains instead of wildcard for security
-      const allowedOrigins = process.env.WIDGET_ALLOWED_ORIGINS 
-        ? process.env.WIDGET_ALLOWED_ORIGINS.split(',') 
+      const allowedOrigins = process.env.WIDGET_ALLOWED_ORIGINS
+        ? process.env.WIDGET_ALLOWED_ORIGINS.split(',')
         : ['http://localhost:3000', 'http://localhost:5173']; // Default for development
-      
+
       const origin = res.req?.headers?.origin;
       if (origin && allowedOrigins.includes(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
@@ -530,9 +531,9 @@ app.use(
     saveUninitialized: false,
     name: "whunt.sid",
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.FORCE_HTTPS === "true",
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
   })
@@ -589,7 +590,7 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || "5000", 10);
-  
+
 
   const listenOptions: any = {
     port,
