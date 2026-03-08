@@ -1,5 +1,5 @@
 {
-  "name": "whunt",
+  "name": "WHUNT",
   "type": "application",
   "buildType": "dockerfile",
   "dockerfile": "Dockerfile",
@@ -13,5 +13,49 @@
     "interval": 30,
     "timeout": 3,
     "retries": 3
-  }
+  },
+  "domains": [
+    {
+      "host": "whunt.yourdomain.com",
+      "port": 443,
+      "certificate": "auto"
+    }
+  ],
+  "databases": [
+    {
+      "name": "whunt-postgres",
+      "type": "postgres",
+      "version": "14"
+    },
+    {
+      "name": "whunt-redis",
+      "type": "redis",
+      "version": "6"
+    }
+  ],
+  "volumes": [
+    {
+      "name": "uploads",
+      "path": "/app/uploads"
+    }
+  ],
+  "services": [
+    {
+      "name": "whunt-nginx",
+      "type": "nginx",
+      "config": "nginx.conf"
+    }
+  ],
+  "secrets": [
+    "DATABASE_URL",
+    "SESSION_SECRET",
+    "ENCRYPTION_KEY",
+    "WHATSAPP_ACCESS_TOKEN",
+    "WHATSAPP_PHONE_NUMBER_ID",
+    "WHATSAPP_BUSINESS_ACCOUNT_ID",
+    "WHATSAPP_WEBHOOK_VERIFY_TOKEN",
+    "STRIPE_SECRET_KEY",
+    "RAZORPAY_KEY_SECRET",
+    "SMTP_PASS"
+  ]
 }

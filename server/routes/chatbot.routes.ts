@@ -837,7 +837,7 @@ ${triggerPhrases.length > 0 ? `- If the user mentions any of these phrases, esca
       }
       
       // Whitelist only safe fields to prevent tenantId/id manipulation
-      const safeData: any = {};
+      const safeData: any = {} as any;
       if (req.body.name !== undefined) safeData.name = req.body.name;
       if (req.body.domain !== undefined) safeData.domain = req.body.domain;
       if (req.body.widgetEnabled !== undefined) safeData.widgetEnabled = req.body.widgetEnabled;
@@ -916,7 +916,7 @@ app.post('/api/sites/create_or_update', requireAuth, async (req, res) => {
       //   return res.status(403).json({ message: 'Access denied: cannot update' });
       // }
 
-      const safeData: any = {};
+      const safeData: any = {} as any;
       if (validated.name              !== undefined) safeData.name              = validated.name;
       if (validated.domain            !== undefined) safeData.domain            = validated.domain;
       if (validated.widgetEnabled     !== undefined) safeData.widgetEnabled     = validated.widgetEnabled;

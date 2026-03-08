@@ -105,7 +105,7 @@ export class DatabaseStorage implements IStorage {
     .select()
     .from(sites);
   
-  return sites;
+  return sites as Site[];
 }
 
   async getSitesByChannel(channelId: string): Promise<Site[]> {

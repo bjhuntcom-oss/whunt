@@ -87,7 +87,7 @@ export const requirePermission = (...permissions: string[]) => {
 
       const userPermissions = (getUserPermissions ?? []).reduce(
         (acc, perm) => {
-          acc[perm] = true;
+          (acc as any)[perm] = true;
           return acc;
         },
         {} as Record<string, boolean>

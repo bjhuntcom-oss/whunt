@@ -221,7 +221,7 @@ export async function addMessageToBullQueue(messageData: {
   if (!messageQueueBull) return false;
 
   try {
-    const jobOptions: any = {};
+    const jobOptions: any = {} as any;
 
     if (messageData.scheduledFor) {
       const delay = messageData.scheduledFor.getTime() - Date.now();
@@ -254,7 +254,7 @@ export async function addBulkMessagesToBullQueue(
 
   try {
     const jobs = messages.map((msg) => {
-      const jobOptions: any = {};
+      const jobOptions: any = {} as any;
       if (msg.scheduledFor) {
         const delay = msg.scheduledFor.getTime() - Date.now();
         if (delay > 0) {

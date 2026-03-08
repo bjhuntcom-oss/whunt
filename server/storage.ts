@@ -714,6 +714,7 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       status: insertConversation.status || "open",
       lastMessageAt: insertConversation.lastMessageAt || null,
       lastMessageText: insertConversation.lastMessageText || null,
+      type: insertConversation.type || null,
       updatedAt: new Date(),
       createdAt: new Date(),
     };
@@ -751,6 +752,7 @@ async searchContactsByChannel(channelId: string, query: string): Promise<Contact
       mediaId: insertMessage.mediaId || null,
       mediaMimeType: insertMessage.mediaMimeType || null,
       mediaSha256: insertMessage.mediaSha256 || null,
+      fromType: insertMessage.fromType || null,
       metadata: insertMessage.metadata || {},
       type: insertMessage.type || "text",
       status: insertMessage.status || "sent",
