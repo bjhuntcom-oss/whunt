@@ -117,7 +117,7 @@
     "papaparse": "^5.5.3",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "pdf-parse": "2.4.5",
+    "pdf-parse": "1.1.1",
     "pdfjs-dist": "3.11.174",
     "pdfkit": "^0.17.0",
     "pg": "^8.16.3",
