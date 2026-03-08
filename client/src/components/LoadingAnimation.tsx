@@ -22,7 +22,6 @@ import {
   Users,
   TrendingUp,
   CheckCircle,
-  MessageSquare,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { AppSettings } from "@/types/types";
@@ -48,14 +47,11 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
   });
 
   const steps = [
-    {
-      text: "Initializing WhatsApp Marketing Platform...",
-      icon: MessageCircle,
-    },
-    { text: "Loading Campaign Builder...", icon: Zap },
-    { text: "Setting up Analytics Dashboard...", icon: TrendingUp },
-    { text: "Preparing Contact Management...", icon: Users },
-    { text: "Ready to Scale Your Business!", icon: CheckCircle },
+    { text: "Initializing platform", icon: MessageCircle },
+    { text: "Loading campaign engine", icon: Zap },
+    { text: "Connecting analytics", icon: TrendingUp },
+    { text: "Preparing contacts", icon: Users },
+    { text: "Ready", icon: CheckCircle },
   ];
 
   React.useEffect(() => {
@@ -68,196 +64,148 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
           if (onComplete) {
             onComplete();
           }
-        }, 1000);
+        }, 600);
       }
-    }, 800);
+    }, 700);
 
     return () => clearTimeout(timer);
   }, [currentStep, steps.length, onComplete]);
 
-  // Small loading spinner for buttons
+  // Small spinner — square design
   if (size === "sm") {
+    const borderColor =
+      color === "white"
+        ? "border-white"
+        : color === "blue"
+          ? "border-blue-500"
+          : "border-[#00ff88]";
     return (
       <div
-        className={`animate-spin rounded-full border-2 border-t-transparent ${
-          size === "sm" ? "w-4 h-4" : "w-6 h-6"
-        } ${
-          color === "white"
-            ? "border-white"
-            : color === "blue"
-            ? "border-blue-600"
-            : "border-green-600"
-        }`}
-      ></div>
+        className={`w-4 h-4 border-2 border-t-transparent animate-spin ${borderColor}`}
+        style={{ borderRadius: 0 }}
+      />
     );
   }
 
-  // Medium loading spinner
+  // Medium spinner — square design
   if (size === "md") {
+    const borderColor =
+      color === "white"
+        ? "border-white"
+        : color === "blue"
+          ? "border-blue-500"
+          : "border-[#00ff88]";
     return (
       <div
-        className={`animate-spin rounded-full border-2 border-t-transparent w-6 h-6 ${
-          color === "white"
-            ? "border-white"
-            : color === "blue"
-            ? "border-blue-600"
-            : "border-green-600"
-        }`}
-      ></div>
+        className={`w-6 h-6 border-2 border-t-transparent animate-spin ${borderColor}`}
+        style={{ borderRadius: 0 }}
+      />
     );
   }
 
-  // Full page loading animation - WHITE MODE
+  // Full page — dark theme, square design
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-white via-gray-50 to-white flex items-center justify-center z-50">
-      {/* Animated Gradient Background - LIGHT VERSION */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
-      </div>
+    <div className="fixed inset-0 bg-[#050505] flex items-center justify-center z-50">
+      {/* Subtle grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      {/* Light Overlay for Better Contrast */}
-      <div className="absolute inset-0 bg-[#0a0a0a] opacity-30 backdrop-blur-sm"></div>
+      {/* Accent glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-[0.04]"
+        style={{
+          background: "radial-gradient(circle, #00ff88 0%, transparent 70%)",
+        }}
+      />
 
-      <div className="relative z-10 text-center max-w-md mx-auto px-6">
-        {/* Logo with Enhanced Animation */}
-        <div className="flex items-center justify-center space-x-3 mb-12">
+      <div className="relative z-10 text-center max-w-sm mx-auto px-6">
+        {/* Logo / Brand */}
+        <div className="flex items-center justify-center mb-10">
           {brandSettings?.logo ? (
             <img
-              src={brandSettings?.logo}
+              src={brandSettings.logo}
               alt="Logo"
-              className="h-12  object-contain animate-bounce"
+              className="h-10 object-contain"
             />
           ) : (
-            <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-4 rounded-2xl shadow-2xl ">
-              <MessageCircle
-                className="w-10 h-10 text-white"
-                strokeWidth={1.5}
-              />
-            </div>
+            <span className="font-sans font-black text-2xl tracking-[-0.03em] text-white leading-none select-none">
+              WHUNT
+            </span>
           )}
         </div>
 
-        {/* Floating Messages Animation */}
-        <div className="relative mb-12 h-40 perspective">
-          {[...Array(3)].map((_, i) => (
-            <div
-              key={i}
-              className={`absolute bg-[#0a0a0a] p-4 rounded-3xl shadow-xl border border-[#1a1a1a] backdrop-blur-md ${
-                i === 0
-                  ? "left-0 top-0 animation-delay-0"
-                  : i === 1
-                  ? "right-0 top-6 animation-delay-1000"
-                  : "left-1/2 transform -translate-x-1/2 top-12 animation-delay-2000"
-              }`}
-              style={{
-                animation: `float 3s ease-in-out infinite`,
-                animationDelay: `${i * 1}s`,
-              }}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-[#999]">
-                  {i === 0
-                    ? "Campaign sent! ✓"
-                    : i === 1
-                    ? "Message delivered ✓"
-                    : "Customer engaged ✓"}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Loading Step with Icon Animation */}
-        <div className="mb-8 bg-[#0a0a0a] bg-opacity-60 backdrop-blur-md p-6 rounded-2xl border border-[#1a1a1a] shadow-lg">
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            <div className="bg-gradient-to-r from-green-400 to-emerald-500 p-3 rounded-xl shadow-lg">
-              {React.createElement(steps[currentStep].icon, {
-                className: "w-7 h-7 text-white animate-pulse",
-                strokeWidth: 1.5,
-              })}
-            </div>
-            <span className="text-lg font-semibold text-[#e0e0e0] drop-shadow-lg">
-              {steps[currentStep].text}
+        {/* Step indicator — terminal-style */}
+        <div className="mb-8 border border-[#1a1a1a] bg-[#0a0a0a] p-5">
+          {/* Terminal header */}
+          <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#1a1a1a]">
+            <div className="w-2 h-2 bg-[#ff3b3b]" />
+            <div className="w-2 h-2 bg-[#ffb800]" />
+            <div className="w-2 h-2 bg-[#00ff88]" />
+            <span className="ml-2 font-mono text-[9px] text-[#333] uppercase tracking-widest">
+              system
             </span>
+          </div>
+
+          {/* Steps log */}
+          <div className="space-y-2 text-left">
+            {steps.map((step, i) => {
+              const isActive = i === currentStep;
+              const isDone = i < currentStep;
+              const isPending = i > currentStep;
+
+              return (
+                <div
+                  key={i}
+                  className={`flex items-center gap-3 transition-all duration-300 ${isPending ? "opacity-20" : "opacity-100"
+                    }`}
+                >
+                  <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                    {isDone ? (
+                      <CheckCircle className="w-3.5 h-3.5 text-[#00ff88]" />
+                    ) : isActive ? (
+                      <div
+                        className="w-3 h-3 border border-[#00ff88] animate-spin"
+                        style={{ borderTopColor: "transparent" }}
+                      />
+                    ) : (
+                      <div className="w-1.5 h-1.5 bg-[#333]" />
+                    )}
+                  </div>
+                  <span
+                    className={`font-mono text-[11px] tracking-wide ${isDone
+                        ? "text-[#555] line-through"
+                        : isActive
+                          ? "text-[#00ff88]"
+                          : "text-[#333]"
+                      }`}
+                  >
+                    {step.text}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Enhanced Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-3 mb-6 backdrop-blur-sm border border-[#252525] shadow-md overflow-hidden">
+        {/* Progress bar — square, sharp */}
+        <div className="w-full h-[3px] bg-[#1a1a1a] mb-6 overflow-hidden">
           <div
-            className="bg-gradient-to-r from-green-400 via-emerald-500 to-blue-500 h-3 rounded-full transition-all duration-800 ease-out shadow-lg shadow-green-400/50"
+            className="h-full bg-[#00ff88] transition-all duration-700 ease-out"
             style={{ width: `${progress}%` }}
-          ></div>
+          />
         </div>
 
-        {/* Status Text */}
-        <p className="text-base font-medium text-[#999] drop-shadow-lg">
-          Setting up your WhatsApp marketing platform...
+        {/* Status */}
+        <p className="font-mono text-[10px] text-[#444] uppercase tracking-[0.15em]">
+          Initializing · {progress}%
         </p>
-
-        {/* Loading Dots */}
-        <div className="flex justify-center space-x-2 mt-6">
-          {[...Array(3)].map((_, i) => (
-            <div
-              key={i}
-              className="w-2.5 h-2.5 bg-green-500 rounded-full animate-bounce"
-              style={{
-                animationDelay: `${i * 0.2}s`,
-              }}
-            ></div>
-          ))}
-        </div>
       </div>
-
-      <style>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
-        }
-
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        .animation-delay-0 {
-          animation-delay: 0s;
-        }
-
-        .animation-delay-1000 {
-          animation-delay: 1s;
-        }
-
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-
-        .perspective {
-          perspective: 1000px;
-        }
-      `}</style>
     </div>
   );
 };
