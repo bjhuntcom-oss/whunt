@@ -66,8 +66,8 @@ export async function cacheGet<T>(
 
   const l1Entry = l1Cache.get(key);
   if (l1Entry && l1Entry.expiresAt > now) {
-    l1Cache.delete(key);
-    l1Cache.set(key, l1Entry);
+    // PERF-05 FIX: No need to delete and re-add, Map maintains insertion order
+    // Just return the value, the entry is already fresh
     return l1Entry.value as T;
   }
 
@@ -81,7 +81,10 @@ export async function cacheGet<T>(
         enforceLRUSize();
         return parsed;
       }
-    } catch {}
+    } catch (error) {
+      // INC-14 FIX: Log Redis errors instead of silently ignoring them
+      console.error('[Cache] Redis get error:', error instanceof Error ? error.message : error);
+    }
   }
 
   const value = await fetchFn();
@@ -92,7 +95,10 @@ export async function cacheGet<T>(
   if (redis && redis.isRedisAvailable()) {
     try {
       await redis.cacheSet(key, JSON.stringify(value), ttlSeconds);
-    } catch {}
+    } catch (error) {
+      // INC-14 FIX: Log Redis errors instead of silently ignoring them
+      console.error('[Cache] Redis set error:', error instanceof Error ? error.message : error);
+    }
   }
 
   return value;

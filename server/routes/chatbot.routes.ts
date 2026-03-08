@@ -54,9 +54,19 @@ export function registerWidgetRoutes(app: Express) {
   
   // CORS middleware
   app.use('/api/widget', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    // Use specific allowed domains instead of wildcard for security
+    const allowedOrigins = process.env.WIDGET_ALLOWED_ORIGINS 
+      ? process.env.WIDGET_ALLOWED_ORIGINS.split(',') 
+      : ['http://localhost:3000', 'http://localhost:5173']; // Default for development
+    
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+    }
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Credentials', 'false');
+    
     if (req.method === 'OPTIONS') {
       return res.sendStatus(200);
     }

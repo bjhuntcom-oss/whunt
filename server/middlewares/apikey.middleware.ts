@@ -222,7 +222,7 @@ export const requirePermission = (...requiredPermissions: string[]) => {
     const userPermissions = req.apiUser.permissions;
     const effectivePermissions = userPermissions && userPermissions.length > 0
       ? userPermissions
-      : ALL_API_PERMISSIONS;
+      : []; // No permissions if none are defined - prevents escalation
 
     const hasPermission = requiredPermissions.some((p) => effectivePermissions.includes(p));
     if (!hasPermission) {

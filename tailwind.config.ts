@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+// INC-08 FIX: Convert require() to ES6 imports for ESM compatibility
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindcssTypography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class"],
@@ -124,5 +127,6 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  // INC-08 FIX: Use ES6 imports instead of require()
+  plugins: [tailwindcssAnimate, tailwindcssTypography],
 } satisfies Config;

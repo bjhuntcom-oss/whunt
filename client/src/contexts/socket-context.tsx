@@ -35,22 +35,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user?.id || socketRef.current) return;
 
     const socket = io(window.location.origin, {
-      query: {
-        userId: user.id,
-        role: user.role || "agent",
-      },
-      transports: ["websocket"],
+      withCredentials: true,
+      transports: ["websocket", "polling"],
     });
 
     socketRef.current = socket;
-
-    socket.on("connect", () => {
-      console.log("🟢 Global socket connected:", socket.id);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("🔴 Global socket disconnected");
-    });
 
     return () => {
       socket.disconnect();

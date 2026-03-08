@@ -26,6 +26,25 @@ import { triggerService } from "../services/automation-execution-service";
 
 export const getMessages = asyncHandler(async (req: Request, res: Response) => {
   const { conversationId } = req.params;
+  
+  // First, get the conversation to verify access
+  const conversation = await storage.getConversation(conversationId);
+  if (!conversation) {
+    return res.status(404).json({ error: "Conversation not found" });
+  }
+  
+  // Check if user has access to this conversation's channel
+  const user = (req.session as any)?.user || req.user;
+  if (user && user.role !== 'superadmin') {
+    const ownerId = user.role === 'team' ? user.createdBy : user.id;
+    const channels = await storage.getChannelsByUserId(ownerId);
+    const channelIds = channels.map((ch: any) => ch.id);
+    
+    if (!channelIds.includes(conversation.channelId)) {
+      return res.status(403).json({ error: "Access denied to this conversation" });
+    }
+  }
+  
   const messages = await storage.getMessages(conversationId);
 
   await storage.updateConversation(conversationId, {

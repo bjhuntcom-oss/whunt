@@ -15,17 +15,8 @@
  * ============================================================
  */
 
-// import { Pool, neonConfig } from '@neondatabase/serverless';
-// import { drizzle } from 'drizzle-orm/neon-serverless';
-// import ws from "ws";
-// import * as schema from "@shared/schema";
-// import 'dotenv/config';
-
-// neonConfig.webSocketConstructor = ws;
-
-
 import { Pool } from "pg";
-// import { WHUNT_BRAND } from "../../packages/whunt-core/index.ts";
+import { WHUNT_BRAND } from "@whunt/core";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "@shared/schema";
 import "dotenv/config";
@@ -46,7 +37,7 @@ export const pool = new Pool({
   });
 
   pool.on('error', (err) => {
-    console.error(`[${DIPLOY_BRAND}] Unexpected database pool error:`, err.message);
+    console.error(`[${WHUNT_BRAND.name}] Unexpected database pool error:`, err.message);
   });
   
   export const db = drizzle(pool, { schema });
@@ -63,14 +54,12 @@ export const pool = new Pool({
 
   if (process.env.DATABASE_READ_URL) {
     readPool.on('error', (err) => {
-      console.error(`[${DIPLOY_BRAND}] Unexpected read replica pool error:`, err.message);
+      console.error(`[${WHUNT_BRAND.name}] Unexpected read replica pool error:`, err.message);
     });
-    console.log(`[${DIPLOY_BRAND}] Read replica database configured`);
+    console.log(`[${WHUNT_BRAND.name}] Read replica database configured`);
   }
 
   export const dbRead = process.env.DATABASE_READ_URL
     ? drizzle(readPool, { schema })
     : db;
 
-// export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-// export const db = drizzle({ client: pool, schema });

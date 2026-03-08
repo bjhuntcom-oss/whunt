@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import {
   Loader2,
-  MessageSquare,
   Eye,
   EyeOff,
   Zap,
@@ -120,14 +119,11 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="flex items-center gap-2.5">
             {brandSettings?.logo ? (
-              <img src={brandSettings.logo} alt="Logo" className="h-8 object-contain" />
+              <img src={brandSettings.logo} alt={brandSettings.tagline || "Logo"} className="h-8 object-contain" />
             ) : (
-              <>
-                <div className="w-7 h-7 rounded bg-[#00ff88] flex items-center justify-center shrink-0">
-                  <MessageSquare className="w-4 h-4 text-black" />
-                </div>
-                <span className="font-sans font-black text-lg tracking-tight text-white">WHUNT</span>
-              </>
+              <span className="font-sans font-black text-xl tracking-[-0.03em] text-white leading-none select-none">
+                WHUNT
+              </span>
             )}
           </div>
 
@@ -175,14 +171,11 @@ export default function LoginPage() {
           {/* Mobile logo */}
           <div className="flex justify-center mb-8 lg:hidden">
             {brandSettings?.logo ? (
-              <img src={brandSettings.logo} alt="Logo" className="h-10 object-contain" />
+              <img src={brandSettings.logo} alt={brandSettings.tagline || "Logo"} className="h-10 object-contain" />
             ) : (
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded bg-[#00ff88] flex items-center justify-center">
-                  <MessageSquare className="w-4 h-4 text-black" />
-                </div>
-                <span className="font-sans font-black text-lg tracking-tight text-white">WHUNT</span>
-              </div>
+              <span className="font-sans font-black text-xl tracking-[-0.03em] text-white leading-none select-none">
+                WHUNT
+              </span>
             )}
           </div>
 

@@ -22,6 +22,7 @@ import axios from "axios";
 import { db } from "../db";
 import { plans, users, subscriptions, paymentProviders } from "@shared/schema";
 import { eq, and } from "drizzle-orm";
+import { decryptSecret } from "../utils/encryption";
 
 let stripeInstance: Stripe | null = null;
 let razorpayInstance: Razorpay | null = null;
@@ -44,11 +45,22 @@ async function getProviderConfig(providerKey: string) {
 export async function getStripe(): Promise<Stripe | null> {
   if (stripeInstance) return stripeInstance;
   const provider = await getProviderConfig("stripe");
-  const secretKey =
+  
+  let secretKey =
     provider?.config?.apiSecret ||
     provider?.config?.apiSecretTest ||
     process.env.STRIPE_SECRET_KEY;
+  
   if (!secretKey) return null;
+  
+  // Decrypt if encrypted
+  try {
+    secretKey = decryptSecret(secretKey);
+  } catch (error) {
+    console.error("[Payment] Failed to decrypt Stripe secret:", error);
+    return null;
+  }
+  
   stripeInstance = new Stripe(secretKey);
   return stripeInstance;
 }
@@ -56,15 +68,27 @@ export async function getStripe(): Promise<Stripe | null> {
 export async function getRazorpay(): Promise<Razorpay | null> {
   if (razorpayInstance) return razorpayInstance;
   const provider = await getProviderConfig("razorpay");
-  const keyId =
+  
+  let keyId =
     provider?.config?.apiKey ||
     provider?.config?.apiKeyTest ||
     process.env.RAZORPAY_KEY_ID;
-  const keySecret =
+  let keySecret =
     provider?.config?.apiSecret ||
     provider?.config?.apiSecretTest ||
     process.env.RAZORPAY_KEY_SECRET;
+  
   if (!keyId || !keySecret) return null;
+  
+  // Decrypt if encrypted
+  try {
+    keyId = decryptSecret(keyId);
+    keySecret = decryptSecret(keySecret);
+  } catch (error) {
+    console.error("[Payment] Failed to decrypt Razorpay secrets:", error);
+    return null;
+  }
+  
   razorpayInstance = new Razorpay({ key_id: keyId, key_secret: keySecret });
   return razorpayInstance;
 }
@@ -616,14 +640,23 @@ async function getPayPalAccessToken(): Promise<string> {
   const provider = await getProviderConfig("paypal");
   if (!provider) throw new Error("PayPal is not configured or inactive");
 
-  const clientId = provider.config?.isLive
+  let clientId = provider.config?.isLive
     ? provider.config?.apiKey
     : provider.config?.apiKeyTest || provider.config?.apiKey;
-  const clientSecret = provider.config?.isLive
+  let clientSecret = provider.config?.isLive
     ? provider.config?.apiSecret
     : provider.config?.apiSecretTest || provider.config?.apiSecret;
 
   if (!clientId || !clientSecret) throw new Error("PayPal credentials not configured");
+
+  // Decrypt if encrypted
+  try {
+    clientId = decryptSecret(clientId);
+    clientSecret = decryptSecret(clientSecret);
+  } catch (error) {
+    console.error("[Payment] Failed to decrypt PayPal secrets:", error);
+    throw new Error("PayPal credentials decryption failed");
+  }
 
   const baseUrl = await getPayPalBaseUrl();
   const auth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
@@ -886,10 +919,21 @@ export async function upgradeOrDowngradePayPal(
 async function getPaystackSecretKey(): Promise<string> {
   const provider = await getProviderConfig("paystack");
   if (!provider) throw new Error("Paystack is not configured or inactive");
-  const key = provider.config?.isLive
+  
+  let key = provider.config?.isLive
     ? provider.config?.apiSecret
     : provider.config?.apiSecretTest || provider.config?.apiSecret;
+  
   if (!key) throw new Error("Paystack secret key not configured");
+  
+  // Decrypt if encrypted
+  try {
+    key = decryptSecret(key);
+  } catch (error) {
+    console.error("[Payment] Failed to decrypt Paystack secret:", error);
+    throw new Error("Paystack secret decryption failed");
+  }
+  
   return key;
 }
 
@@ -1110,10 +1154,21 @@ export async function upgradeOrDowngradePaystack(
 async function getMercadoPagoAccessToken(): Promise<string> {
   const provider = await getProviderConfig("mercadopago");
   if (!provider) throw new Error("Mercado Pago is not configured or inactive");
-  const token = provider.config?.isLive
+  
+  let token = provider.config?.isLive
     ? provider.config?.apiSecret
     : provider.config?.apiSecretTest || provider.config?.apiSecret;
+  
   if (!token) throw new Error("Mercado Pago access token not configured");
+  
+  // Decrypt if encrypted
+  try {
+    token = decryptSecret(token);
+  } catch (error) {
+    console.error("[Payment] Failed to decrypt Mercado Pago token:", error);
+    throw new Error("Mercado Pago token decryption failed");
+  }
+  
   return token;
 }
 

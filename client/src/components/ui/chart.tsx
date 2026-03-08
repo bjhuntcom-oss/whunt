@@ -93,6 +93,13 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null
   }
 
+  // Validate CSS color values to prevent injection
+  const isValidColor = (color: string): boolean => {
+    // Allow hex colors, rgb/rgba, hsl/hsla, and named colors
+    const colorRegex = /^(#[0-9A-Fa-f]{3,8}|rgb\([\d\s,]+\)|rgba\([\d\s,]+\)|hsl\([\d\s,%]+\)|hsla\([\d\s,%]+\)|[a-z]+)$/i;
+    return colorRegex.test(color.trim());
+  };
+
   return (
     <style
       dangerouslySetInnerHTML={{
@@ -105,8 +112,10 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    // Validate color before injecting into CSS
+    return color && isValidColor(color) ? `  --color-${key}: ${color};` : null
   })
+  .filter(Boolean)
   .join("\n")}
 }
 `

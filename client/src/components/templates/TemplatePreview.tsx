@@ -32,13 +32,14 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import type { Template } from "@shared/schema";
+import DOMPurify from 'dompurify';
 
 interface TemplatePreviewProps {
   template: Template;
   onClose: () => void;
 }
 
-// WhatsApp text formatting function
+// WhatsApp text formatting function with XSS protection
 function formatWhatsAppText(text: string): React.ReactNode {
   if (!text) return null;
   
@@ -55,7 +56,13 @@ function formatWhatsAppText(text: string): React.ReactNode {
     formattedText = formattedText.replace(regex, replacement);
   });
   
-  return <span dangerouslySetInnerHTML={{ __html: formattedText }} />;
+  // Sanitize HTML to prevent XSS attacks
+  const sanitizedHTML = DOMPurify.sanitize(formattedText, {
+    ALLOWED_TAGS: ['strong', 'em', 'del', 'code'],
+    ALLOWED_ATTR: []
+  });
+  
+  return <span dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />;
 }
 
 export function TemplatePreview({ template, onClose }: TemplatePreviewProps) {

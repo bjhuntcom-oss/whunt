@@ -64,12 +64,8 @@ export const getContacts = asyncHandler(
         if (channelIds.length === 0) {
           contacts = [];
         } else {
-          let allContacts: any[] = [];
-          for (const chId of channelIds) {
-            const chContacts = await storage.getContactsByChannel(chId);
-            allContacts = allContacts.concat(chContacts);
-          }
-          contacts = allContacts;
+          // PERF-01 FIX: Use single query with IN clause instead of N+1 queries
+          contacts = await storage.getContactsByChannels(channelIds);
         }
       }
     }
@@ -446,6 +442,19 @@ export const getContact = asyncHandler(async (req: Request, res: Response) => {
   if (!contact) {
     throw new AppError(404, "Contact not found");
   }
+  
+  // Check if user has access to this contact's channel
+  const user = (req.session as any)?.user;
+  if (user && user.role !== 'superadmin') {
+    const ownerId = user.role === 'team' ? user.createdBy : user.id;
+    const channels = await storage.getChannelsByUserId(ownerId);
+    const channelIds = channels.map((ch: any) => ch.id);
+    
+    if (!channelIds.includes(contact.channelId)) {
+      return res.status(403).json({ error: "Access denied to this contact" });
+    }
+  }
+  
   res.json(contact);
 });
 

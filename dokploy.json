@@ -1,0 +1,17 @@
+{
+  "name": "whunt",
+  "type": "application",
+  "buildType": "dockerfile",
+  "dockerfile": "Dockerfile",
+  "port": 5000,
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "5000"
+  },
+  "healthCheck": {
+    "path": "/api/health",
+    "interval": 30,
+    "timeout": 3,
+    "retries": 3
+  }
+}

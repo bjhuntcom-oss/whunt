@@ -16,7 +16,7 @@
  */
 
 import { db } from "../db";
-import { eq, desc, and, gte, sql, lt } from "drizzle-orm";
+import { eq, desc, and, gte, sql, lt, inArray } from "drizzle-orm";
 import { contacts, users, type Contact, type InsertContact } from "@shared/schema";
 
 // Helper functions to replace date-fns
@@ -84,6 +84,18 @@ export class ContactRepository {
       .select()
       .from(contacts)
       .where(eq(contacts.channelId, channelId))
+      .orderBy(desc(contacts.createdAt));
+  }
+
+  async getByChannels(channelIds: string[]): Promise<Contact[]> {
+    // PERF-01 FIX: Single query with IN clause
+    if (channelIds.length === 0) {
+      return [];
+    }
+    return await db
+      .select()
+      .from(contacts)
+      .where(inArray(contacts.channelId, channelIds))
       .orderBy(desc(contacts.createdAt));
   }
 

@@ -46,17 +46,29 @@ export class ChannelHealthMonitor {
     try {
       const channels = await storage.getChannels();
       
-      for (const channel of channels) {
-        if (channel.isActive === false) {
-          console.log(`[Channel Health Monitor] Skipping inactive channel: ${channel.name} (${channel.phoneNumber})`);
-          continue;
+      // PERF-02 FIX: Parallelize health checks with Promise.allSettled
+      const healthCheckPromises = channels
+        .filter(channel => {
+          if (channel.isActive === false) {
+            console.log(`[Channel Health Monitor] Skipping inactive channel: ${channel.name} (${channel.phoneNumber})`);
+            return false;
+          }
+          if (!channel.accessToken || !channel.phoneNumberId) {
+            console.log(`[Channel Health Monitor] Skipping channel with missing credentials: ${channel.name} (${channel.phoneNumber})`);
+            return false;
+          }
+          return true;
+        })
+        .map(channel => this.checkChannelHealth(channel.id));
+      
+      const results = await Promise.allSettled(healthCheckPromises);
+      
+      // Log any failures
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          console.error(`[Channel Health Monitor] Health check failed for channel ${index}:`, result.reason);
         }
-        if (!channel.accessToken || !channel.phoneNumberId) {
-          console.log(`[Channel Health Monitor] Skipping channel with missing credentials: ${channel.name} (${channel.phoneNumber})`);
-          continue;
-        }
-        await this.checkChannelHealth(channel.id);
-      }
+      });
       
       console.log('[Channel Health Monitor] Health check completed for all channels');
     } catch (error) {

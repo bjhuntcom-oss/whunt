@@ -395,20 +395,10 @@ export default function Sidebar() {
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#1a1a1a]">
           <Link href="/dashboard" className="flex items-center gap-2.5">
             {brandSettings?.logo ? (
-              <img src={brandSettings.logo} alt="Logo" className="h-7 object-contain" />
+              <img src={brandSettings.logo} alt={brandSettings.tagline || "Logo"} className="h-7 object-contain" />
             ) : (
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded bg-[#00ff88] flex items-center justify-center shrink-0">
-                  <MessageSquare className="w-3.5 h-3.5 text-black" />
-                </div>
-                <span className="font-sans font-800 text-[15px] font-black tracking-tight text-white leading-none">
-                  WHUNT
-                </span>
-              </div>
-            )}
-            {brandSettings?.logo && (
-              <span className="font-sans font-black text-sm tracking-tight text-white">
-                {brandSettings.tagline || "WHUNT"}
+              <span className="font-sans font-black text-[17px] tracking-[-0.03em] text-white leading-none select-none">
+                WHUNT
               </span>
             )}
           </Link>

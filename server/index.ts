@@ -25,7 +25,6 @@ import { MessageStatusUpdater } from "./services/message-status-updater";
 import { MessageQueueService } from "./services/message-queue";
 import "dotenv/config";
 import { initializeUploadsDirectory } from "./middlewares/upload.middleware";
-import cors from "cors";
 import { rateLimitMiddleware } from "./middlewares/rate-limit.middleware";
 import path from "path";
 import { createServer } from "http";
@@ -33,26 +32,16 @@ import { storage } from "./storage";
 import { Server as SocketIOServer } from "socket.io";
 import { fetchConversationList } from "./controllers/conversations.controller";
 import { startScheduledCampaignCron } from "./cron/scheduledCampaigns.cron";
-// Temporary implementations for development
-const whuntLogger = {
-  error: (message: string, ...args: any[]) => console.error(message, ...args),
-  info: (message: string, ...args: any[]) => console.log(message, ...args),
-  warn: (message: string, ...args: any[]) => console.warn(message, ...args),
-  success: (message: string, ...args: any[]) => console.log(`✅ ${message}`, ...args),
-  banner: () => console.log('\n🚀 Whunt WhatsApp Marketing Platform v3.2.0\n📞 Server starting...\n'),
-};
-
-const WHUNT_HEADER_KEY = 'X-Powered-By';
-const WHUNT_HEADER_VALUE = 'Whunt v3.2.0';
-const WHUNT_VERSION = '3.2.0';
+import { randomBytes } from "crypto";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { securityHeaders } from "./middlewares/security.middleware";
+import { whuntLogger, WHUNT_HEADER_KEY, WHUNT_HEADER_VALUE, WHUNT_VERSION } from "@whunt/core";
 
 const app = express();
 const httpServer = createServer(app);
 
 // ============================================
-// INITIALIZE SOCKET.IO
+// INITIALIZE SOCKET.IO WITH SESSION SUPPORT
 // ============================================
 const socketOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
@@ -111,47 +100,80 @@ if (process.env.REDIS_URL) {
 const connectedUsers = new Map();
 const conversationRooms = new Map();
 
-// Socket.io connection handler
+// Socket.io connection handler — cookie-based session auth
+io.use((socket, next) => {
+  try {
+    // Parse the session cookie from handshake headers (httpOnly cookies are sent automatically)
+    const cookieHeader = socket.handshake.headers.cookie || "";
+    let rawSid: string | undefined;
+    for (const part of cookieHeader.split(";")) {
+      const [name, ...rest] = part.trim().split("=");
+      if (name === "whunt.sid") {
+        const value = decodeURIComponent(rest.join("="));
+        // express-session signs cookies as s:id.signature
+        rawSid = value.startsWith("s:") ? value.slice(2).split(".")[0] : value;
+        break;
+      }
+    }
+
+    if (!rawSid) {
+      return next(new Error("Not authenticated"));
+    }
+
+    const sessionStore = app.get("sessionStore") as any;
+    if (!sessionStore) {
+      return next(new Error("Server configuration error"));
+    }
+
+    sessionStore.get(rawSid, (err: any, session: any) => {
+      if (err || !session?.user) {
+        return next(new Error("Invalid or expired session"));
+      }
+      socket.data.user = {
+        userId: session.user.id,
+        role: session.user.role,
+        siteId: session.user.siteId,
+      };
+      next();
+    });
+  } catch (error) {
+    console.error("WebSocket authentication error:", error);
+    next(new Error("Authentication failed"));
+  }
+});
+
 io.on("connection", (socket) => {
-  console.log("Socket.io client connected:", socket.id);
+  // BUG-M01 FIX: Log only essential user info, not full user object
+  const user = socket.data.user;
+  console.log("Socket.io client connected:", { 
+    socketId: socket.id, 
+    userId: user?.userId, 
+    role: user?.role 
+  });
 
-  const { userId, role, siteId } = socket.handshake.query;
-
-  // Store user info
-  const user = {
-    socketId: socket.id,
-    userId: userId as string,
-    role: (role as string) || "agent",
-    siteId: siteId as string,
-  };
+  // Extract validated user info from socket.data
+  
+  if (!user || !user.userId) {
+    console.error("WebSocket connection missing validated user data");
+    socket.disconnect();
+    return;
+  }
 
   connectedUsers.set(socket.id, user);
-  console.log(`User connected: ${userId}, Role: ${role}`);
 
-  if (userId) {
-    socket.join(`user:${userId}`);
-    console.log(`✅ Auto-joined user:${userId} room for notifications`);
-  }
+  socket.join(`user:${user.userId}`);
 
-  // Join site room for broadcasts
-  if (siteId) {
-    socket.join(`site:${siteId}`);
+  if (user.siteId) {
+    socket.join(`site:${user.siteId}`);
   }
 
 
-   socket.on("test_event", (data) => {
-      console.log("🔥 TEST EVENT RECEIVED:", data);
-  
-      socket.emit("test_response", { msg: "Server se response aaya!" });
-    });
-    socket.on("join-room", ({ room }) => {
-    console.log("📥 Socket joined room:", room);
+  socket.on("join-room", ({ room }) => {
     socket.join(room);
   });
 
   socket.on("leave-room", ({ room }) => {
     socket.leave(room);
-    console.log("📤 Left:", room);
   });
 
   
@@ -161,14 +183,8 @@ io.on("connection", (socket) => {
     // ============================================
     socket.on("get_conversations", async ({ channelId }) => {
       try {
-        console.log("🔥 get_conversations called for channel:", channelId);
-  
         const list = await fetchConversationList(channelId);
-  
-        console.log("🔥 conversations_list sending:", list?.length || 0);
-  
         socket.emit("conversations_list", list);
-  
       } catch (err) {
         console.error("Error fetching conversations via socket:", err);
       }
@@ -288,9 +304,9 @@ io.on("connection", (socket) => {
 
     try {
       // Update database
-      // await storage.updateConversation(conversationId, {
-      //   status: 'closed'
-      // });
+      await storage.updateConversation(conversationId, {
+        status: 'closed'
+      });
 
       // Notify all participants
       io.to(`conversation:${conversationId}`).emit(
@@ -464,9 +480,18 @@ app.use(
   "/widget",
   express.static(path.join(process.cwd(), "public"), {
     setHeaders: (res) => {
-      res.setHeader("Access-Control-Allow-Origin", "*");
+      // Use specific allowed domains instead of wildcard for security
+      const allowedOrigins = process.env.WIDGET_ALLOWED_ORIGINS 
+        ? process.env.WIDGET_ALLOWED_ORIGINS.split(',') 
+        : ['http://localhost:3000', 'http://localhost:5173']; // Default for development
+      
+      const origin = res.req?.headers?.origin;
+      if (origin && allowedOrigins.includes(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+      }
       res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      res.setHeader("Access-Control-Allow-Credentials", "false");
     },
   })
 );
@@ -483,17 +508,24 @@ initializeUploadsDirectory();
 // console.log("ENV::", process.env.NODE_ENV ,process.env.FORCE_HTTPS);
 // Set up session management
 const PostgresSessionStore = connectPgSimple(session);
+const sessionStore = new PostgresSessionStore({
+  pool,
+  createTableIfMissing: true,
+});
+
+app.set('sessionStore', sessionStore);
+
 app.use(
   session({
-    store: new PostgresSessionStore({
-      pool,
-      createTableIfMissing: true,
-    }),
+    store: sessionStore,
     secret: process.env.SESSION_SECRET || (() => {
       if (process.env.NODE_ENV === "production") {
         throw new Error("SESSION_SECRET environment variable is required in production");
       }
-      return "dev-secret-change-in-production";
+      // SEC-M07 FIX: Generate a secure random secret for development
+      const devSecret = randomBytes(64).toString("hex");
+      console.warn('⚠️  Using auto-generated SESSION_SECRET for development. Set SESSION_SECRET env var for production.');
+      return devSecret;
     })(),
     resave: false,
     saveUninitialized: false,

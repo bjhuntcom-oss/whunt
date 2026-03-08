@@ -11,6 +11,16 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         PORT: 5000,
+        // Critical environment variables - ensure these are set in your .env file
+        // or passed through the environment when starting PM2
+        DATABASE_URL: process.env.DATABASE_URL,
+        DATABASE_READ_URL: process.env.DATABASE_READ_URL,
+        SESSION_SECRET: process.env.SESSION_SECRET,
+        REDIS_URL: process.env.REDIS_URL,
+        // Optional but recommended
+        DB_POOL_MAX: process.env.DB_POOL_MAX || "25",
+        ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS,
+        WIDGET_ALLOWED_ORIGINS: process.env.WIDGET_ALLOWED_ORIGINS,
       },
       max_memory_restart: "500M",
       restart_delay: 3000,

@@ -17,7 +17,6 @@
 
 // automation-execution.service.ts - Enhanced with Conditions Support
 import { db } from "../db";
-import { diployLogger, HTTP_STATUS, DIPLOY_BRAND } from "@whunt/core";
 import { sql } from "drizzle-orm";
 import {
   automations,

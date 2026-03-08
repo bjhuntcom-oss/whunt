@@ -43,8 +43,18 @@ export NODE_OPTIONS="--max-old-space-size=1536"
 npm run build
 
 echo ""
+echo "Creating database backup..."
+BACKUP_FILE="backup_$(date +%Y%m%d_%H%M%S).sql"
+if command -v pg_dump > /dev/null 2>&1; then
+    pg_dump "$DATABASE_URL" > "$BACKUP_FILE"
+    echo "   Database backup created: $BACKUP_FILE"
+else
+    echo "   WARNING: pg_dump not found. Skipping backup."
+fi
+
+echo ""
 echo "Syncing database schema..."
-npm run db:push --force
+npm run db:push
 echo "   Database schema synced"
 
 echo ""

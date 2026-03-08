@@ -22,7 +22,7 @@ import { useLocation } from "wouter";
 import { AppSettings, CountryCurrency, SubscriptionResponse } from "@/types/types";
 
 interface User {
-  createdBy: any;
+  createdBy: string | null; // INC-02 FIX: Changed from any to string | null
   id: string;
   username: string;
   email: string;

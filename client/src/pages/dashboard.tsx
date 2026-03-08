@@ -74,7 +74,11 @@ export default function Dashboard() {
     queryFn: async () => {
       const response = await fetch("/api/team/activity-logs");
       
-      // if (!response.ok) return null;
+      // BUG-M10 FIX: Check response.ok before parsing JSON
+      if (!response.ok) {
+        console.error('Failed to fetch activity logs:', response.status);
+        return [];
+      }
       return await response.json();
     },
   });
@@ -87,6 +91,7 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<number>(30);
 
   // Fetch campaign analytics
+  // BUG-M05 FIX: Added enabled guard to prevent query with undefined channelId
   const { data: campaignAnalytics, isLoading: campaignLoading } = useQuery({
     queryKey: ["/api/analytics/campaigns", activeChannel?.id],
     queryFn: async () => {
@@ -97,7 +102,7 @@ export default function Dashboard() {
       if (!response.ok) throw new Error("Failed to fetch campaign analytics");
       return await response.json();
     },
-    enabled: !!activeChannel,
+    enabled: !!activeChannel?.id, // Only run when activeChannel.id is defined
   });
 
   const { data: stats, isLoading: statsLoading } = useDashboardStats(

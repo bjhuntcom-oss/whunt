@@ -68,31 +68,7 @@ export const requireRole = (...roles: string[]) => {
 };
 
 // Permission-based authorization middleware
-// export const requirePermission = (...permissions: Permission[]) => {
-//   return (req: Request, res: Response, next: NextFunction) => {
-//     const user = req.user;
-
-//     if (!user) {
-//       return res.status(401).json({ error: "Authentication required" });
-//     }
-
-//     // Admins have all permissions
-//     if (user.role === "admin") {
-//       return next();
-//     }
-
-//     const hasPermission = permissions.some(permission => 
-//       user.permissions.includes(permission)
-//     );
-
-//     if (!hasPermission) {
-//       return res.status(403).json({ error: "Insufficient permissions" });
-//     }
-
-//     next();
-//   };
-// };
-
+// INC-11 FIX: Removed commented code
 export const requirePermission = (...permissions: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
@@ -101,7 +77,8 @@ export const requirePermission = (...permissions: string[]) => {
       return res.status(401).json({ error: "Authentication required" });
     }
 
-    if (user.role === "admin" || user.role === "user" || user.role === "superadmin") {
+    // Only superadmin bypasses permission checks
+    if (user.role === "superadmin") {
       return next();
     }
 

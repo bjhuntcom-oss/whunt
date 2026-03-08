@@ -43,15 +43,10 @@ router.post("/login", validateRequest(loginSchema), async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // console.log("Login request body:", req.body);
-
-    // Find user by username
     const results = await db
       .select()
       .from(users)
       .where(eq(users.username, username));
-
-      console.log(results)
 
     const user = results[0];
 
@@ -59,8 +54,6 @@ router.post("/login", validateRequest(loginSchema), async (req, res) => {
       console.warn("User not found:", username);
       return res.status(401).json({ error: "Invalid username or password" });
     }
-
-    // console.log(user.status, "checkk users statuuuuuu")
 
     // Check if user is active
     if ((user.status || "").trim().toLowerCase() !== "active") {
@@ -137,8 +130,8 @@ if (user.isEmailVerified === false) {
       user: userData,
     });
   } catch (error) {
-    console.log("Error during login:", error);
-    res.status(500).json({ error: "Login failed", message: (error as Error).message });
+    console.error("Error during login:", error);
+    res.status(500).json({ error: "Login failed" });
   }
 });
 
@@ -173,9 +166,7 @@ router.post("/logout", (req, res) => {
 
 // Get current user
 router.get("/me", async (req, res) => {
-  // console.log("Fetching current user" , req.session);
   const user = (req as any).session?.user;
-// console.log("Session user:", user);
   if (!user) {
     return res.status(401).json({ error: "Not authenticated" });
   }
@@ -232,9 +223,10 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
     const userId = existingUser[0].id;
     const userName = existingUser[0].firstName; // Use DB value
 
-    // Rate limiting: max 3 OTP per 5 min
-    const recentOTPs = await db
-      .select()
+    // Rate limiting: atomic check to prevent race condition
+    // Use a subquery to check and count in a single operation
+    const [otpCount] = await db
+      .select({ count: sql`count(*)` })
       .from(otpVerifications)
       .where(
         and(
@@ -243,7 +235,7 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
         )
       );
 
-    if (recentOTPs.length >= 3) {
+    if (Number(otpCount?.count) >= 3) {
       return res.status(429).json({
         error: "Too many requests. Try again in 5 minutes.",
       });
@@ -264,7 +256,6 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
     // Send OTP via email
     try {
       await sendOTPEmail(email, otpCode, userName);
-      console.log(`✉️ OTP sent to ${email}`);
     } catch (emailError) {
       console.error("⚠️ Failed to send OTP email:", emailError);
     }
@@ -275,7 +266,7 @@ router.post("/forgot-password", async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error("Forgot password error:", error);
-    res.status(500).json({ error: error.message || "Failed to process request" });
+    res.status(500).json({ error: "Failed to process request" });
   }
 });
 
@@ -303,17 +294,19 @@ router.post("/reset-password", async (req, res) => {
 
     const userId = existingUser[0].id;
 
-    // Find valid OTP
-    const otpRecord = await db
-      .select()
-      .from(otpVerifications)
+    // Use atomic update to prevent race condition - mark OTP as used immediately
+    const [updatedOtp] = await db
+      .update(otpVerifications)
+      .set({ isUsed: true })
       .where(
-        eq(otpVerifications.userId, userId),
-        eq(otpVerifications.isUsed, false)
+        and(
+          eq(otpVerifications.userId, userId),
+          eq(otpVerifications.isUsed, false)
+        )
       )
-      .limit(1);
+      .returning();
 
-    if (!otpRecord.length) {
+    if (!updatedOtp) {
       return res.status(400).json({ error: "Invalid or already used OTP" });
     }
 
@@ -329,12 +322,12 @@ router.post("/reset-password", async (req, res) => {
     // Delete the OTP record after successful password reset
     await db
       .delete(otpVerifications)
-      .where(eq(otpVerifications.id, otpRecord[0].id));
+      .where(eq(otpVerifications.id, updatedOtp.id));
 
     res.json({ success: true, message: "Password updated successfully" });
   } catch (error: any) {
     console.error("Reset password error:", error);
-    res.status(500).json({ error: error.message || "Failed to reset password" });
+    res.status(500).json({ error: "Failed to reset password" });
   }
 });
 
@@ -344,7 +337,6 @@ router.post("/reset-password", async (req, res) => {
 router.post("/verify-otp", async (req, res) => {
   try {
     const { email, otpCode } = req.body;
-    console.log("Request body:", req.body);
 
     if (!email || !otpCode) {
       return res.status(400).json({ error: "Email and OTP are required" });
@@ -356,8 +348,6 @@ router.post("/verify-otp", async (req, res) => {
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
-
-    console.log("Found user:", existingUser);
 
     if (!existingUser.length) {
       return res.status(404).json({ error: "Email not registered" });
@@ -374,17 +364,11 @@ router.post("/verify-otp", async (req, res) => {
           eq(otpVerifications.userId, userId),
           eq(otpVerifications.otpCode, otpCode.toString()),
           eq(otpVerifications.isUsed, false),
-          // sql`${otpVerifications.expiresAt} > timezone('UTC', now())`
+          sql`${otpVerifications.expiresAt} > timezone('UTC', now())`
 
         )
       )
       .limit(1);
-
-    console.log("OTP records found:", otpRecord);
-    if (otpRecord.length) {
-      console.log("OTP expires at:", otpRecord[0].expiresAt);
-      console.log("Current time:", new Date().toISOString());
-    }
 
     if (!otpRecord.length) {
       return res.status(400).json({ error: "Invalid or expired OTP" });
@@ -399,7 +383,7 @@ router.post("/verify-otp", async (req, res) => {
     res.json({ success: true, message: "OTP verified successfully" });
   } catch (error: any) {
     console.error("OTP verification error:", error);
-    res.status(500).json({ error: error.message || "Failed to verify OTP" });
+    res.status(500).json({ error: "Failed to verify OTP" });
   }
 });
 

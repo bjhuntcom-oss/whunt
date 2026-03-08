@@ -18,6 +18,7 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
+import { getValidatedUser, getValidatedSiteId, setValidatedSiteId } from "@/lib/storage-validation";
 
 interface SiteContextType {
   selectedSiteId: string | null;
@@ -31,21 +32,21 @@ const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
 export function SiteProvider({ children }: { children: ReactNode }) {
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(() => {
-    // Load from localStorage on mount
-    return localStorage.getItem("selectedSiteId") || null;
+    // Load from localStorage with validation
+    return getValidatedSiteId();
   });
 
   const [tenantId, setTenantId] = useState<string | null>(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    return user.tenantId || null;
+    const user = getValidatedUser();
+    return user?.tenantId || null;
   });
   const previousTenantId = useRef<string | null>(tenantId);
 
   // Watch for localStorage changes to update tenantId reactively
   useEffect(() => {
     const checkTenant = () => {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const currentTenantId = user.tenantId || null;
+      const user = getValidatedUser();
+      const currentTenantId = user?.tenantId || null;
       if (currentTenantId !== tenantId) {
         setTenantId(currentTenantId);
       }
@@ -109,7 +110,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   // Persist to localStorage whenever it changes
   useEffect(() => {
     if (selectedSiteId) {
-      localStorage.setItem("selectedSiteId", selectedSiteId);
+      setValidatedSiteId(selectedSiteId);
     } else {
       localStorage.removeItem("selectedSiteId");
     }

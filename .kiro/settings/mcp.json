@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "bjhunt-ssh": {
+      "args": [
+        "-y",
+        "@fangjunjie/ssh-mcp-server",
+        "--host",
+        "82.25.117.79",
+        "--port",
+        "22",
+        "--username",
+        "root",
+        "--privateKey",
+        "C:\\Users\\ELITE\\.ssh\\bjhunt_vps"
+      ],
+      "command": "npx",
+      "disabled": true
+    },
+    "mcp-playwright": {
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "command": "npx",
+      "disabled": false
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

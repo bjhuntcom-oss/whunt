@@ -279,8 +279,16 @@ export function registerRestApiV1Routes(app: Express) {
     try {
       const { channelId } = req.apiUser!;
       const { contactPhone } = req.params;
-      const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
-      const offset = parseInt(req.query.offset as string) || 0;
+      
+      // Validate and sanitize limit and offset to prevent NaN
+      const limitParam = parseInt(req.query.limit as string, 10);
+      const offsetParam = parseInt(req.query.offset as string, 10);
+      
+      const limit = Math.min(
+        !isNaN(limitParam) && limitParam > 0 ? limitParam : 50,
+        100
+      );
+      const offset = !isNaN(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
 
       if (!channelId) {
         return res.status(400).json({ success: false, error: "No channel associated with this API key. Pass x-channel-id header or channel_id query param to specify a channel." });
@@ -346,8 +354,16 @@ export function registerRestApiV1Routes(app: Express) {
       const { channelId } = req.apiUser!;
       const search = req.query.search as string;
       const groupId = req.query.groupId as string;
-      const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
-      const offset = parseInt(req.query.offset as string) || 0;
+      
+      // Validate and sanitize limit and offset to prevent NaN
+      const limitParam = parseInt(req.query.limit as string, 10);
+      const offsetParam = parseInt(req.query.offset as string, 10);
+      
+      const limit = Math.min(
+        !isNaN(limitParam) && limitParam > 0 ? limitParam : 50,
+        100
+      );
+      const offset = !isNaN(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
 
       if (!channelId) {
         return res.status(400).json({ success: false, error: "No channel associated with this API key. Pass x-channel-id header or channel_id query param to specify a channel." });
@@ -632,8 +648,16 @@ export function registerRestApiV1Routes(app: Express) {
     try {
       const { channelId } = req.apiUser!;
       const status = req.query.status as string;
-      const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
-      const offset = parseInt(req.query.offset as string) || 0;
+      
+      // Validate and sanitize limit and offset to prevent NaN
+      const limitParam = parseInt(req.query.limit as string, 10);
+      const offsetParam = parseInt(req.query.offset as string, 10);
+      
+      const limit = Math.min(
+        !isNaN(limitParam) && limitParam > 0 ? limitParam : 50,
+        100
+      );
+      const offset = !isNaN(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
 
       if (!channelId) {
         return res.status(400).json({ success: false, error: "No channel associated with this API key. Pass x-channel-id header or channel_id query param to specify a channel." });

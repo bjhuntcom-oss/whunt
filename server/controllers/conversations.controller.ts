@@ -108,6 +108,18 @@ export const getConversation = asyncHandler(async (req: Request, res: Response) 
     throw new AppError(404, 'Conversation not found');
   }
 
+  // Check if user has access to this conversation's channel
+  const user = (req.session as any)?.user;
+  if (user && user.role !== 'superadmin') {
+    const ownerId = user.role === 'team' ? user.createdBy : user.id;
+    const channels = await storage.getChannelsByUserId(ownerId);
+    const channelIds = channels.map((ch: any) => ch.id);
+    
+    if (!channelIds.includes(conversation.channelId)) {
+      return res.status(403).json({ error: "Access denied to this conversation" });
+    }
+  }
+
   res.json(conversation);
 });
 

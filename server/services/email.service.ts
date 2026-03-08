@@ -335,7 +335,7 @@ export async function sendContactEmail(data: {
         <div style="margin-top:30px;">
           <p style="font-size:16px; font-weight:600; color:#374151; margin-bottom:8px;">Message:</p>
           <div style="background:#f9fafb; padding:20px; border-radius:10px; font-size:15px; line-height:1.6; color:#111827;">
-            ${message.replace(/\n/g, "<br>")}
+            ${message.replace(/\n/g, "<br>").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;")}
           </div>
         </div>
       </div>

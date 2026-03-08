@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           source: "."
-          target: "/home/whatsway"
+          target: "/home/whunt"
 
       - name: Run deploy script on server
         uses: appleboy/ssh-action@v1.0.3
@@ -30,6 +30,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            cd /home/whatsway
+            cd /home/whunt
             chmod +x deploy.sh
             ./deploy.sh

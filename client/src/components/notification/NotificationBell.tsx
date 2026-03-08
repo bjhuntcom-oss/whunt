@@ -248,7 +248,7 @@ export default function NotificationBell() {
         const notifMessage = data?.message || "You have a new notification";
         new Notification(notifTitle, {
           body: notifMessage,
-          icon: "/logo1924.jpg",
+          icon: "/favicon.ico",
         });
       }
     },

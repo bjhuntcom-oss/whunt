@@ -1059,11 +1059,11 @@ export const groups = pgTable("groups", {
   id: varchar("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  channelId: uuid("channelId"), 
+  channelId: varchar("channelId").references(() => channels.id, { onDelete: "cascade" }), 
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
   createdBy: varchar("created_by").references(() => users.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at", { withTimezone: false })
+  createdAt: timestamp("created_at")
     .defaultNow()
 });
 
